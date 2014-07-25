@@ -183,6 +183,12 @@ function menu() {
      Exemplo: --comand-all {comando}
      Uso:     --comand-all 'nmap sV -p 22,80,21 _TARGET_'
               --comand-all './exploit.sh _TARGET_ output.txt'
+              
+    Observação: 
+    _TARGET_ será substituído por pelo URL/alvo encontrado, porem formatado sem 
+    os gets & pastas será executado somente o domínio.
+   _TARGETFULL_ será substituído por pelo URL/alvo encontrado será mantido a URL/alvo original encontrada. 
+   
 ");
 }
 
@@ -257,7 +263,7 @@ function servidorOS() {
 
 function salvarTXT($arquivo, $valor, $op = NULL) {
     echo!is_null($op) ? "\n\033[1;37m0x|\033[02;31mVALUE SAVED IN THE FILE::\033[0;32m {$arquivo}\033[0m" : NULL;
-    system('echo "' . $valor . '">>' . $arquivo);
+    file_put_contents($arquivo, "{$valor}\r\n", FILE_APPEND);
 }
 
 ################################################################################################################################################################
@@ -408,23 +414,28 @@ function setUserAgent() {
 #RESPONSÁVEL POR EXECUTAR COMANDOS NO TERMINAL##################################
 
 function comando($comando, $alvo) {
-
-    $alvo = parse_url($alvo);
-    $alvo_ = (isset($alvo['host'])) ? $alvo['host'] : $alvo['path'];
-    if (!is_null($comando)) { {
+    if (!is_null($comando)) {
+        (strstr($comando, '_TARGET_') || strstr($comando, '_TARGETFULL_') ? NULL : sair(bannerLogo() . "\033[1;37m0x\033[0m\033[02;31mSET PARAMETER - comand correctly\033[0m\n"));
+        if (strstr($comando, '_TARGET_')) {
+            $alvo = parse_url($alvo);
+            $alvo_ = (isset($alvo['host'])) ? $alvo['host'] : $alvo['path'];
             $comando = str_replace('_TARGET_', escapeshellarg($alvo_), $comando);
-            echo "\n\033[1;34m[*]__\033[0m\n";
-            echo "     \033[1;34m|EXTERNAL COMMAND:: {$comando}\033[1;35m\n";
-            $dados = system($comando, $dados);
-            plus();
-            sleep(1);
-            echo "\033[0m";
+        } else {
+
+            $comando = str_replace('_TARGETFULL_', escapeshellarg($alvo), $comando);
         }
-        if (empty($dados[0])) {
-            return FALSE;
-        }
-        unset($dados);
+
+        echo "\n\033[1;34m[*]__\033[0m\n";
+        echo "     \033[1;34m|EXTERNAL COMMAND:: {$comando}\033[1;35m\n";
+        $dados = system($comando, $dados);
+        plus();
+        sleep(1);
+        echo "\033[0m";
     }
+    if (empty($dados[0])) {
+        return FALSE;
+    }
+    unset($dados);
 }
 
 ################################################################################################################################################################
@@ -690,7 +701,7 @@ function subProcesso($resultado, $motorNome) {
             $blacklist = "google.,uol.,youtube.,whowhere.,hotbot.,amesville.,lycos,lygo.,orkut.,schema.,blogger.,bing.,w3.,yahoo.,yimg.,";
             $blacklist.= "live.,microsoft.,ask.,answers.,analytics.,googleadservices.,sapo.pt,favicon.,blogspot.,wordpress.,.css,dmoz.,gigablast.,aol.,";
             $blacklist.="aolcdn.,altavista.,clusty.,teoma.,wisenut.,a9.,uolhost.,w3schools.,msn.,baidu.,hao123.,shifen.,procog.,facebook.,twitter.,flickr.,";
-            $blacklist.="4shared.,stackoverflow.,gstatic.,php.net,wikipedia.";
+            $blacklist.="4shared.,stackoverflow.,gstatic.,php.net,wikipedia.,webcache.";
             $url = ($motorNome == 'ajax.googleapis.com') ? $result["url"] : $result;
             if (!is_null($url) && !empty($url) && !validarOpcoes($blacklist, $url, 1)) {
                 $_SESSION["config"]["totas_urls"].="[URL]{$url}";
