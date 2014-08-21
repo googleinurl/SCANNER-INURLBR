@@ -195,7 +195,7 @@ SCANNER - INURLBR
               --replace 'index.aspx?id=[INURL]index.aspx?id=1%27´'
 ```
 
-- Dando permição para execução do script:
+- Dando permissão para execução do script:
 ------
 ```
 $chmod +x inurlbr.php
