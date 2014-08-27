@@ -11,7 +11,7 @@ SCANNER - INURLBR
  * Blog:     http://blog.inurl.com.br
  * twitter: /@googleinurl
  * facebook: /InurlBrasil
- * Versão:  1.0
+ * Versão:  1.0.1
  * php5-curl           LIB
  * php5-cli            LIB  
  * cURL support        enabled
@@ -64,10 +64,11 @@ SCANNER - INURLBR
 |  __  |  __| | |    |  ___/
 | |  | | |____| |____| |    
 |_|  |_|______|______|_|                      
------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------------------
 -h
 --help   Alternative long length help command.
 --ajuda  Command to specify Help.
+--info   Information script.
  -q  Choose which search engine you want through [1...13]:
      [options]:
      1   - www.google.com.br
@@ -168,6 +169,11 @@ SCANNER - INURLBR
        
  -u  Enables the search for URL lists on the url specified.
  
+ --gc Enable validation of values ​​with google webcache.
+ 
+ --cms-check Enable simple check if the url / target is using CMS
+
+
  --comand-vul Every vulnerable URL found will execute this command parameters.
      Example: --comand-vul {command}
      Usage:   --comand-vul 'nmap sV -p 22,80,21 _TARGET_'
