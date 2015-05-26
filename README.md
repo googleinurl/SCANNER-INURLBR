@@ -2,6 +2,17 @@ SCANNER - INURLBR
 ===============
 
 >Advanced search in search engines, enables analysis provided to exploit GET / POST capturing emails & urls, with an internal custom validation junction for each target / url found.
+```
+        +-----------------------------------------------------------------------------+
+        |  [!] Legal disclaimer: Usage of INURLBR for attacking targets without prior |
+        |  mutual consent is illegal.                                                 |
+        |  It is the end user's responsibility to obey all applicable local, state and|
+        |  federal laws.                                                              |
+        |  Developers assume no liability and are not responsible for any misuse or   |
+        |  damage caused by this program                                              |
+        +-----------------------------------------------------------------------------+
+```
+
 
 ```
   [+] AUTOR:        Cleiton Pinheiro / Nick: googleINURL
@@ -21,6 +32,11 @@ SCANNER - INURLBR
  * SCRIPT NAME:        INURLBR
  * Codename:           Subversive
  * Version:            2.1.0
+
+
+- Screenshot:
+------
+![Screenshot](http://3.bp.blogspot.com/-H1DjYjXjqXU/VWPNTUnfeaI/AAAAAAAAA_E/B24JDIxrq3o/s1600/inurlbr.png)
 
 - LIB & PERMISSION:
 ------
@@ -42,6 +58,7 @@ Proxy random        TOR
 [+] INSTALLING LIB CLI: sudo apt-get install php5-cli
 [+] INSTALLING PROXY TOR https://www.torproject.org/docs/debian.html.en
  ----------------------------------------------------------
+resume: apt-get install curl libcurl3 libcurl3-dev php5 php5-cli php5-curl
 ```
 - HELP:
 ------
@@ -566,6 +583,6 @@ To get a list of all options and switches use:
 ```
 
 
-* Demos: [https://www.youtube.com/playlist?list=PLV1376pVwcCmcoCmq_Z4O0ra4BqjmhIaR](http://youtube.com/c/INURLBrasil)
+* Demos: [http://youtube.com/c/INURLBrasil](https://www.youtube.com/playlist?list=PLV1376pVwcCmcoCmq_Z4O0ra4BqjmhIaR)
 * Tutoriais: [http://blog.inurl.com.br/search/label/INURLBR](http://blog.inurl.com.br/search/label/INURLBR)
 * IRC: irc.rizon.net / #inurlbrasil
