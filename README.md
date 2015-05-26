@@ -483,7 +483,7 @@ resume: apt-get install curl libcurl3 libcurl3-dev php5 php5-cli php5-curl
      Usage:   hex(102030)
      Usage:   --exploit-get 'user?id=hex(102030)'
 
- hex Generate random values.
+ Generate random values.
      Example: random({character_counter})
      Usage:   random(8)
      Usage:   --exploit-get 'user?id=random(8)'
