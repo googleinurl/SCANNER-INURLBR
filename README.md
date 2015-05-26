@@ -540,7 +540,7 @@ Proxy random        TOR
 
 - Installation
 ----
-Preferably, you can download sqlmap by cloning the [Git](https://github.com/googleinurl/SCANNER-INURLBR) repository:
+Preferably, you can download inurlbr by cloning the [Git](https://github.com/googleinurl/SCANNER-INURLBR) repository:
 ```
     git clone https://github.com/googleinurl/SCANNER-INURLBR.git inurlbr
 ```
@@ -558,11 +558,11 @@ Executar: ./inurlbr.php
 
 To get a list of basic options and switches use:
 ```
-    php sqlmap.py -h
+    php inurlbr.php -h
 ```
 To get a list of all options and switches use:
 ```
-    python sqlmap.py -hh
+    python inurlbr.php --help
 ```
 
 
