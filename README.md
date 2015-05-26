@@ -3,14 +3,14 @@ SCANNER - INURLBR
 
 >Advanced search in search engines, enables analysis provided to exploit GET / POST capturing emails & urls, with an internal custom validation junction for each target / url found.
 ```
-        +-----------------------------------------------------------------------------+
-        |  [!] Legal disclaimer: Usage of INURLBR for attacking targets without prior |
-        |  mutual consent is illegal.                                                 |
-        |  It is the end user's responsibility to obey all applicable local, state and|
-        |  federal laws.                                                              |
-        |  Developers assume no liability and are not responsible for any misuse or   |
-        |  damage caused by this program                                              |
-        +-----------------------------------------------------------------------------+
+      +-----------------------------------------------------------------------------+
+      |  [!] Legal disclaimer: Usage of INURLBR for attacking targets without prior |
+      |  mutual consent is illegal.                                                 |
+      |  It is the end user's responsibility to obey all applicable local, state and|
+      |  federal laws.                                                              |
+      |  Developers assume no liability and are not responsible for any misuse or   |
+      |  damage caused by this program                                              |
+      +-----------------------------------------------------------------------------+
 ```
 
 
