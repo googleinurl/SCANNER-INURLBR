@@ -37,7 +37,9 @@ SCANNER - INURLBR
 - Screenshot:
 ------
 ![Screenshot](http://3.bp.blogspot.com/-H1DjYjXjqXU/VWPNTUnfeaI/AAAAAAAAA_E/B24JDIxrq3o/s1600/inurlbr.png)
-
+![Screenshot](http://4.bp.blogspot.com/-XAohC-ga9EM/VWU1l3a3QcI/AAAAAAAAA_o/BRg0mIllOgQ/s1600/sqlmap.png)
+![Screenshot](http://4.bp.blogspot.com/-bOOilZLyUFg/VWQCdHKCAwI/AAAAAAAAA_U/JAy1ChdQJU0/s1600/post.png)
+![Screenshot](http://2.bp.blogspot.com/-kCYgptMhfts/VWU2eTTTKFI/AAAAAAAAA_w/eGSt7qg4HRo/s1600/exploits.png)
 - LIB & PERMISSION:
 ------
 ```
