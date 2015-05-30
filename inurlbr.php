@@ -108,7 +108,7 @@ $commandos_list = array(
     'dork:', 'dork-file:', 'exploit-cad:', 'range:', 'range-rand:', 'irc:',
     'exploit-all-id:', 'exploit-vul-id:', 'exploit-get:', 'exploit-post:',
     'regexp-filter:', 'exploit-command:', 'command-all:', 'command-vul:',
-    'replace:', 'remove:', 'regexp:', 'sall:', 'sub-file:', 'sub-get::',
+    'replace:', 'remove:', 'regexp:', 'sall:', 'sub-file:', 'sub-get::', 'sub-concat:',
     'user-agent:', 'url-reference:', 'delay:', 'sendmail:', 'time-out:',
     'http-header:', 'ifcode:', 'ifurl:', 'ifemail:', 'mp:', 'target:',
     'no-banner::', 'gc::', 'proxy:', 'proxy-file:', 'time-proxy:', 'pr::',
@@ -409,6 +409,9 @@ $_SESSION['config']['persist'] = not_isnull_empty($opcoes['persist']) ? $opcoes[
 
 #[+]VALIDATION SET FILE COOKIE
 $_SESSION['config']['file-cookie'] = not_isnull_empty($opcoes['file-cookie']) ? $opcoes['file-cookie'] : NULL;
+
+#[+]VALIDATION SET STRING CONCAT URL SUB-PROCESS
+$_SESSION['config']['sub-concat'] = not_isnull_empty($opcoes['sub-concat']) ? $opcoes['sub-concat'] : NULL;
 
 ################################################################################
 #IRC CONFIGURATION##############################################################
@@ -930,6 +933,10 @@ function __menu() {
      --sub-file will be injected via POST.
      Usage:   {$_SESSION["c1"]}--sub-get
          
+ {$_SESSION["c1"]}--sub-concat{$_SESSION["c0"]} Sets string to be concatenated with 
+     the target host within the subprocess
+     Example: {$_SESSION["c1"]}--sub-concat {$_SESSION["c2"]}{string}{$_SESSION["c0"]}
+     Usage:   {$_SESSION["c1"]}--sub-concat {$_SESSION["c2"]}'/login.php'{$_SESSION["c0"]}
 
  {$_SESSION["c1"]}--sub-cmd-vul{$_SESSION["c0"]} Each vulnerable URL found within the sub-process
      will execute the parameters of this command.
@@ -977,7 +984,7 @@ function __menu() {
      Usage:   {$_SESSION["c1"]}hex({$_SESSION["c2"]}102030{$_SESSION["c1"]}){$_SESSION["c0"]}
      Usage:   {$_SESSION["c1"]}--exploit-get 'user?id=hex({$_SESSION["c2"]}102030{$_SESSION["c1"]})'{$_SESSION["c0"]}
 
- {$_SESSION["c1"]}Generate{$_SESSION["c0"]} random values.
+ {$_SESSION["c1"]}hex{$_SESSION["c0"]} Generate random values.
      Example: {$_SESSION["c1"]}random({$_SESSION["c2"]}{character_counter}{$_SESSION["c1"]}){$_SESSION["c0"]}
      Usage:   {$_SESSION["c1"]}random({$_SESSION["c2"]}8{$_SESSION["c1"]}){$_SESSION["c0"]}
      Usage:   {$_SESSION["c1"]}--exploit-get 'user?id=random({$_SESSION["c2"]}8{$_SESSION["c1"]})'{$_SESSION["c0"]}
@@ -1014,7 +1021,7 @@ function __info() {
  {$_SESSION["c1"]}[*]{$_SESSION["c0"]}PSS:      https://packetstormsecurity.com/user/googleinurl
  {$_SESSION["c1"]}[*]{$_SESSION["c0"]}YOUTUBE:  http://youtube.com/c/INURLBrasil
  {$_SESSION["c1"]}[*]{$_SESSION["c0"]}PLUS:     http://google.com/+INURLBrasil
- {$_SESSION["c1"]}[*]{$_SESSION["c0"]}Version:  2.1
+ {$_SESSION["c1"]}[*]{$_SESSION["c0"]}Version:  2.0
 
 {$_SESSION["c1"]}[-]-------------------------------------------------------------------------------{$_SESSION["c0"]}
  
@@ -2697,8 +2704,8 @@ function __exitProcess() {
     $file_all = !is_null($_SESSION['config']['arquivo_output_all']) ? $_SESSION['config']['arquivo_output_all'] : NULL;
     (($_SESSION['config']['extrai-email']) ? __filterEmailsRepeated() : NULL);
     $cont = count(explode("\n", $_SESSION['config']['resultado_valores'])) - 1;
-    echo "\n\n{$_SESSION["c1"]}[ INFO ][ Shutting down ]{$_SESSION["c0"]}";
-    echo "\n{$_SESSION["c1"]}[ INFO ][ End of process INURLBR at [" . date("d-m-Y H:i:s") . "]{$_SESSION["c0"]}";
+    echo "\n\n{$_SESSION["c1"]}[ INFO ] [ Shutting down ]{$_SESSION["c0"]}";
+    echo "\n{$_SESSION["c1"]}[ INFO ] [ End of process INURLBR at [" . date("d-m-Y H:i:s") . "]{$_SESSION["c0"]}";
     echo "\n{$_SESSION["c1"]}[ INFO ] {$_SESSION["c0"]}{$_SESSION["c16"]}[ TOTAL FILTERED VALUES ]::{$_SESSION["c1"]} [ {$cont} ]{$_SESSION["c0"]}";
     echo!is_null($file) ? "\n{$_SESSION["c1"]}[ INFO ] {$_SESSION["c16"]}[ OUTPUT FILE ]::{$_SESSION["c1"]} [ " . getcwd() . "/{$_SESSION['config']['out_put_paste']}{$file}  ]{$_SESSION["c0"]}" : NULL;
     echo!is_null($file_all) ? "\n{$_SESSION["c1"]}[ INFO ] {$_SESSION["c16"]}[ OUTPUT FILE ALL ]::{$_SESSION["c1"]} [ " . getcwd() . "/{$_SESSION['config']['out_put_paste']}{$file_all}  ]{$_SESSION["c0"]}" : NULL;
@@ -2821,7 +2828,9 @@ function __subExecExploits($target, $exploitArray = array()) {
     foreach ($exploitArray as $value) {
 
         $postDados = !is_null($_SESSION["config"]["sub-post"]) ? __convertUrlQuery($value) : NULL;
-        $url = "{$target}{$value}";
+        $patch_GP = (is_null($postDados) ? $value : NULL);
+        $url = $target . $_SESSION["config"]["sub-concat"] . $patch_GP;
+
         echo "{$_SESSION["c7"]}-[||]{$_SESSION["c0"]}";
         $resultado__ = __request_info($url, $_SESSION["config"]["proxy"], $postDados);
         __plus();
@@ -2833,7 +2842,7 @@ function __subExecExploits($target, $exploitArray = array()) {
 
         __plus();
         $_ex['vull_style'] = (not_isnull_empty($_ex['erroReturn'])) ?
-                "{$_SESSION["c15"]}[ INFO ][{$_ex['erroReturn']} ]\n[ INFO ][ TARGET POTENTIALLY VULNERABLE ]: " . __cli_beep() : NULL;
+                "{$_SESSION["c15"]}[ INFO ][ {$_ex['erroReturn']} ]\n[ INFO ][ TARGET POTENTIALLY VULNERABLE ]: " . __cli_beep() : NULL;
         echo (not_isnull_empty($_ex['erroReturn']) ? "\n{$_ex['vull_style']}{$url}\n{$_SESSION["c0"]}" : NULL);
         echo (not_isnull_empty($_ex['erroReturn']) ? __saveValue($_SESSION['config']['arquivo_output'], $url, 1) . "\n" : NULL);
         __plus();
@@ -3609,7 +3618,7 @@ function __engines($dork, $list_proxy) {
 
 function __startingBanner() {
 
-    echo "\n{$_SESSION["c1"]}[ ! ] Starting SCANNER INURLBR 2.1 at [" . date("d-m-Y H:i:s") . "]{$_SESSION["c9"]}
+    echo "\n{$_SESSION["c1"]}[ ! ] Starting SCANNER INURLBR 2.0 at [" . date("d-m-Y H:i:s") . "]{$_SESSION["c9"]}
 [ ! ] legal disclaimer: Usage of INURLBR for attacking targets without prior mutual consent is illegal. 
 It is the end user's responsibility to obey all applicable local, state and federal laws.
 Developers assume no liability and are not responsible for any misuse or damage caused by this program{$_SESSION["c0"]}\n";
