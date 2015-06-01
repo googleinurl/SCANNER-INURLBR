@@ -581,7 +581,7 @@ To get a list of basic options and switches use:
 ```
 To get a list of all options and switches use:
 ```
-    python inurlbr.php --help
+    php inurlbr.php --help
 ```
 
 
