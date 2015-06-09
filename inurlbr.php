@@ -3687,8 +3687,8 @@ function __main($dork, $motor, $cod) {
 
             //$objNewSearch = create_function('$dork_, $motor, $list_proxy', $cod);
             //$objNewSearch(urlencode($dork_[3][$i]), $motor, $list_proxy);
-
-            __engines(str_replace(' ', '%20', $dork_[3][$i]), $list_proxy) . __plus();
+		
+            __engines(urlencode($dork_[3][$i]), $list_proxy) . __plus();
 
             ($_SESSION["config"]["pr"]) ? __process(explode("\n", $_SESSION["config"]["totas_urls"])) . __plus() : NULL;
             ($_SESSION["config"]["pr"]) ? $_SESSION["config"]["totas_urls"] = NULL : NULL;
