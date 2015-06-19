@@ -1021,7 +1021,7 @@ function __info() {
  {$_SESSION["c1"]}[*]{$_SESSION["c0"]}PSS:      https://packetstormsecurity.com/user/googleinurl
  {$_SESSION["c1"]}[*]{$_SESSION["c0"]}YOUTUBE:  http://youtube.com/c/INURLBrasil
  {$_SESSION["c1"]}[*]{$_SESSION["c0"]}PLUS:     http://google.com/+INURLBrasil
- {$_SESSION["c1"]}[*]{$_SESSION["c0"]}Version:  2.0
+ {$_SESSION["c1"]}[*]{$_SESSION["c0"]}Version:  2.1
 
 {$_SESSION["c1"]}[-]-------------------------------------------------------------------------------{$_SESSION["c0"]}
  
@@ -3618,7 +3618,7 @@ function __engines($dork, $list_proxy) {
 
 function __startingBanner() {
 
-    echo "\n{$_SESSION["c1"]}[ ! ] Starting SCANNER INURLBR 2.0 at [" . date("d-m-Y H:i:s") . "]{$_SESSION["c9"]}
+    echo "\n{$_SESSION["c1"]}[ ! ] Starting SCANNER INURLBR 2.1 at [" . date("d-m-Y H:i:s") . "]{$_SESSION["c9"]}
 [ ! ] legal disclaimer: Usage of INURLBR for attacking targets without prior mutual consent is illegal. 
 It is the end user's responsibility to obey all applicable local, state and federal laws.
 Developers assume no liability and are not responsible for any misuse or damage caused by this program{$_SESSION["c0"]}\n";
