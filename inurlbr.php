@@ -12,14 +12,13 @@
   +-----------------------------------------------------------------------------+
 
 
-  [+] AUTOR:        Cleiton Pinheiro / Nick: googleINURL
+  [+] AUTOR:        googleINURL
   [+] Blog:         http://blog.inurl.com.br
   [+] Twitter:      https://twitter.com/googleinurl
   [+] Fanpage:      https://fb.com/InurlBrasil
   [+] Pastebin      http://pastebin.com/u/Googleinurl
   [+] GIT:          https://github.com/googleinurl
   [+] PSS:          http://packetstormsecurity.com/user/googleinurl
-  [+] EXA:          http://exploit4arab.net/author/248/Cleiton_Pinheiro
   [+] YOUTUBE:      http://youtube.com/c/INURLBrasil
   [+] PLUS:         http://google.com/+INURLBrasil
 
