@@ -15,7 +15,7 @@ SCANNER - INURLBR
 
 
 ```
-  [+] AUTOR:        Cleiton Pinheiro / Nick: googleINURL
+  [+] AUTOR:        googleINURL
   [+] EMAIL:        inurlbr@gmail.com
   [+] Blog:         http://blog.inurl.com.br
   [+] Twitter:      https://twitter.com/googleinurl
