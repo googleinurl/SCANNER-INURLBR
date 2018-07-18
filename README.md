@@ -584,6 +584,23 @@ To get a list of all options and switches use:
     php inurlbr.php --help
 ```
 
+- Using Docker
+----
+
+Create image using Docker
+```
+sudo docker build -t inurlbr:0.1 .
+```
+
+Using image 
+```
+sudo docker run -it --rm inurl-docker:0.1 -h
+```
+
+Sharing volumes
+```
+sudo docker run -it --rm -v /SCANNER-INURLBR/output/:$(pwd) inurl-docker:0.1 -h
+```
 
 * Demos: [http://youtube.com/c/INURLBrasil](https://www.youtube.com/playlist?list=PLV1376pVwcCmcoCmq_Z4O0ra4BqjmhIaR)
 * Tutoriais: [http://blog.inurl.com.br/search/label/INURLBR](http://blog.inurl.com.br/search/label/INURLBR)
