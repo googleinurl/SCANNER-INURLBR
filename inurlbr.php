@@ -1472,13 +1472,8 @@ function __renewTOR() {
 
 function __validateEmail($email) {
 
-    $conta = "^[a-zA-Z0-9\._-]+@";
-    $domino = "[a-zA-Z0-9\._-]+.";
-    $extensao = "([a-zA-Z]{2,4})$";
-
-    $pattern = $conta . $domino . $extensao;
-
-    return (ereg($pattern, $email)) ? TRUE : FALSE;
+    preg_match_all('/([\w\d\.\-\_]+)@([\w\d\.\_\-]+)/', $email, $matches);
+    return $matches;
 }
 
 ################################################################################
