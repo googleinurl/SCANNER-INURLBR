@@ -1,6 +1,6 @@
-SCANNER - INURLBR
-===============
-
+# SCANNER - INURLBR
+> **This is a fork of the original project.**
+>
 >Advanced search in search engines, enables analysis provided to exploit GET / POST capturing emails & urls, with an internal custom validation junction for each target / url found.
 ```
    +-----------------------------------------------------------------------------+
@@ -30,21 +30,21 @@ SCANNER - INURLBR
 
  * GROUP INURL BRASIL - ADVANCED SEARCH.
  * SCRIPT NAME:        INURLBR
- * Codename:           Subversive
- * Version:            2.1.0
+ * Codename:           Facada
+ * Version:            3.0.0
 
 
-- Screenshot:
+## Screenshot:
 ------
-![Screenshot](http://3.bp.blogspot.com/-H1DjYjXjqXU/VWPNTUnfeaI/AAAAAAAAA_E/B24JDIxrq3o/s1600/inurlbr.png)
+![Screenshot](https://1.bp.blogspot.com/-oAWYXFohNpw/YGN2Lj8VUlI/AAAAAAAAArk/Xibi752EVPMQTjQbZtrasm7aJGEyH0BmwCLcBGAsYHQ/s1214/Captura%2Bde%2Btela%2Bde%2B2021-03-30%2B16-01-33.png)
 ![Screenshot](http://4.bp.blogspot.com/-XAohC-ga9EM/VWU1l3a3QcI/AAAAAAAAA_o/BRg0mIllOgQ/s1600/sqlmap.png)
 ![Screenshot](http://4.bp.blogspot.com/-bOOilZLyUFg/VWQCdHKCAwI/AAAAAAAAA_U/JAy1ChdQJU0/s1600/post.png)
 ![Screenshot](http://2.bp.blogspot.com/-kCYgptMhfts/VWU2eTTTKFI/AAAAAAAAA_w/eGSt7qg4HRo/s1600/exploits.png)
-- LIB & PERMISSION:
+## LIB & PERMISSION:
 ------
-```
+```log
  ----------------------------------------------------------
-PHP Version         5.4.7
+PHP Version         7.4.16
 php5-curl           LIB
 php5-cli            LIB   
 cURL support        enabled
@@ -60,9 +60,9 @@ Proxy random        TOR
 [+] INSTALLING LIB CLI: sudo apt-get install php5-cli
 [+] INSTALLING PROXY TOR https://www.torproject.org/docs/debian.html.en
  ----------------------------------------------------------
-resume: apt-get install curl libcurl3 libcurl3-dev php5 php5-cli php5-curl
+resume: apt-get install curl libcurl3 libcurl3-dev php7 php7-cli php7-curl
 ```
-- HELP:
+## HELP:
 ------
 ```
 -h
@@ -72,7 +72,7 @@ resume: apt-get install curl libcurl3 libcurl3-dev php5 php5-cli php5-curl
 --update Code update.    
 -q       Choose which search engine you want through [1...24] / [e1..6]]:
      [options]:
-     1   - GOOGLE / (CSE) GENERIC RANDOM / API
+     1   - GOOGLE
      2   - BING
      3   - YAHOO BR
      4   - ASK
@@ -223,7 +223,7 @@ resume: apt-get install curl libcurl3 libcurl3-dev php5 php5-cli php5-curl
      Example: -a {string}
      Usage:   -a '<title>hello world</title>'
      
- -d  Specify the script usage op 1, 2, 3, 4, 5.
+ -d  Specify debug op 1, 2, 3, 4, 5.
      Example: -d {op}
      Usage:   -d 1 /URL of the search engine.
               -d 2 /Show all the url.
@@ -493,9 +493,10 @@ resume: apt-get install curl libcurl3 libcurl3-dev php5 php5-cli php5-curl
 ```
 
 
-- COMMANDS SIMPLE:
+
+## COMMANDS SIMPLE:
 ------
-```
+```bash
 ./inurlbr.php --dork 'inurl:php?id=' -s save.txt -q 1,6 -t 1 --exploit-get "?´'%270x27;"  
    
 ./inurlbr.php --dork 'inurl:aspx?id=' -s save.txt -q 1,6 -t 1 --exploit-get "?´'%270x27;" 
@@ -557,34 +558,46 @@ resume: apt-get install curl libcurl3 libcurl3-dev php5 php5-cli php5-curl
 ./inurlbr.php --dork-file 'dorks_Wordpress_revslider.txt' -s output.txt -q 1,2,6,4,5,9,7,8  --sub-file 'xpls_Arbitrary_File_Download.txt'  
 ```
 
-- Installation
-----
-Preferably, you can download inurlbr by cloning the [Git](https://github.com/googleinurl/SCANNER-INURLBR) repository:
-```
-    git clone https://github.com/googleinurl/SCANNER-INURLBR.git inurlbr
-```
-The inurlbr works with [php](http://php.net/downloads.php) version **5.4.x**  linux platforms.
-
-- Giving permission to script execution:
+## Installation
 ------
+Preferably, you can download inurlbr by cloning the [Git](https://github.com/googleinurl/SCANNER-INURLBR) repository:
+```bash
+git clone https://github.com/googleinurl/SCANNER-INURLBR.git inurlbr
 ```
+The inurlbr works with [php](http://php.net/downloads.php) version **7.x**  linux platforms.
+
+## Giving permission to script execution:
+------
+```bash
 $chmod +x inurlbr.php
 Executar: ./inurlbr.php
 ```
 
-- Usage
+## Setting your token ipinfo
+------
+It is possible to register more than one token
+```bash
+./resources/token.ipinfo.inurl
+```
+## Setting your token ipinfo
+------
+You can register more validation strings
+```bash
+./resources/strings.validation.inurl
+```
+
+## Usage
 ----
 
 To get a list of basic options and switches use:
-```
-    php inurlbr.php -h
+```bash
+php inurlbr.php -h
 ```
 To get a list of all options and switches use:
+```bash
+php inurlbr.php --help
+php inurlbr.php --info
 ```
-    php inurlbr.php --help
-```
-
 
 * Demos: [http://youtube.com/c/INURLBrasil](https://www.youtube.com/playlist?list=PLV1376pVwcCmcoCmq_Z4O0ra4BqjmhIaR)
 * Tutoriais: [http://blog.inurl.com.br/search/label/INURLBR](http://blog.inurl.com.br/search/label/INURLBR)
-* IRC: irc.rizon.net / #inurlbrasil

@@ -1,0 +1,175 @@
+
+SHELLSHOCK-01;99887766555
+LOCAL-FILE-INCLUSION-01;/root:/
+LOCAL-FILE-INCLUSION-02;root:x:0:0:
+LOCAL-FILE-INCLUSION-03;mysql:x:
+ZIMBRA-WEB-MAIL-01;zimbra_user
+ZIMBRA-WEB-MAIL-02;zimbra_ldap_password
+ZIMBRA-WEB-MAIL-03;ldap_replication_password
+ZIMBRA-WEB-MAIL-04;ldap_root_password
+ZIMBRA-WEB-MAIL-05;ldap_nginx_password
+ZIMBRA-WEB-MAIL-06;mailboxd_keystore_password
+ZIMBRA-WEB-MAIL-07;zimbra_mysql_password
+ZIMBRA-WEB-MAIL-08;mysql_root_password
+ZIMBRA-WEB-MAIL-10;mailboxd_truststore_password
+ZIMBRA-WEB-MAIL-11;ldap_postfix_password
+ZIMBRA-WEB-MAIL-12;ldap_amavis_password
+ZEND-FRAMEWORK-01;mail.transport.username
+ZEND-FRAMEWORK-02;mail.transport.password
+ZEND-FRAMEWORK-03;db.params.username
+ZEND-FRAMEWORK-04;db.params.password
+ZEND-FRAMEWORK-05;db.params.dbname
+CMS-WORDPRESS-01;define('DB_NAME'
+CMS-WORDPRESS-02;define('DB_USER'
+CMS-WORDPRESS-03;define('DB_PASSWORD'
+CMS-WORDPRESS-04;define('DB_HOST'
+MARIADB-01;MariaDB server version for the right syntax
+MYSQL-AND-MARIADB;You have an error in your SQL syntax
+MYSQL-03;Warning: mysql_
+MYSQL-04;function.mysql
+MYSQL-05;MySQL result index
+MYSQL-07;MySQL Error
+MYSQL-08;MySQL ODBC
+MYSQL-09;MySQL Driver
+MYSQL-10;mysqli.query
+MYSQL-11;num_rows
+MYSQL-12;mysql error:
+MYSQL-13;supplied argument is not a valid MySQL result resource
+MYSQL-14;on MySQL result index
+MYSQL-15;Error Executing Database Query
+MYSQL-01;mysql_
+MICROSOFT-01;Microsoft JET Database
+MICROSOFT-02;ADODB.Recordset
+MICROSOFT-03;500 - Internal server error
+MICROSOFT-04;Microsoft OLE DB Provider
+MICROSOFT-05;Unclosed quotes
+MICROSOFT-06;ADODB.Command
+MICROSOFT-07;ADODB.Field error
+MICROSOFT-08;Microsoft VBScript
+MICROSOFT-09;Microsoft OLE DB Provider for SQL Server
+MICROSOFT-10;Unclosed quotation mark
+MICROSOFT-11;Microsoft OLE DB Provider for Oracle
+MICROSOFT-14;Active Server Pages error
+MICROSOFT-15;OLE/DB provider returned message
+MICROSOFT-16;OLE DB Provider for ODBC
+MICROSOFT-17;error '800a0d5d'
+MICROSOFT-18;error '800a000d'
+MICROSOFT-19;error '80040e07'
+MICROSOFT-20;error '80040e14'
+MICROSOFT-21;Unclosed quotation mark after the character string
+MICROSOFT-22;[Microsoft][SQL Server Native Client 11.0][SQL Server]
+MICROSOFT-23;Warning: odbc_
+MICROSOFT-24;Syntax error converting
+ORACLE-01;ORA-00921: unexpected end of SQL command
+ORACLE-02;ORA-01756
+ORACLE-03;ORA-
+ORACLE-04;Oracle ODBC
+ORACLE-05;Oracle Error
+ORACLE-06;Oracle Driver
+ORACLE-07;Oracle DB2
+ORACLE-08;error ORA-
+ORACLE-09;SQL command not properly ended
+DB2-01;DB2 ODBC
+DB2-02;DB2 error
+DB2-03;DB2 Driver
+DB2-04;detected an internal error [IBM][CLI Driver][DB2/6000]
+ODBC-01;ODBC SQL
+ODBC-02;ODBC DB2
+ODBC-03;ODBC Driver
+ODBC-04;ODBC Error
+ODBC-05;ODBC Microsoft Access
+ODBC-06;ODBC Oracle
+ODBC-07;ODBC Microsoft Access Driver
+POSTGRESQL-01;Warning: pg_
+POSTGRESQL-02;PostgreSql Error:
+POSTGRESQL-03;function.pg
+POSTGRESQL-04;Supplied argument is not a valid PostgreSQL result
+POSTGRESQL-05;PostgreSQL query failed: ERROR: parser: parse error
+POSTGRESQL-06;pg_
+SYBASE-01;Warning: sybase_
+SYBASE-02;function.sybase
+SYBASE-03;Sybase result index
+SYBASE-04;Sybase Error:
+SYBASE-05;Sybase: Server message:
+SYBASE-06;sybase_
+SYBASE-07;[Sybase][ODBC Driver]:
+JBOSSWEB-01;java.sql.SQLSyntaxErrorException: ORA-
+JBOSSWEB-02;org.springframework.jdbc.BadSqlGrammarException:
+JBOSSWEB-03;javax.servlet.ServletException:
+JBOSSWEB-04;java.lang.NullPointerException
+JDBC_CFM-01;Error Executing Database Query
+JDBC_CFM-02;SQLServer JDBC Driver
+JDBC_CFM-03;JDBC SQL
+JDBC_CFM-04;JDBC Oracle
+JDBC_CFM-05;JDBC MySQL
+JDBC_CFM-06;JDBC error
+JDBC_CFM-07;JDBC Driver
+JAVA-INFINITYDB-01;java.io.IOException: InfinityDB
+ERRORPHP-01;Warning: include
+ERRORPHP-02;Fatal error: include
+ERRORPHP-03;Warning: require
+ERRORPHP-04;Fatal error: require
+ERRORPHP-05;ADODB_Exception
+ERRORPHP-06;Warning: include(
+ERRORPHP-07;Warning: require_once(
+ERRORPHP-08;function.include
+ERRORPHP-09;Disallowed Parent Path
+ERRORPHP-10;function.require
+ERRORPHP-11;Warning: main(
+ERRORPHP-12;Warning: session_start()
+ERRORPHP-13;Warning: getimagesize()
+ERRORPHP-16;Warning: array_merge()
+ERRORPHP-17;Warning: preg_match()
+ERRORPHP-18;GetArray()
+ERRORPHP-19;FetchRow()
+ERRORPHP-20;Warning: preg_
+ERRORPHP-21;Warning: ociexecute()
+ERRORPHP-22;Warning: ocifetchstatement()
+ERRORPHP-23;PHP Warning:
+ERRORASP-01;Version Information: Microsoft .NET Framework
+ERRORASP-04;ASP.NET is configured to show verbose error messages
+ERRORASP-05;BOF or EOF
+ERRORASP-06;Unclosed quotation mark
+ERRORASP-06;Error converting data type varchar to numeric
+ERRORLUA-01;LuaPlayer ERROR:
+ERRORLUA-02;CGILua message
+ERRORLUA-03;Lua error
+INDEFINITE-01;Incorrect syntax near
+INDEFINITE-02;Fatal error
+INDEFINITE-04;Invalid Querystring
+INDEFINITE-05;Input string was not in a correct format
+INDEFINITE-06;An illegal character has been found in the statement
+SHELL-01;c99shell</title>
+SHELL-02;C99Shell v
+SHELL-03;<form method="POST" action="cfexec.cfm">
+SHELL-05;<input type=text name=".CMD" size=45 value=
+SHELL-05;<title>awen asp.net webshell</title>
+SHELL-06;<FORM METHOD=GET ACTION='cmdjsp.jsp'>
+SHELL-07;JSP Backdoor Reverse Shell
+SHELL-08;Simple CGI backdoor by DK
+SHELL-09;execute command: <input type="text" name="c">
+SHELL-10;Execute Shell Command
+SHELL-11;r57shell</title>
+SHELL-12;<title>r57Shell
+SHELL-13;heroes1412
+SHELL-14;MyShell
+SHELL-15;PHP Shell
+SHELL-16;PHPShell
+SHELL-17;REMVIEW TOOLS
+SHELL-18;<title>iTSecTeam</title>
+SHELL-19;JSP Backdoor Reverse Shell
+SHELL-20;<title>*  ernealizm  * </title>
+SHELL-21;<title>JSP Shell</title>
+SHELL-22;<title>KNULL Shell</title>
+SHELL-23;<title>.+- WSO.+</title>
+SHELL-24;<title>SST Sheller !</title>
+SHELL-25;<title>SyRiAn Sh3ll
+SHELL-26;<title>Mini Php Shell
+SHELL-27;<title>ASPX Shell</title>
+SHELL-28;<title>ZoRBaCK Connect</title>
+SHELL-29;<title>.+Ani-Shell.+</title>
+SHELL-30;<title>Stored Procedure Execute</title>
+SHELL-31;<title>:: www.h4ckcity.org :: Coded By 2MzRp & LocalMan ::</title>
+SHELL-32;<title>PhpShell 2.0</title>
+SHELL-33;<title>.+NTDaddy.+</title>
+SHELL-34;<title>PHP-Terminal
