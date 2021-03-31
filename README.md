@@ -1,47 +1,31 @@
 # SCANNER - INURLBR
-> **This is a fork of the original project.**
+> **This is a fork of the original [project](https://github.com/googleinurl/SCANNER-INURLBR).**
 >
 >Advanced search in search engines, enables analysis provided to exploit GET / POST capturing emails & urls, with an internal custom validation junction for each target / url found.
+## Disclaimer
 ```
-   +-----------------------------------------------------------------------------+
-   |  [!] Legal disclaimer: Usage of INURLBR for attacking targets without prior |
-   |  mutual consent is illegal.                                                 |
-   |  It is the end user's responsibility to obey all applicable local, state and|
-   |  federal laws.                                                              |
-   |  Developers assume no liability and are not responsible for any misuse or   |
-   |  damage caused by this program                                              |
-   +-----------------------------------------------------------------------------+
+This or previous program is for Educational purpose ONLY. Do not use it without permission. The usual disclaimer applies, especially the fact that me (MrCl0wnLab) is not liable for any damages caused by direct or indirect use of the information or functionality provided by these programs. The author or any Internet provider bears NO responsibility for content or misuse of these programs or any derivatives thereof. By using these programs you accept the fact that any damage (dataloss, system crash, system compromise, etc.) caused by the use of these programs is not MrCl0wnLab's responsibility.
 ```
 
-
 ```
-  [+] AUTOR:        googleINURL
-  [+] EMAIL:        inurlbr@gmail.com
-  [+] Blog:         http://blog.inurl.com.br
-  [+] Twitter:      https://twitter.com/googleinurl
-  [+] Fanpage:      https://fb.com/InurlBrasil
-  [+] Pastebin      http://pastebin.com/u/Googleinurl
-  [+] GIT:          https://github.com/googleinurl
-  [+] PSS:          http://packetstormsecurity.com/user/googleinurl
-  [+] EXA:          http://exploit4arab.net/author/248/Cleiton_Pinheiro
-  [+] YOUTUBE:      http://youtube.com/c/INURLBrasil
-  [+] PLUS:         http://google.com/+INURLBrasil
+    Autor:    MrCl0wn
+    Blog:     https://blog.mrcl0wn.com
+    GitHub:   https://github.com/MrCl0wnLab
+    Twitter:  https://twitter.com/MrCl0wnLab
+    Email:    mrcl0wnlab\@\gmail.com
+
+    * Cybersecurity researcher specialized in GED ( Gambiarra, Exploit and Development )
+    * Script:        INURLBR
+    * Codename:           Facada
+    * Version:            3.0.0
 ```
 
- * GROUP INURL BRASIL - ADVANCED SEARCH.
- * SCRIPT NAME:        INURLBR
- * Codename:           Facada
- * Version:            3.0.0
-
-
-## Screenshot:
-------
+## Screenshot
 ![Screenshot](https://1.bp.blogspot.com/-oAWYXFohNpw/YGN2Lj8VUlI/AAAAAAAAArk/Xibi752EVPMQTjQbZtrasm7aJGEyH0BmwCLcBGAsYHQ/s1214/Captura%2Bde%2Btela%2Bde%2B2021-03-30%2B16-01-33.png)
 ![Screenshot](http://4.bp.blogspot.com/-XAohC-ga9EM/VWU1l3a3QcI/AAAAAAAAA_o/BRg0mIllOgQ/s1600/sqlmap.png)
 ![Screenshot](http://4.bp.blogspot.com/-bOOilZLyUFg/VWQCdHKCAwI/AAAAAAAAA_U/JAy1ChdQJU0/s1600/post.png)
 ![Screenshot](http://2.bp.blogspot.com/-kCYgptMhfts/VWU2eTTTKFI/AAAAAAAAA_w/eGSt7qg4HRo/s1600/exploits.png)
-## LIB & PERMISSION:
-------
+## Lib & Permission
 ```log
  ----------------------------------------------------------
 PHP Version         7.4.16
@@ -56,14 +40,13 @@ Operating system    LINUX
 Proxy random        TOR 
  ----------------------------------------------------------
 [+] PERMISSION EXECUTION: chmod +x inurlbr.php
-[+] INSTALLING LIB CURL: sudo apt-get install php5-curl
-[+] INSTALLING LIB CLI: sudo apt-get install php5-cli
+[+] INSTALLING LIB CURL: sudo apt-get install php7-curl
+[+] INSTALLING LIB CLI: sudo apt-get install php7-cli
 [+] INSTALLING PROXY TOR https://www.torproject.org/docs/debian.html.en
  ----------------------------------------------------------
 resume: apt-get install curl libcurl3 libcurl3-dev php7 php7-cli php7-curl
 ```
-## HELP:
-------
+## Help
 ```
 -h
 --help   Alternative long length help command.
@@ -494,7 +477,7 @@ resume: apt-get install curl libcurl3 libcurl3-dev php7 php7-cli php7-curl
 
 
 
-## COMMANDS SIMPLE:
+## Commands
 ------
 ```bash
 ./inurlbr.php --dork 'inurl:php?id=' -s save.txt -q 1,6 -t 1 --exploit-get "?´'%270x27;"  
@@ -559,36 +542,30 @@ resume: apt-get install curl libcurl3 libcurl3-dev php7 php7-cli php7-curl
 ```
 
 ## Installation
-------
-Preferably, you can download inurlbr by cloning the [Git](https://github.com/googleinurl/SCANNER-INURLBR) repository:
+Preferably, you can download inurlbr by cloning the [Git](https://github.com/MrCl0wnLab/SCANNER-INURLBR) repository:
 ```bash
-git clone https://github.com/googleinurl/SCANNER-INURLBR.git inurlbr
+git clone https://github.com/MrCl0wnLab/SCANNER-INURLBR.git inurlbr
 ```
 The inurlbr works with [php](http://php.net/downloads.php) version **7.x**  linux platforms.
 
-## Giving permission to script execution:
-------
+## Giving permission to script execution
 ```bash
 $chmod +x inurlbr.php
 Executar: ./inurlbr.php
 ```
 
 ## Setting your token ipinfo
-------
 It is possible to register more than one token
 ```bash
 ./resources/token.ipinfo.inurl
 ```
 ## Setting your token ipinfo
-------
 You can register more validation strings
 ```bash
 ./resources/strings.validation.inurl
 ```
 
 ## Usage
-----
-
 To get a list of basic options and switches use:
 ```bash
 php inurlbr.php -h
