@@ -63,7 +63,7 @@ function __processUrlExec($url, $contUrl) {
             (__not_empty($_SESSION['config']['command-vul']) ? __command($_SESSION['config']['command-vul'], $target_) : NULL);
             
             __plus();
-            (__not_empty($_SESSION['config']['exploit-vul-id']) ?
+            (!is_null($_SESSION['config']['exploit-vul-id'])?
                             __configExploitsExec($_SESSION['config']['exploit-vul-id'], $target_) : NULL);
             
         endif;

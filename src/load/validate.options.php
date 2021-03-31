@@ -145,7 +145,7 @@ $_SESSION['config']['exploit-command'] = __not_empty($opcoes['exploit-command'])
 $opcoes['exploit-command'] : NULL;
 
 #[+]VALIDATION MANAGEMENT COMMANDS SHELL TARGET VULN ID
-$_SESSION['config']['exploit-vul-id'] = __not_empty($opcoes['exploit-vul-id']) ?
+$_SESSION['config']['exploit-vul-id'] = !is_null($opcoes['exploit-vul-id']) ?
 $opcoes['exploit-vul-id'] : NULL;
 
 #[+]VALIDATION MANAGEMENT COMMANDS SHELL ALL TARGET ID
