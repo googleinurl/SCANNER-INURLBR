@@ -17,7 +17,7 @@
   [+] Twitter:  https://twitter.com/MrCl0wnLab
   [+] Email:    mrcl0wnlab\@\gmail.com
 
-  [+] SCRIPT NAME: INURLBR 2.2
+  [+] SCRIPT NAME: INURLBR 3.0
   INURLBR scanner was developed by Cleiton Pinheiro, owner and founder of INURL - BRASIL.
   Tool made ​​in PHP that can run on different Linux distributions helps
   hackers / security professionals in their specific searches.
@@ -66,7 +66,7 @@
   [*]ERROR ORACLE,    [*]ERROR DB2,            [*]JDBC CFM,              [*]ERROS LUA,
   [*]ERROR INDEFINITE
 
-  [+] Dependencies - (PHP 5.4.*):
+  [+] Dependencies - (PHP 7.*):
   sudo apt-get install curl libcurl3 libcurl3-dev php7 php7-cli php7-curl
 
 
