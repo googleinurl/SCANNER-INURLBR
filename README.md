@@ -1,7 +1,8 @@
 
 
-<p style="text-align:center">
-<img src="https://lh3.googleusercontent.com/-uB97QnHQ-VY/YGYWDRmUK0I/AAAAAAAAAsI/f3BH8Kv8kvMvlrulgsbtkRsAbgHpB3mKACLcBGAsYHQ/logo2.png" width="70%"/><p>
+<p style="text-align:center" align="center">
+<img src="https://lh3.googleusercontent.com/-uB97QnHQ-VY/YGYWDRmUK0I/AAAAAAAAAsI/f3BH8Kv8kvMvlrulgsbtkRsAbgHpB3mKACLcBGAsYHQ/logo2.png" width="70%" />
+<p>
 
 
 > **This is a fork of the original [project](https://github.com/googleinurl/SCANNER-INURLBR).**
