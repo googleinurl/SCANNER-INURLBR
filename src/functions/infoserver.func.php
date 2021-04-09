@@ -10,6 +10,15 @@ function __infoServer($url_, $postDados = NULL) {
         if (!is_null($_SESSION['config']['extrai-email']))
             return __extractEmail($resultado['corpo'], $url_);
 
+        if (!is_null($_SESSION['config']['extrai-url']) &&  !is_null($_SESSION['config']['extrai-url-archive'])){
+            __extractURLs($resultado['corpo'], $url_);
+            __extractURLDomainsArchive($resultado['parser_url']['host']);
+            return;
+        }
+        
+        if (!is_null($_SESSION['config']['extrai-url-archive']))
+            return __extractURLDomainsArchive($resultado['parser_url']['host']);
+
         if (!is_null($_SESSION['config']['extrai-url']))
             return __extractURLs($resultado['corpo'], $url_);
 

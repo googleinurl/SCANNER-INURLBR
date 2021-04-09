@@ -207,8 +207,10 @@ function __menu() {
 
  {$_SESSION["c1"]}-m{$_SESSION["c0"]}  Enable the search for emails on the urls specified.
   
- {$_SESSION["c1"]}-u{$_SESSION["c0"]}  Enables the search for URL lists on the url specified.
- 
+ {$_SESSION["c1"]}-u{$_SESSION["c0"]}  Enables the search for URL lists on the host specified.
+
+ {$_SESSION["c1"]}--ua{$_SESSION["c0"]}  Enables the search for URL lists on the host specified using archive.org.
+
  {$_SESSION["c1"]}--gc{$_SESSION["c0"]} Enable validation of values ​​with google webcache.
      
  {$_SESSION["c1"]}--pr{$_SESSION["c0"]}  Progressive scan, used to set operators (dorks), 

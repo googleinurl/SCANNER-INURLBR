@@ -80,7 +80,7 @@
  * r00t-3xp10t, Jh00n, chk_,  Unknownantisec,  sl4y3r 0wn3r, hc0d3r, arplhmd, 0x4h4x
  * Clandestine, KoubackTr, SnakeTomahawk, SkyRedFild, Lorenzo Faletra, Eclipse, shaxer   
  * dd3str0y3r, Johnny Deep, Lenon Leite, pSico_b0y, Bakunim_Malvadão, IceKiller, c00z  
- * Oystex, rH, Warflop, se4b3ar 
+ * Oystex, rH, Warflop, se4b3ar, ResenhaCyber, OFJAAAH, aCCESS, Sub-Solo
  */
 
 /*
@@ -89,7 +89,7 @@
 
 $set_error=1;
 error_reporting($set_error);
-ini_set('memory_limit', '256M');
+ini_set('memory_limit', -1);
 ini_set('display_errors', $set_error);
 ini_set('max_execution_time', $set_error);
 ini_set('allow_url_fopen', 1);
@@ -108,7 +108,7 @@ $command_list = [
     'replace:', 'remove:', 'regexp:', 'sall:', 'sub-file:', 'sub-get::', 'sub-concat:',
     'user-agent:', 'url-reference:', 'delay:', 'sendmail:', 'time-out:',
     'http-header:', 'ifcode:', 'ifurl:', 'ifemail:', 'mp:', 'target:',
-    'no-banner::', 'gc::', 'proxy:', 'proxy-file:', 'time-proxy:', 'pr::',
+    'no-banner::', 'gc::','ua::', 'proxy:', 'proxy-file:', 'time-proxy:', 'pr::',
     'proxy-http-file:', 'update::', 'info::', 'help::', 'unique::', 'popup::',
     'ajuda::', 'install-dependence::', 'cms-check::', 'sub-post::', 'robots::',
     'alexa-rank::', 'beep::', 'exploit-list::', 'tor-random::', 'shellshock::',

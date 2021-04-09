@@ -2,6 +2,7 @@
 function __request_info($url_, $proxy = NULL, $postDados = NULL) {
 
     $url_ = __crypt($url_);
+    $parser_url = parse_url($url_);
     $mh = curl_multi_init();
     $curl_array = [];
     $nodes = is_array($url_) ? $url_ : [$url_];
@@ -41,6 +42,7 @@ function __request_info($url_, $proxy = NULL, $postDados = NULL) {
         curl_setopt($curl_array[$i], CURLOPT_SSL_VERIFYHOST, 0);
         curl_setopt($curl_array[$i], CURLOPT_FRESH_CONNECT, 1);
         curl_setopt($curl_array[$i], CURLOPT_RETURNTRANSFER, 1);
+        #curl_setopt($curl_array[$i], CURLOPT_FOLLOWLOCATION, 1);
 
         curl_setopt($curl_array[$i], CURLOPT_CONNECTTIMEOUT, __not_empty($_SESSION['config']['time-out']) ?
                         $_SESSION['config']['time-out'] : 5);
@@ -89,5 +91,5 @@ function __request_info($url_, $proxy = NULL, $postDados = NULL) {
 
     __plus();
     unset($curl_array);
-    return isset($ret[0]) ? array('corpo' => $ret[0], 'server' => $ret[1], 'error' => $ret[2], 'info' => $ret[3]) : FALSE;
+    return isset($ret[0]) ? array('corpo' => $ret[0], 'server' => $ret[1], 'error' => $ret[2], 'info' => $ret[3],'parser_url'=>$parser_url) : FALSE;
 }

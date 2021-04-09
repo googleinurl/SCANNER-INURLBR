@@ -28,3 +28,31 @@ function __extractURLs($html, $url_) {
     endforeach;
     __timeSec('delay', "\n");
 }
+
+function __extractURLDomainsArchive($domain_) {
+    
+    __plus();
+    echo "{$_SESSION["c1"]}{$_SESSION['config']['line']}{$_SESSION["c0"]}\n";
+    echo "{$_SESSION["c1"]} |_[ INFO ][URL EXTRACT FROM DOMAIN] {$_SESSION["c0"]}=>{$_SESSION["c9"]} {$domain_} {$_SESSION["c0"]}\n";
+    echo "{$_SESSION["c1"]}{$_SESSION['config']['line']}{$_SESSION["c0"]}\n";
+    $url_ = "http://web.archive.org/cdx/search/cdx?url=*.{$domain_}/*&output=text&fl=original&collapse=urlkey";
+    $matches_ = array_unique(array_filter(explode("\n", __request_info($url_, $proxy, $postDados_)['corpo'])));
+    $trash_list = $_SESSION["config"]['trash_list'];
+    foreach ($matches_ as $valor):
+
+        $valor = __filterURLTAG($valor);
+        if (__validateURL($valor) && !__validateOptions($trash_list_, $valor, 1)):
+            echo "{$_SESSION["c1"]}__[ + ]{$_SESSION["c0"]}[\033[01;31m {$_SESSION["config"]['cont_url']}"
+            . " {$_SESSION["c9"]}]- {$valor}{$_SESSION["c0"]}\n";
+            $_SESSION["config"]["resultado_valores"].="{$valor}\n";
+            __plus();
+            __saveValue($_SESSION["config"]["arquivo_output"], $valor) . __plus();
+            $_SESSION["config"]["cont_url"] ++;
+        endif;
+        __plus();
+    endforeach;
+    __timeSec('delay', "\n");
+    
+
+
+}

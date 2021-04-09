@@ -88,7 +88,9 @@ function __info() {
 ./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'site:.gov.br email (gmail|yahoo|hotmail) ext:txt' {$_SESSION["c1"]}-s {$_SESSION["c2"]}emails.txt {$_SESSION["c1"]}-m{$_SESSION["c0"]}
   
 ./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'site:.gov.br email (gmail|yahoo|hotmail) ext:txt' {$_SESSION["c1"]}-s {$_SESSION["c2"]}urls.txt {$_SESSION["c1"]}-u{$_SESSION["c0"]}
- 
+
+./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'site:gov.br' {$_SESSION["c1"]}-s {$_SESSION["c2"]}urls.txt {$_SESSION["c1"]}--ua{$_SESSION["c0"]}
+
 ./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'site:gov.bo' {$_SESSION["c1"]}-s {$_SESSION["c2"]}govs.txt {$_SESSION["c1"]}--exploit-all-id {$_SESSION["c2"]} 1,2,6 {$_SESSION["c0"]} 
  
 ./inurlbr.php {$_SESSION["c1"]}--dork {$_SESSION["c2"]}'site:.uk' {$_SESSION["c1"]}-s {$_SESSION["c2"]}uk.txt {$_SESSION["c1"]}--user-agent {$_SESSION["c2"]} 'Mozilla/5.0 (compatible; U; ABrowse 0.6; Syllable) AppleWebKit/420+ (KHTML, like Gecko)' {$_SESSION["c0"]}
@@ -118,6 +120,8 @@ function __info() {
 ./inurlbr.php {$_SESSION["c1"]}--dork-file {$_SESSION["c2"]}'dorksCGI.txt' {$_SESSION["c1"]}-s {$_SESSION["c2"]}output.txt {$_SESSION["c1"]}-q {$_SESSION["c2"]}1,2,6,4,5,9,7,8  {$_SESSION["c0"]}{$_SESSION["c1"]} --pr --shellshock{$_SESSION["c0"]}
  
 ./inurlbr.php {$_SESSION["c1"]}--dork-file {$_SESSION["c2"]}'dorks_Wordpress_revslider.txt' {$_SESSION["c1"]}-s {$_SESSION["c2"]}output.txt {$_SESSION["c1"]}-q {$_SESSION["c2"]}1,2,6,4,5,9,7,8  {$_SESSION["c1"]}--sub-file {$_SESSION["c2"]}'xpls_Arbitrary_File_Download.txt' {$_SESSION["c0"]}
+
+
 {$_SESSION["c1"]}------------------------------------------------------------------------------------------------------------{$_SESSION["c0"]}
   
 {$_SESSION["c1"]}[ INFO ]{$_SESSION["c16"]} It it also useful to know the full path to the PHP binary on your computer. {$_SESSION["c0"]}

@@ -84,6 +84,9 @@ $_SESSION['config']['extrai-url'] = isset($opcoes['u']) ? TRUE : NULL;
 #[+]VALIDATION EMAIL EXTRACTION
 $_SESSION['config']['extrai-email'] = isset($opcoes['m']) ? TRUE : NULL;
 
+#[+]VALIDATION URL EXTRACTION FROM web.archive.org
+$_SESSION['config']['extrai-url-archive'] = isset($opcoes['ua']) ? TRUE : NULL;
+
 #[+]VALIDATION ID SEARCH ENGINE
 $_SESSION['config']['motor'] = __not_empty($opcoes['q']) &&
 __validateOptions('1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,e1,e2,e3,e4,e5,e6,all', $opcoes['q']) ?

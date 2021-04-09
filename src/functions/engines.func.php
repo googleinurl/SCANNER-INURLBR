@@ -158,14 +158,14 @@ function __engines($dork, $list_proxy) {
         || __validateOptions($_SESSION["config"]["motor"], "all")):
         $randHost = __dominioGoogleRandom();
         $randGeneric = __googleGenericRandom();
-        __pageEngine($confArray, "GOOGLE_GENERIC_RANDOM - {$randHost} ID: {$randGeneric}", "http://{$randHost}/cse?cx={$randGeneric}&q=[DORK]&num=500&hl=en&as_qdr=all&start=[PAG]&sa=N", $dork_exec, NULL, 0, 0, 1);
+        __pageEngine($confArray, "GOOGLE_GENERIC_RANDOM - ID: {$randGeneric}", "http://google.com/cse?cx={$randGeneric}&q=[DORK]&num=500&hl=en&as_qdr=all&start=[PAG]&sa=N", $dork_exec, NULL, 0, 0, 1);
     endif;
 
     if (__validateOptions($_SESSION["config"]["motor"], 24) 
         || __validateOptions($_SESSION["config"]["motor"], "all")):
         $randHost = __dominioGoogleRandom();
         $randGeneric = __googleGenericRandom();
-        __pageEngine($confArray, "GOOGLE_GENERIC_RANDOM - {$randHost} ID: {$randGeneric}", "http://{$randHost}/cse?cx={$randGeneric}&q=[DORK]&num=500&hl=en&as_qdr=all&start=[PAG]&sa=N", $dork_exec, NULL, 0, 0, 1);
+        __pageEngine($confArray, "GOOGLE_GENERIC_RANDOM - ID: {$randGeneric}", "http://google.com/cse?cx={$randGeneric}&q=[DORK]&num=500&hl=en&as_qdr=all&start=[PAG]&sa=N", $dork_exec, NULL, 0, 0, 1);
     endif;
 
 

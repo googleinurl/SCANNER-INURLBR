@@ -24,7 +24,7 @@ Autor:    MrCl0wn
 Blog:     https://blog.mrcl0wn.com
 GitHub:   https://github.com/MrCl0wnLab
 Twitter:  https://twitter.com/MrCl0wnLab
-Email:    mrcl0wnlab\@\gmail.co
+Email:    mrcl0wnlab\@\gmail.com
 Script:   INURLBR
 Codename: Facada
 Version:  3.0.0
@@ -62,6 +62,25 @@ php inurlbr.php --target 'https://YOUR_TARGET' -o fuzz.txt -s popup_result.txt -
 ```
 ![Screenshot](https://1.bp.blogspot.com/-AFOmlAmYzUg/YGZgaNOY2II/AAAAAAAAAtI/twy2icF7kTo6N2YPKzOQojptIZYTCmbywCLcBGAsYHQ/s2057/Captura%2Bde%2Btela%2Bde%2B2021-04-01%2B21-05-40.png)
 
+
+### Extract urls using archive.org
+```bash
+php inurlbr.php  -o 'defense.gov.txt' --au -s 'defense.gov.out'
+```
+![Screenshot](https://1.bp.blogspot.com/-4RwLa0MyUqI/YG_KIpr1eII/AAAAAAAAAuo/iNwH0MMY-7I9AGDc9Z9OkmBMZ5ZNAEWwgCLcBGAsYHQ/s1104/Captura%2Bde%2Btela%2Bde%2B2021-04-09%2B00-15-33.png)
+
+### Extract values using regex
+```bash
+php inurlbr.php --dork 'contato telefone' -s 'reg.txt' -q 1 --regexp-filter '([0-9]{2}[6789][0-9]{3,4}[0-9]{4})'
+```
+![Screenshot](https://1.bp.blogspot.com/-CxspmhIyEh0/YG_LQKM8O1I/AAAAAAAAAu4/qgZ8dpiku1I9GGhQX-TyoPEQUdSNx2VRACLcBGAsYHQ/s1184/Captura%2Bde%2Btela%2Bde%2B2021-04-09%2B00-33-35.png)
+
+### Validate values using regex
+```bash
+php inurlbr.php --dork 'contato telefone' -s 'reg.txt' -q 1 --regexp '([0-9]{2}[6789][0-9]{3,4}[0-9]{4})'
+```
+![Screenshot](https://1.bp.blogspot.com/-9YocowQy_-A/YG_Jodfsz6I/AAAAAAAAAug/D03Wz6GsFQsne0uozgA-Z_Kz8xNBrjB7gCLcBGAsYHQ/s1184/Captura%2Bde%2Btela%2Bde%2B2021-04-09%2B00-24-45.png)
+
 ## Lib & Permission
 ```properties
  ----------------------------------------------------------
@@ -85,6 +104,17 @@ resume: apt-get install curl libcurl3 libcurl3-dev php7 php7-cli php7-curl
 ```
 ## Help
 ```properties
+
+     ██░ ██    ▓█████     ██▓        ██▓███  
+    ▓██░ ██▒   ▓█   ▀    ▓██▒       ▓██░  ██▒
+    ▒██▀▀██░   ▒███      ▒██░       ▓██░ ██▓▒
+    ░▓█ ░██    ▒▓█  ▄    ▒██░       ▒██▄█▓▒ ▒
+    ░▓█▒░██▓   ░▒████▒   ░██████▒   ▒██▒ ░  ░
+    ▒ ░░▒░▒   ░░ ▒░ ░   ░ ▒░▓  ░   ▒▓▒░ ░  ░
+    ▒ ░▒░ ░    ░ ░  ░   ░ ░ ▒  ░   ░▒ ░     
+    ░  ░░ ░      ░        ░ ░      ░░       
+    ░  ░  ░      ░  ░       ░  ░            
+                                         
 -h
 --help   Alternative long length help command.
 --ajuda  Command to specify Help.
@@ -92,11 +122,10 @@ resume: apt-get install curl libcurl3 libcurl3-dev php7 php7-cli php7-curl
 --update Code update.    
 -q       Choose which search engine you want through [1...24] / [e1..6]]:
      [options]:
-     1   - GOOGLE
+     1   - GOOGLE / (CSE) GENERIC RANDOM / API
      2   - BING
      3   - YAHOO BR
      4   - ASK
-     5   - HAO123 BR
      6   - GOOGLE (API)
      7   - LYCOS
      8   - UOL BR
@@ -105,26 +134,26 @@ resume: apt-get install curl libcurl3 libcurl3-dev php7 php7-cli php7-curl
      11  - DMOZ
      12  - GIGABLAST
      13  - NEVER
-     14  - BAIDU BR
-     15  - YANDEX
-     16  - ZOO
-     17  - HOTBOT
-     18  - ZHONGSOU
+     17  - HOTBUSCA
      19  - HKSEARCH
      20  - EZILION
      21  - SOGOU
      22  - DUCK DUCK GO
-     23  - BOOROW
      24  - GOOGLE(CSE) GENERIC RANDOM
+     25  - EXALEAD
+     26  - STARTPAGE
+     27  - QWANT
      ----------------------------------------
                  SPECIAL MOTORS
      ----------------------------------------
      e1  - TOR FIND
      e2  - ELEPHANT
      e3  - TORSEARCH
-     e4  - WIKILEAKS
-     e5  - OTN
-     e6  - EXPLOITS SHODAN
+     e4  - GORCH
+     e5  - WIKILEAKS
+     e6  - AHMIA
+     e7  - OTN
+     e8  - EXPLOITS SHODAN
      ----------------------------------------
      all - All search engines / not special motors
      Default:    1
@@ -243,7 +272,7 @@ resume: apt-get install curl libcurl3 libcurl3-dev php7 php7-cli php7-curl
      Example: -a {string}
      Usage:   -a '<title>hello world</title>'
      
- -d  Specify debug op 1, 2, 3, 4, 5.
+ -d  Specify the script usage op 1, 2, 3, 4, 5.
      Example: -d {op}
      Usage:   -d 1 /URL of the search engine.
               -d 2 /Show all the url.
@@ -272,8 +301,10 @@ resume: apt-get install curl libcurl3 libcurl3-dev php7 php7-cli php7-curl
 
  -m  Enable the search for emails on the urls specified.
   
- -u  Enables the search for URL lists on the url specified.
- 
+ -u  Enables the search for URL lists on the host specified.
+
+ --ua  Enables the search for URL lists on the host specified using archive.org.
+
  --gc Enable validation of values ​​with google webcache.
      
  --pr  Progressive scan, used to set operators (dorks), 
@@ -458,6 +489,10 @@ resume: apt-get install curl libcurl3 libcurl3-dev php7 php7-cli php7-curl
      --sub-file will be injected via POST.
      Usage:   --sub-get
          
+ --sub-concat Sets string to be concatenated with 
+     the target host within the subprocess
+     Example: --sub-concat {string}
+     Usage:   --sub-concat '/login.php'
 
  --sub-cmd-vul Each vulnerable URL found within the sub-process
      will execute the parameters of this command.
@@ -505,10 +540,11 @@ resume: apt-get install curl libcurl3 libcurl3-dev php7 php7-cli php7-curl
      Usage:   hex(102030)
      Usage:   --exploit-get 'user?id=hex(102030)'
 
- Generate random values.
+ hex Generate random values.
      Example: random({character_counter})
      Usage:   random(8)
      Usage:   --exploit-get 'user?id=random(8)'
+
 
 ```
 
